@@ -94,17 +94,13 @@ export default function About() {
             "radial-gradient(ellipse at center, black 25%, transparent 80%)",
         }}
       />
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.45, 0.7, 0.45] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-32 top-1/4 h-[320px] w-[320px] rounded-full bg-emerald-500/15 blur-[110px] md:-left-40 md:h-[560px] md:w-[560px] md:blur-[160px]"
+        className="pointer-events-none absolute -left-32 top-1/4 h-[320px] w-[320px] rounded-full bg-emerald-500/10 blur-[110px] md:-left-40 md:h-[560px] md:w-[560px] md:blur-[160px]"
       />
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.55, 0.3, 0.55] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -right-32 top-0 h-[300px] w-[300px] rounded-full bg-sky-500/15 blur-[110px] md:-right-40 md:h-[520px] md:w-[520px] md:blur-[160px]"
+        className="pointer-events-none absolute -right-32 top-0 h-[300px] w-[300px] rounded-full bg-sky-500/10 blur-[110px] md:-right-40 md:h-[520px] md:w-[520px] md:blur-[160px]"
       />
 
       {/* ============ Main grid ============ */}
@@ -256,14 +252,12 @@ function CharacterStage() {
       style={{ transformOrigin: "50% 100%" }}
     >
       {/* Aurora glow behind character */}
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.6, 0.95, 0.6], scale: [1, 1.06, 1] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 55% 55%, rgba(16,185,129,0.28), transparent 65%), radial-gradient(ellipse 50% 40% at 35% 30%, rgba(56,189,248,0.22), transparent 60%)",
+            "radial-gradient(ellipse 65% 55% at 55% 55%, rgba(16,185,129,0.22), transparent 65%), radial-gradient(ellipse 50% 40% at 35% 30%, rgba(56,189,248,0.16), transparent 60%)",
           filter: "blur(20px)",
         }}
       />

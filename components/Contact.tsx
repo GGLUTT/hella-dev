@@ -80,17 +80,13 @@ export default function Contact() {
       className="relative overflow-hidden bg-black px-5 py-24 sm:px-6 sm:py-32 md:py-40"
     >
       {/* Backdrop */}
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.35, 0.6, 0.35] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[180px]"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/8 blur-[180px]"
       />
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.45, 0.25, 0.45] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-500/12 blur-[140px]"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-500/6 blur-[140px]"
       />
       <div
         aria-hidden

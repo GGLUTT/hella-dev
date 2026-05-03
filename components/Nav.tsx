@@ -1,8 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useSpring, type Variants } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
 import { useLang } from "@/context/LangContext";
 
@@ -106,13 +106,7 @@ export default function Nav() {
                 </AnimatePresence>
               </button>
 
-              <MagneticButton
-                href="#contact"
-                className="hidden rounded-full bg-white px-4 py-1.5 text-sm font-medium text-black transition hover:bg-white/90 md:inline-flex"
-                strength={0.4}
-              >
-                {t("Написати", "Contact")}
-              </MagneticButton>
+              <NavCTA label={t("Написати", "Contact")} />
 
               {/* Mobile burger */}
               <button
@@ -258,6 +252,42 @@ export default function Nav() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/* ── Nav CTA with shimmer hover ── */
+function NavCTA({ label }: { label: string }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const x = useSpring(rawX, { stiffness: 220, damping: 18, mass: 0.4 });
+  const y = useSpring(rawY, { stiffness: 220, damping: 18, mass: 0.4 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    rawX.set((e.clientX - r.left - r.width / 2) * 0.35);
+    rawY.set((e.clientY - r.top - r.height / 2) * 0.35);
+  };
+
+  return (
+    <motion.div style={{ x, y }} className="hidden md:inline-flex">
+      <a
+        ref={ref}
+        href="#contact"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => { rawX.set(0); rawY.set(0); }}
+        className="group relative overflow-hidden rounded-full bg-white px-4 py-1.5 text-sm font-medium text-black"
+      >
+        {/* Shimmer sweep */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -translate-x-[110%] skew-x-[-18deg] bg-gradient-to-r from-transparent via-black/[0.09] to-transparent transition-transform duration-500 ease-in-out group-hover:translate-x-[110%]"
+        />
+        <span className="relative z-10">{label}</span>
+      </a>
+    </motion.div>
   );
 }
 

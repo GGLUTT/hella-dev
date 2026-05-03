@@ -131,17 +131,13 @@ export default function Services() {
             "radial-gradient(ellipse at center, black 25%, transparent 80%)",
         }}
       />
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.35, 0.6, 0.35] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-40 top-1/4 h-[520px] w-[520px] rounded-full bg-emerald-500/10 blur-[180px]"
+        className="pointer-events-none absolute -left-40 top-1/4 h-[520px] w-[520px] rounded-full bg-emerald-500/8 blur-[180px]"
       />
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.45, 0.25, 0.45] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -right-40 bottom-0 h-[460px] w-[460px] rounded-full bg-sky-500/10 blur-[180px]"
+        className="pointer-events-none absolute -right-40 bottom-0 h-[460px] w-[460px] rounded-full bg-sky-500/8 blur-[180px]"
       />
 
       {/* Scattered floating mockups */}
@@ -242,11 +238,9 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
     >
       {/* Highlight glow ring */}
       {isHi && (
-        <motion.div
+        <div
           aria-hidden
-          animate={{ opacity: [0.4, 0.7, 0.4] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -inset-3 -z-10 rounded-[28px] bg-gradient-to-br from-emerald-300/30 via-sky-300/20 to-fuchsia-300/20 blur-2xl"
+          className="pointer-events-none absolute -inset-3 -z-10 rounded-[28px] bg-gradient-to-br from-emerald-300/20 via-sky-300/15 to-fuchsia-300/15 blur-2xl"
         />
       )}
 
