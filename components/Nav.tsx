@@ -255,7 +255,7 @@ export default function Nav() {
   );
 }
 
-/* ── Nav CTA with shimmer hover ── */
+/* ── Nav CTA — liquid fill hover ── */
 function NavCTA({ label }: { label: string }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const rawX = useMotionValue(0);
@@ -267,8 +267,8 @@ function NavCTA({ label }: { label: string }) {
     const el = ref.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    rawX.set((e.clientX - r.left - r.width / 2) * 0.35);
-    rawY.set((e.clientY - r.top - r.height / 2) * 0.35);
+    rawX.set((e.clientX - r.left - r.width / 2) * 0.3);
+    rawY.set((e.clientY - r.top - r.height / 2) * 0.3);
   };
 
   return (
@@ -278,14 +278,18 @@ function NavCTA({ label }: { label: string }) {
         href="#contact"
         onMouseMove={handleMouseMove}
         onMouseLeave={() => { rawX.set(0); rawY.set(0); }}
-        className="group relative overflow-hidden rounded-full bg-white px-4 py-1.5 text-sm font-medium text-black"
+        className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-5 py-2 text-sm font-medium text-white"
       >
-        {/* Shimmer sweep */}
+        {/* Liquid fill — scales up from bottom on hover */}
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 -translate-x-[110%] skew-x-[-18deg] bg-gradient-to-r from-transparent via-black/[0.09] to-transparent transition-transform duration-500 ease-in-out group-hover:translate-x-[110%]"
+          className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 rounded-full bg-white transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-100"
         />
-        <span className="relative z-10">{label}</span>
+        {/* Label — flips black on hover */}
+        <span className="relative z-10 flex items-center gap-2 transition-colors duration-200 group-hover:text-black">
+          <span aria-hidden className="h-1 w-1 rounded-full bg-emerald-400 transition-colors duration-200 group-hover:bg-black/40" />
+          {label}
+        </span>
       </a>
     </motion.div>
   );

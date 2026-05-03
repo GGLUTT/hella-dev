@@ -87,37 +87,41 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Name — single line, fluid font size, never wraps */}
-          <div className="overflow-hidden">
-            <motion.h1
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="whitespace-nowrap font-bold leading-[0.92] tracking-[-0.04em] text-white"
-              style={{ fontSize: "clamp(52px, 14.5vw, 92px)" }}
-            >
-              YEVHENII
-            </motion.h1>
-          </div>
+          {/* Name block — both lines same font */}
+          <h1
+            className="font-display font-bold leading-[0.9] tracking-[-0.04em]"
+            style={{ fontSize: "clamp(56px, 15vw, 96px)" }}
+          >
+            <span className="block overflow-hidden">
+              <motion.span
+                initial={{ y: "105%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="block whitespace-nowrap text-white"
+              >
+                YEVHENII
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden">
+              <motion.span
+                initial={{ y: "105%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.9, delay: 0.46, ease: [0.22, 1, 0.36, 1] }}
+                className="block whitespace-nowrap"
+                style={{
+                  background: "linear-gradient(110deg, #fff 25%, #10b981 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                LIUTYI
+              </motion.span>
+            </span>
+          </h1>
 
-          {/* Subtitle line */}
-          <div className="overflow-hidden">
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.75, delay: 0.48, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-1 whitespace-nowrap font-bold leading-[0.92] tracking-[-0.04em]"
-              style={{
-                fontSize: "clamp(52px, 14.5vw, 92px)",
-                background: "linear-gradient(100deg, #fff 20%, rgba(16,185,129,0.9) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              LIUTYI
-            </motion.div>
-          </div>
+          {/* hella sticker */}
+          <HellaSticker />
 
           {/* Tagline */}
           <motion.p
@@ -383,5 +387,82 @@ function LoaderContent({ progress, splitting }: { progress: number; splitting: b
         {progress.toString().padStart(3, "0")}
       </motion.div>
     </div>
+  );
+}
+
+/* ===================== HELLA STICKER ===================== */
+
+const STICKER_CHARS = ["h", "e", "l", "l", "a"];
+
+function HellaSticker() {
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setRevealed(true), 900);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.6, rotate: -14, y: 8 }}
+      animate={{ opacity: 1, scale: 1, rotate: -5, y: 0 }}
+      transition={{ duration: 0.7, delay: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
+      className="mt-5 inline-block"
+      style={{ perspective: 600 }}
+    >
+      {/* Outer glow ring */}
+      <motion.div
+        animate={{
+          boxShadow: [
+            "0 0 0px 0px rgba(16,185,129,0)",
+            "0 0 18px 4px rgba(16,185,129,0.25)",
+            "0 0 0px 0px rgba(16,185,129,0)",
+          ],
+        }}
+        transition={{ duration: 2.8, delay: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        className="rounded-xl"
+      >
+        {/* Clean border pill */}
+        <div className="relative rounded-xl border border-emerald-500/40">
+          {/* Inner pill */}
+          <div className="flex items-center gap-2 rounded-[10px] bg-white/[0.04] px-4 py-2 backdrop-blur-md">
+            {/* Dot */}
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <motion.span
+                className="absolute inline-flex h-full w-full rounded-full bg-emerald-400"
+                animate={{ scale: [1, 2.2, 1], opacity: [0.7, 0, 0.7] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+              />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            </span>
+
+            {/* Char-by-char reveal */}
+            <span className="flex font-display text-[14px] font-bold tracking-[0.2em] text-white">
+              {STICKER_CHARS.map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
+                  animate={revealed ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+                  transition={{ duration: 0.35, delay: i * 0.07, ease: "easeOut" }}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
+
+            {/* Slash + dev */}
+            <motion.span
+              initial={{ opacity: 0, x: -4 }}
+              animate={revealed ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.45, ease: "easeOut" }}
+              className="flex items-center gap-1"
+            >
+              <span className="h-3 w-px bg-white/15" />
+              <span className="font-mono text-[10px] tracking-wider text-emerald-400/80">/dev</span>
+            </motion.span>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
