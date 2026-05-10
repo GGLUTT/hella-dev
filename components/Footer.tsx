@@ -8,14 +8,16 @@ import {
   GithubIcon,
   LinkedinIcon,
   Mail01Icon,
-  NewTwitterIcon,
+  InstagramIcon,
+  TiktokIcon,
   ArrowUpRight01Icon,
 } from "@hugeicons/core-free-icons";
 
 const socials = [
-  { href: "https://github.com/", label: "GitHub", icon: GithubIcon },
-  { href: "https://www.linkedin.com/", label: "LinkedIn", icon: LinkedinIcon },
-  { href: "https://x.com/", label: "X / Twitter", icon: NewTwitterIcon },
+  { href: "https://github.com/GGLUTT", label: "GitHub", icon: GithubIcon },
+  { href: "https://www.linkedin.com/in/evgenii-lutiy-460797364/", label: "LinkedIn", icon: LinkedinIcon },
+  { href: "https://www.instagram.com/gg_lutt/", label: "Instagram", icon: InstagramIcon },
+  { href: "https://www.tiktok.com/@hella.work44", label: "TikTok", icon: TiktokIcon },
   { href: "mailto:hello@hella.dev", label: "Email", icon: Mail01Icon },
 ];
 
