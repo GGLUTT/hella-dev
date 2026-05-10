@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionTemplate,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /* ===================== HERO ===================== */
@@ -13,11 +19,57 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const textScale = useTransform(scrollYProgress, [0, 0.5, 0.8], [1, 3, 9]);
-  const bgScale = useTransform(scrollYProgress, [0, 0.9, 1], [1.06, 1.32, 1.36]);
-  const containerOpacity = useTransform(scrollYProgress, [0.7, 0.92], [1, 0]);
-  const vignetteOpacity = useTransform(scrollYProgress, [0, 0.6, 0.85], [0.55, 0.85, 0]);
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
+  // Spring-smoothed progress for buttery scrolling in both directions.
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 30,
+    mass: 0.25,
+    restDelta: 0.0005,
+  });
+
+  // ─────────────────────────────────────────────────────────────────
+  // Three clean acts, each with ONE job. No overlapping transforms
+  // on the same property, nothing to break on reverse scroll.
+  //
+  //   ACT I  (0.00 → 0.45)  REVEAL — overlay dissolves, video clears
+  //   ACT II (0.45 → 0.80)  SIGNATURE — stroked YEVHENII + subtitle
+  //   ACT III(0.90 → 1.00)  EXIT — whole section fades to next
+  //
+  // Continuous throughout: gentle video zoom + subtle parallax on text.
+  // ─────────────────────────────────────────────────────────────────
+
+  // ACT I — cinematic video intro (blur + desaturation clear).
+  const videoBlur = useTransform(progress, [0, 0.45], [10, 0]);
+  const videoSaturate = useTransform(progress, [0, 0.45], [0.45, 1]);
+  const videoFilter = useMotionTemplate`blur(${videoBlur}px) saturate(${videoSaturate})`;
+
+  // ACT I — black overlay with YEVHENII cutout dissolves.
+  const overlayOpacity = useTransform(progress, [0.05, 0.45], [1, 0]);
+
+  // Subtle tracking expansion — just a breath, not a spread.
+  const letterSpacing = useTransform(progress, [0, 1], [-6, 4]);
+  const letterSpacingCss = useMotionTemplate`${letterSpacing}px`;
+
+  // ACT II — stroked YEVHENII: the "signature" over the revealed scene.
+  const strokeOpacity = useTransform(progress, [0.42, 0.58, 0.88, 1], [0, 1, 1, 0]);
+
+  // ACT II — ink underline draws beneath the stroked text.
+  const underlineScaleX = useTransform(progress, [0.5, 0.8], [0, 1]);
+  const underlineOpacity = useTransform(progress, [0.48, 0.58, 0.88, 1], [0, 1, 1, 0]);
+
+  // ACT II — subtitle label appears under the signature.
+  const subtitleOpacity = useTransform(progress, [0.62, 0.78, 0.9, 1], [0, 1, 1, 0]);
+  const subtitleY = useTransform(progress, [0.62, 0.8], [14, 0]);
+
+  // Continuous — gentle vertical parallax on the text group.
+  const textParallax = useTransform(progress, [0, 1], [24, -48]);
+
+  // Continuous — background video slowly zooms.
+  const bgScale = useTransform(progress, [0, 1], [1.1, 1.2]);
+
+  // ACT III — section fade (very last 10%, no overlap with signature).
+  const containerOpacity = useTransform(progress, [0.92, 1], [1, 0]);
+  const hintOpacity = useTransform(progress, [0, 0.08], [1, 0]);
 
   return (
     <>
@@ -192,15 +244,15 @@ export default function Hero() {
         </motion.div>
       </section>
 
-      {/* ── DESKTOP hero — scroll-driven parallax ── */}
-      <section ref={ref} className="relative hidden h-[280vh] bg-black md:block">
+      {/* ── DESKTOP hero — mask-reveal (no text scaling), 2 screens of scroll ── */}
+      <section ref={ref} className="relative hidden h-[200vh] bg-black md:block">
         <motion.div
           style={{ opacity: containerOpacity }}
           className="sticky top-0 h-screen w-full overflow-hidden bg-black"
         >
-          {/* Background video — desktop only */}
+          {/* Background video — cinematic blur/desaturate intro + parallax zoom */}
           <motion.video
-            style={{ scale: bgScale }}
+            style={{ scale: bgScale, filter: videoFilter }}
             className="absolute inset-0 z-0 h-full w-full object-cover"
             src="/new-hero.mp4"
             autoPlay
@@ -210,43 +262,94 @@ export default function Hero() {
             preload="metadata"
           />
 
-          {/* Vignette */}
+          {/* Static vignette for contrast — not animated */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[5]"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.85) 100%)",
+            }}
+          />
+
+          {/* ── LAYER 1: black overlay with YEVHENII cutout ── */}
+          {/* Initially solid (video visible ONLY through letters), fades away revealing full video. */}
+          <motion.svg
+            style={{ opacity: overlayOpacity, y: textParallax }}
+            viewBox="0 0 1600 900"
+            preserveAspectRatio="xMidYMid slice"
+            className="absolute inset-0 z-10 h-full w-full"
+            shapeRendering="geometricPrecision"
+          >
+            <defs>
+              <mask id="yev-cutout">
+                <rect width="1600" height="900" fill="white" />
+                <motion.text
+                  x="800"
+                  y="470"
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontFamily="var(--font-unbounded), Inter, system-ui, sans-serif"
+                  fontWeight="700"
+                  fontSize="260"
+                  fill="black"
+                  style={{ letterSpacing: letterSpacingCss }}
+                >
+                  YEVHENII
+                </motion.text>
+              </mask>
+            </defs>
+            <rect width="1600" height="900" fill="#000" mask="url(#yev-cutout)" />
+          </motion.svg>
+
+          {/* ── LAYER 2: stroked YEVHENII — appears over full video after overlay fades ── */}
+          <motion.svg
+            style={{ opacity: strokeOpacity, y: textParallax }}
+            viewBox="0 0 1600 900"
+            preserveAspectRatio="xMidYMid slice"
+            className="pointer-events-none absolute inset-0 z-[15] h-full w-full"
+            shapeRendering="geometricPrecision"
+          >
+            <motion.text
+              x="800"
+              y="470"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontFamily="var(--font-unbounded), Inter, system-ui, sans-serif"
+              fontWeight="700"
+              fontSize="260"
+              fill="none"
+              stroke="rgba(255,255,255,0.9)"
+              strokeWidth="2"
+              paintOrder="stroke"
+              style={{ letterSpacing: letterSpacingCss }}
+            >
+              YEVHENII
+            </motion.text>
+          </motion.svg>
+
+          {/* ── LAYER 2.5: ink underline drawing beneath the signature ── */}
           <motion.div
             aria-hidden
             style={{
-              opacity: vignetteOpacity,
-              background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.95) 100%)",
+              opacity: underlineOpacity,
+              scaleX: underlineScaleX,
+              y: textParallax,
             }}
-            className="pointer-events-none absolute inset-0 z-[5]"
+            className="pointer-events-none absolute left-1/2 top-[62%] z-[15] h-[2px] w-[min(44vw,560px)] -translate-x-1/2 origin-left bg-white/85"
           />
 
-          {/* YEVHENII cutout mask */}
+          {/* ── LAYER 3: subtitle — the payoff of the scroll ── */}
           <motion.div
-            style={{ scale: textScale, willChange: "transform" }}
-            className="absolute inset-0 z-10 origin-center"
+            style={{ opacity: subtitleOpacity, y: subtitleY }}
+            className="pointer-events-none absolute inset-x-0 top-[68%] z-[16] flex flex-col items-center gap-3 text-center"
           >
-            <svg
-              viewBox="0 0 1600 900"
-              preserveAspectRatio="xMidYMid slice"
-              className="h-full w-full"
-              shapeRendering="geometricPrecision"
-            >
-              <defs>
-                <mask id="yev-mask">
-                  <rect width="1600" height="900" fill="white" />
-                  <text
-                    x="800" y="470"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontFamily="Inter, system-ui, sans-serif"
-                    fontWeight="900"
-                    fontSize="220"
-                    fill="black"
-                  >YEVHENII</text>
-                </mask>
-              </defs>
-              <rect width="1600" height="900" fill="#000000" mask="url(#yev-mask)" />
-            </svg>
+            <span className="font-mono text-[10px] uppercase tracking-[0.55em] text-white/70">
+              Fullstack Developer · Kyiv · MMXXV
+            </span>
+            <span className="max-w-xl px-6 font-serif text-base italic text-white/55 lg:text-lg">
+              Building products — from idea to production.
+            </span>
           </motion.div>
 
           {/* Film grain */}
@@ -259,12 +362,20 @@ export default function Hero() {
             }}
           />
 
+          {/* Corner labels — editorial feel */}
+          <div className="pointer-events-none absolute inset-x-0 top-8 z-30 flex items-center justify-between px-10 font-mono text-[10px] uppercase tracking-[0.4em] text-white/55">
+            <span>Portfolio · MMXXV</span>
+            <span>Kyiv / Remote</span>
+          </div>
+
           {/* Scroll hint */}
           <motion.div
             style={{ opacity: hintOpacity }}
             className="pointer-events-none absolute inset-x-0 bottom-8 z-30 flex flex-col items-center gap-2 text-white/70"
           >
-            <span className="font-mono text-[10px] uppercase tracking-[0.4em]">scroll to enter</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.4em]">
+              scroll to reveal
+            </span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}

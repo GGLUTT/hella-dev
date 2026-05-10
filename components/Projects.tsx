@@ -22,12 +22,44 @@ type Project = {
   stack: string[];
   href: string;
   bannerPath: string;
+  framePath?: string;
   accent: string;
 };
 
 type RawProject = Omit<Project, "desc"> & { descUA: string; descEN: string };
 
 const RAW_PROJECTS: RawProject[] = [
+  {
+    name: "Budle",
+    tag: "Startup · Social Network",
+    descUA: "Стартап нової соцмережі: стрічка, профілі, чати, real-time реакції та modern-стек.",
+    descEN: "Social network startup: feed, profiles, chats, real-time reactions on a modern stack.",
+    stack: ["Next.js", "TypeScript", "Node.js", "MongoDB"],
+    href: "https://github.com/GGLUTT/budle-startup",
+    bannerPath: "/budle1.png",
+    framePath: "/budle2.png",
+    accent: "from-indigo-500/40 via-violet-500/20 to-transparent",
+  },
+  {
+    name: "iPhone 3D Landing",
+    tag: "Landing · 3D Animation",
+    descUA: "Кінематографічний лендінг нового iPhone з 3D-сценою, скрол-анімаціями та плавними переходами.",
+    descEN: "Cinematic iPhone landing with a 3D scene, scroll-driven animations and smooth transitions.",
+    stack: ["React", "Three.js", "GSAP", "TailwindCSS"],
+    href: "https://gglutt.github.io/phone3d/",
+    bannerPath: "/iphone-project.png",
+    accent: "from-slate-300/40 via-zinc-400/20 to-transparent",
+  },
+  {
+    name: "3D Nexus",
+    tag: "Commercial · 3D / WebGL",
+    descUA: "Сайт для комерційного комп'ютерного клубу з інтерактивними 3D-об'єктами — демонструє роботу з 3D у вебі.",
+    descEN: "Site for a commercial gaming club featuring interactive 3D objects — showcases 3D work on the web.",
+    stack: ["Three.js", "React", "WebGL", "GSAP"],
+    href: "https://gglutt.github.io/3d-nexus/",
+    bannerPath: "/nexus.png",
+    accent: "from-cyan-500/40 via-emerald-400/20 to-transparent",
+  },
   {
     name: "NTS SOCCER ACADEMY",
     tag: "Sports · SaaS",
@@ -264,9 +296,13 @@ function DeckCard({
   // Higher cards (smaller depth) on top. Exiting cards stay on top of buried ones.
   const zIndex = total - index + 10; // static; CSS stacking is enough
 
+  const isExternal = project.href?.startsWith("http");
+
   return (
     <motion.a
       href={project.href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
       style={{
         y,
         scale,
@@ -348,6 +384,7 @@ function ProjectCard({
   const scale = useTransform(dist, [0, 0.18], [1, 0.9]);
   const opacity = useTransform(dist, [0, 0.22], [1, 0.45]);
   const cardY = useTransform(dist, [0, 0.18], [0, 28]);
+  const isExternal = project.href?.startsWith("http");
 
   return (
     <motion.article
@@ -364,13 +401,13 @@ function ProjectCard({
         className="object-cover"
       />
 
-      {/* Lighter dim + softer blur — lets the banner breathe */}
-      <div className="absolute inset-0 bg-black/55 backdrop-blur-md" />
+      {/* Readability layer — slightly lighter than before so the banner breathes */}
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-      {/* Accent gradient flare — toned down */}
+      {/* Accent gradient flare */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute -inset-1 bg-gradient-to-br ${project.accent} opacity-25 mix-blend-screen`}
+        className={`pointer-events-none absolute -inset-1 bg-gradient-to-br ${project.accent} opacity-30 mix-blend-screen`}
       />
 
       {/* Content grid */}
@@ -408,6 +445,8 @@ function ProjectCard({
 
           <a
             href={project.href}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
             className="group/btn mt-10 inline-flex w-fit items-center gap-3 rounded-full border border-white/20 bg-white/[0.06] px-5 py-3 text-sm font-medium text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/[0.12]"
           >
             <span>{viewLabel}</span>
@@ -420,7 +459,7 @@ function ProjectCard({
         {/* RIGHT — framed banner photo with 3D tilt */}
         <div className="relative mt-10 flex flex-1 items-center justify-center lg:mt-0">
           <BannerFrame
-            src={project.bannerPath}
+            src={project.framePath ?? project.bannerPath}
             alt={project.name}
             accent={project.accent}
           />
