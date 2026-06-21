@@ -10,6 +10,7 @@ interface MagneticButtonProps {
   as?: "a" | "button";
   href?: string;
   onClick?: () => void;
+  glowBorder?: boolean;
   [key: string]: unknown;
 }
 
@@ -20,22 +21,27 @@ export default function MagneticButton({
   as: Tag = "a",
   href,
   onClick,
+  glowBorder = false,
   ...rest
 }: MagneticButtonProps) {
-  const ref = useRef<HTMLElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ref = useRef<any>(null);
 
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
 
-  const x = useSpring(rawX, { stiffness: 200, damping: 18, mass: 0.4 });
-  const y = useSpring(rawY, { stiffness: 200, damping: 18, mass: 0.4 });
+  // Smooth springs for buttery pull
+  const x = useSpring(rawX, { stiffness: 150, damping: 20, mass: 0.3 });
+  const y = useSpring(rawY, { stiffness: 150, damping: 20, mass: 0.3 });
 
   const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
+    // Center of the container
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
+    
     rawX.set((e.clientX - cx) * strength);
     rawY.set((e.clientY - cy) * strength);
   };
@@ -45,20 +51,41 @@ export default function MagneticButton({
     rawY.set(0);
   };
 
-  const props = {
-    ref,
-    className,
-    onMouseMove: handleMouseMove,
-    onMouseLeave: handleMouseLeave,
-    onClick,
-    ...(Tag === "a" && href ? { href } : {}),
-    ...rest,
-  };
+  const hasLink = (typeof Tag !== "string" || Tag === "a") && href;
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const Component = Tag as any;
 
   return (
-    <motion.div style={{ x, y }} className="inline-flex">
-      {/* @ts-expect-error polymorphic element */}
-      <Tag {...props}>{children}</Tag>
-    </motion.div>
+    <Component
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`group/magnetic flex items-center justify-center select-none outline-none ${
+        glowBorder ? "p-8" : "p-3"
+      }`}
+      onClick={onClick}
+      {...(hasLink ? { href } : {})}
+      {...rest}
+    >
+      <motion.div
+        style={{ x, y }}
+        className="relative flex items-center justify-center pointer-events-none"
+      >
+        {/* Glow border ring */}
+        {glowBorder && (
+          <motion.div
+            className="absolute -inset-[1.5px] rounded-full bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-400 opacity-80 blur-[2px]"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          />
+        )}
+        
+        {/* Inner Content Container */}
+        <div className={`pointer-events-auto ${className}`}>
+          {children}
+        </div>
+      </motion.div>
+    </Component>
   );
 }

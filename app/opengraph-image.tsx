@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Hella Dev — Fullstack Developer";
+export const alt = "Hella Dev Agency — Fullstack & Automation";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -81,9 +81,9 @@ export default async function Image() {
             marginBottom: 24,
           }}
         >
-          Fullstack
+          Hella Dev
           <br />
-          <span style={{ color: "#10b981" }}>Developer</span>
+          <span style={{ color: "#10b981" }}>Agency</span>
         </div>
         {/* Subtitle */}
         <div
@@ -93,7 +93,7 @@ export default async function Image() {
             marginBottom: 48,
           }}
         >
-          React · Next.js · Node.js · TypeScript · n8n
+          React · Next.js · n8n Automation · Fullstack Development
         </div>
         {/* Footer */}
         <div

@@ -150,8 +150,8 @@ export default function About() {
               className="mt-8 max-w-xl text-base leading-relaxed text-white/60 md:text-lg"
             >
               {t(
-                "Привіт, я Євгеній — Hella. Працюю з продуктами, де важливі продуктивність, чистий код і вимірюваний результат: від лендінгів до фулстек-платформ і робочих процесів n8n.",
-                "Hi, I'm Yevhenii — Hella. I build products where performance, clean code, and measurable results matter: from landing pages to fullstack platforms and n8n workflows."
+                "Привіт, я Євгеній — засновник digital-агенції Hella. Створюю цифрові рішення з фокусом на продуктивність, чистий код та вимірювані бізнес-результати: від висококласних інтерфейсів до фулстек-платформ та сценаріїв автоматизації n8n.",
+                "Hi, I'm Yevhenii — founder of Hella dev agency. I build digital solutions focused on performance, clean code, and measurable business results: from high-end interfaces to fullstack platforms and complex n8n automation scenarios."
               )}
             </motion.p>
 

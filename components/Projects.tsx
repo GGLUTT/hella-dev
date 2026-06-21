@@ -314,7 +314,7 @@ function DeckCard({
     >
       <Image
         src={project.bannerPath}
-        alt=""
+        alt={`${project.name} - ${project.tag} by Hella Dev Agency`}
         fill
         sizes="100vw"
         priority={index < 2}
@@ -394,7 +394,7 @@ function ProjectCard({
       {/* Banner background */}
       <Image
         src={project.bannerPath}
-        alt=""
+        alt={`${project.name} - Premium Project from Hella Dev Agency`}
         fill
         sizes="90vw"
         priority={index < 2}
