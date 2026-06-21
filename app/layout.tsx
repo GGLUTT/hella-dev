@@ -18,7 +18,7 @@ const unbounded = Unbounded({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const SITE_URL = "https://hella.dev";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.agency-hella.site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
