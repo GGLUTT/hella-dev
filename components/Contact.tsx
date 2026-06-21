@@ -304,19 +304,19 @@ export default function Contact() {
           <p className="mt-8 text-center text-xs text-white/40">
             {t("або напряму:", "or directly:")} {" "}
             <a
-              href="mailto:hello@yevhenii.dev"
+              href="mailto:newgglutt@gmail.com"
               className="text-white/70 underline-offset-4 transition hover:text-white hover:underline"
             >
-              hello@yevhenii.dev
+              newgglutt@gmail.com
             </a>{" "}
             ·{" "}
             <a
-              href="https://t.me/yevhenii_dev"
+              href="https://t.me/GGLUTT"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/70 underline-offset-4 transition hover:text-white hover:underline"
             >
-              @yevhenii_dev
+              @GGLUTT
             </a>
           </p>
         </Reveal>
