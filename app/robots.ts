@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/_next/"],
       },
     ],
-    sitemap: "https://hella.dev/sitemap.xml",
-    host: "https://hella.dev",
+    sitemap: "https://www.agency-hella.site/sitemap.xml",
+    host: "https://www.agency-hella.site",
   };
 }
