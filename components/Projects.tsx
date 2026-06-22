@@ -215,96 +215,173 @@ export default function Projects() {
   );
 }
 
-/* ============================ MOBILE SNAP SLIDER ============================ */
+/* ============================ MOBILE DECK STACK ============================ */
 
 function MobileDeck({ projects, viewLabel }: { projects: Project[]; viewLabel: string }) {
-  const { lang } = useLang();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  });
+
   const total = projects.length;
 
   return (
-    <div className="relative md:hidden w-full overflow-hidden py-10">
-      {/* Horizontal Snap Scroll list */}
-      <div 
-        className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-5 pb-6 scrollbar-none scroll-smooth"
-        style={{
-          WebkitOverflowScrolling: "touch",
-        }}
-      >
-        {projects.map((p, i) => {
-          const isExternal = p.href?.startsWith("http");
-          return (
-            <a
-              key={p.name}
-              href={p.href}
-              target={isExternal ? "_blank" : undefined}
-              rel={isExternal ? "noopener noreferrer" : undefined}
-              className="w-[82vw] sm:w-[70vw] shrink-0 snap-center snap-always relative block aspect-[3/4.2] overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-            >
-              {/* Background image */}
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={p.bannerPath}
-                  alt={`${p.name} - ${p.tag} by Hella Dev Agency`}
-                  fill
-                  sizes="82vw"
-                  priority={i < 2}
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-                <div
-                  aria-hidden
-                  className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${p.accent} opacity-30 mix-blend-screen`}
-                />
-              </div>
-
-              {/* Card info */}
-              <div className="relative z-10 flex h-full flex-col justify-between p-5 sm:p-6">
-                {/* Header */}
-                <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.3em] text-white/70 sm:text-[10px]">
-                  <span className="font-mono">
-                    {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-                  </span>
-                  <span className="truncate pl-3">{p.tag}</span>
-                </div>
-
-                {/* Bottom details */}
-                <div>
-                  <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.02] tracking-tight text-white">
-                    {p.name}
-                  </h3>
-                  <p className="mt-3 text-[12px] sm:text-sm leading-relaxed text-white/75 line-clamp-3">
-                    {p.desc}
-                  </p>
-                  
-                  {/* Stack tags */}
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {p.stack.slice(0, 3).map((s) => (
-                      <span
-                        key={s}
-                        className="rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[9px] text-white/80 backdrop-blur-md"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA button */}
-                  <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-medium text-white backdrop-blur-md">
-                    {viewLabel}
-                    <HugeiconsIcon icon={ArrowUpRight01Icon} size={11} />
-                  </div>
-                </div>
-              </div>
-            </a>
-          );
-        })}
-      </div>
-      
-      {/* Subtle swipe indicator */}
-      <div className="flex items-center justify-center gap-2 text-[9px] uppercase tracking-[0.25em] text-white/30 animate-pulse">
-        <span>← {lang === "ua" ? "Свайпайте вліво або вправо" : "Swipe left or right"} →</span>
+    <div
+      ref={ref}
+      className="relative md:hidden"
+      style={{ height: `${(total + 0.5) * 100}vh` }}
+    >
+      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden px-5" style={{ perspective: 1200 }}>
+        {projects.map((p, i) => (
+          <DeckCard
+            key={p.name}
+            project={p}
+            index={i}
+            total={total}
+            progress={scrollYProgress}
+            viewLabel={viewLabel}
+          />
+        ))}
       </div>
     </div>
+  );
+}
+
+function DeckCard({
+  project,
+  index,
+  total,
+  progress,
+  viewLabel,
+}: {
+  project: Project;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  viewLabel: string;
+}) {
+  // relProg < 0 => buried in deck
+  // relProg in [0..1] => exiting
+  // relProg > 1 => gone
+  const relProg = useTransform(progress, (p) => p * total - index);
+
+  // Stack vertical offset with non-linear spacing (denser stack)
+  const y = useTransform(relProg, (r) => {
+    if (r <= 0) {
+      const depth = Math.min(-r, 4);
+      return `${Math.pow(depth, 1.25) * 15}px`;
+    }
+    return `-${r * 115}vh`;
+  });
+
+  // Stacking scale
+  const scale = useTransform(relProg, (r) => {
+    if (r <= 0) {
+      const depth = Math.min(-r, 4);
+      return 1 - Math.pow(depth, 1.1) * 0.045;
+    }
+    return 1;
+  });
+
+  // Opacity fading
+  const opacity = useTransform(relProg, (r) => {
+    if (r <= 0) {
+      const depth = -r;
+      if (depth > 4) return 0;
+      return 1;
+    }
+    return Math.max(0, 1 - r * 1.4);
+  });
+
+  // 3D rotations for fanned-out deck feel and tilt exit
+  const rotate = useTransform(relProg, (r) => {
+    if (r <= 0) {
+      const fanning = (index % 2 === 0 ? 1.5 : -1.5) * (1 - Math.min(-r, 4) * 0.15);
+      return fanning;
+    }
+    // Tilt sideways as it flies up
+    return r * (index % 2 === 0 ? 5 : -5);
+  });
+
+  const rotateX = useTransform(relProg, (r) => {
+    if (r <= 0) return 0;
+    // Slants back slightly during vertical slide
+    return -r * -12;
+  });
+
+  const rotateY = useTransform(relProg, (r) => {
+    if (r <= 0) return 0;
+    return r * (index % 2 === 0 ? 3 : -3);
+  });
+
+  const zIndex = total - index + 10;
+  const isExternal = project.href?.startsWith("http");
+
+  return (
+    <motion.a
+      href={project.href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      style={{
+        y,
+        scale,
+        opacity,
+        rotate,
+        rotateX,
+        rotateY,
+        zIndex,
+        transformStyle: "preserve-3d",
+        willChange: "transform, opacity",
+      }}
+      className="absolute left-5 right-5 mx-auto block aspect-[3/4.2] max-w-md overflow-hidden rounded-3xl border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.6)]"
+    >
+      <Image
+        src={project.bannerPath}
+        alt={`${project.name} - ${project.tag} by Hella Dev Agency`}
+        fill
+        sizes="100vw"
+        priority={index < 2}
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${project.accent} opacity-30 mix-blend-screen`}
+      />
+
+      <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
+        <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.3em] text-white/70 sm:text-[10px]">
+          <span className="font-mono">
+            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
+          <span className="truncate pl-3">{project.tag}</span>
+        </div>
+
+        <div>
+          <h3 className="text-[30px] font-semibold leading-[1.02] tracking-tight sm:text-[40px]">
+            {project.name}
+          </h3>
+          <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-white/75 sm:text-sm">
+            {project.desc}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {project.stack.slice(0, 3).map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[10px] text-white/85 backdrop-blur-md"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
+            {viewLabel}
+            <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
+          </div>
+        </div>
+      </div>
+    </motion.a>
   );
 }
 
