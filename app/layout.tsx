@@ -23,7 +23,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.agency-hella.s
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Hella — Fullstack Developer & Agency | React, Next.js, n8n Automation",
+    default: "Hella — Створення та розробка сайтів і програм | Біла Церква, Київ | Hella Dev Agency",
     template: "%s | Hella Dev Agency",
   },
   description:

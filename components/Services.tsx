@@ -8,10 +8,10 @@ import {
   ArrowUpRight01Icon,
   MagicWand01Icon,
 } from "@hugeicons/core-free-icons";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Reveal from "./Reveal";
 import { useLang } from "@/context/LangContext";
-import ScratchPrice from "./ScratchPrice";
+import ScratchCardOverlay from "./ScratchCardOverlay";
 
 type Tier = {
   name: string;
@@ -215,6 +215,7 @@ export default function Services() {
 
 function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: number; fromLabel: string; hiLabel: string }) {
   const isHi = tier.highlight;
+  const [isScratchRevealed, setIsScratchRevealed] = useState(false);
 
   // Subtle 3D arrangement: side cards lean inward, center pops forward.
   const restTransform = isHi
@@ -268,6 +269,12 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
             : "border border-white/10 bg-white/[0.02] text-white backdrop-blur-md group-hover:border-white/25 group-hover:bg-white/[0.035] group-hover:shadow-[0_20px_60px_-20px_rgba(255,255,255,0.08)]"
         }`}
       >
+        {isHi && (
+          <ScratchCardOverlay
+            isRevealed={isScratchRevealed}
+            onReveal={() => setIsScratchRevealed(true)}
+          />
+        )}
 
         {/* Top sheen */}
         <div
@@ -279,115 +286,121 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
           }`}
         />
 
-        {/* Eyebrow */}
-        <div
-          className={`mb-4 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] ${
-            isHi ? "text-black/50" : "text-white/45"
-          }`}
+        <motion.div
+          animate={isHi && !isScratchRevealed ? { filter: "blur(7px)", opacity: 0.15 } : { filter: "blur(0px)", opacity: 1 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="flex h-full flex-col animate-none"
         >
-          <span className="font-mono">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span
-            className={`h-px w-6 ${isHi ? "bg-black/25" : "bg-white/20"}`}
-          />
-          {!isHi && tier.tagline}
-          {isHi && hiLabel}
-        </div>
+          {/* Eyebrow */}
+          <div
+            className={`mb-4 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] ${
+              isHi ? "text-black/50" : "text-white/45"
+            }`}
+          >
+            <span className="font-mono">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span
+              className={`h-px w-6 ${isHi ? "bg-black/25" : "bg-white/20"}`}
+            />
+            {!isHi && tier.tagline}
+            {isHi && hiLabel}
+          </div>
 
-        {/* Name */}
-        <h3
-          className={`text-2xl font-semibold tracking-tight ${
-            isHi ? "text-black" : "text-white"
-          }`}
-        >
-          {tier.name}
-        </h3>
+          {/* Name */}
+          <h3
+            className={`text-2xl font-semibold tracking-tight ${
+              isHi ? "text-black" : "text-white"
+            }`}
+          >
+            {tier.name}
+          </h3>
 
-        {/* Price */}
-        <div className="mt-4 min-h-[64px] flex items-end">
-          {isHi ? (
-            <ScratchPrice price={tier.price} fromLabel={fromLabel} />
-          ) : (
-            <div className="flex items-end gap-2">
-              <span
-                className="text-5xl font-semibold tracking-tight bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent"
-              >
-                {tier.price}
-              </span>
-              <span
-                className="pb-1.5 text-[10px] uppercase tracking-[0.25em] text-white/40"
-              >
-                {fromLabel}
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Description */}
-        <p
-          className={`mt-3 text-sm leading-relaxed ${
-            isHi ? "text-black/65" : "text-white/55"
-          }`}
-        >
-          {tier.desc}
-        </p>
-
-        {/* Divider */}
-        <div
-          className={`my-7 h-px ${
-            isHi
-              ? "bg-gradient-to-r from-transparent via-black/15 to-transparent"
-              : "bg-gradient-to-r from-transparent via-white/12 to-transparent"
-          }`}
-        />
-
-        {/* Features */}
-        <motion.ul
-          variants={{
-            hidden: {},
-            visible: {
-              transition: { staggerChildren: 0.07, delayChildren: 0.3 },
-            },
-          }}
-          className="space-y-3.5 text-sm"
-        >
-          {tier.features.map((f) => (
-            <motion.li
-              key={f}
-              variants={featureItem}
-              className="flex items-start gap-3"
+          {/* Price */}
+          <div className="mt-4 flex items-end gap-2">
+            <span
+              className={`text-5xl font-semibold tracking-tight ${
+                isHi
+                  ? "text-black"
+                  : "bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent"
+              }`}
             >
-              <span
-                className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
-                  isHi
-                    ? "bg-black"
-                    : "border border-emerald-300/30 bg-emerald-300/10"
-                }`}
-              >
-                <span className={isHi ? "text-white" : "text-emerald-300"}>
-                  <HugeiconsIcon icon={Tick02Icon} size={10} strokeWidth={3} />
-                </span>
-              </span>
-              <span className={isHi ? "text-black/80" : "text-white/75"}>
-                {f}
-              </span>
-            </motion.li>
-          ))}
-        </motion.ul>
+              {tier.price}
+            </span>
+            <span
+              className={`pb-1.5 text-[10px] uppercase tracking-[0.25em] ${
+                isHi ? "text-black/50" : "text-white/40"
+              }`}
+            >
+              {fromLabel}
+            </span>
+          </div>
 
-        {/* CTA */}
-        <a
-          href="#contact"
-          className={`mt-9 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-medium transition ${
-            isHi
-              ? "bg-black text-white hover:bg-black/85"
-              : "border border-white/15 bg-white/[0.04] text-white hover:border-white/30 hover:bg-white/[0.08]"
-          }`}
-        >
-          {tier.cta}
-          <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
-        </a>
+          {/* Description */}
+          <p
+            className={`mt-3 text-sm leading-relaxed ${
+              isHi ? "text-black/65" : "text-white/55"
+            }`}
+          >
+            {tier.desc}
+          </p>
+
+          {/* Divider */}
+          <div
+            className={`my-7 h-px ${
+              isHi
+                ? "bg-gradient-to-r from-transparent via-black/15 to-transparent"
+                : "bg-gradient-to-r from-transparent via-white/12 to-transparent"
+            }`}
+          />
+
+          {/* Features */}
+          <motion.ul
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.07, delayChildren: 0.3 },
+              },
+            }}
+            className="space-y-3.5 text-sm"
+          >
+            {tier.features.map((f) => (
+              <motion.li
+                key={f}
+                variants={featureItem}
+                className="flex items-start gap-3"
+              >
+                <span
+                  className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
+                    isHi
+                      ? "bg-black"
+                      : "border border-emerald-300/30 bg-emerald-300/10"
+                  }`}
+                >
+                  <span className={isHi ? "text-white" : "text-emerald-300"}>
+                    <HugeiconsIcon icon={Tick02Icon} size={10} strokeWidth={3} />
+                  </span>
+                </span>
+                <span className={isHi ? "text-black/80" : "text-white/75"}>
+                  {f}
+                </span>
+              </motion.li>
+            ))}
+          </motion.ul>
+
+          {/* CTA */}
+          <a
+            href="#contact"
+            className={`mt-9 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-medium transition ${
+              isHi
+                ? "bg-black text-white hover:bg-black/85"
+                : "border border-white/15 bg-white/[0.04] text-white hover:border-white/30 hover:bg-white/[0.08]"
+            }`}
+          >
+            {tier.cta}
+            <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
+          </a>
+        </motion.div>
       </div>
     </motion.div>
   );
