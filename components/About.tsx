@@ -424,7 +424,7 @@ function CharacterStage() {
           playsInline
           preload="auto"
           disablePictureInPicture
-          className="h-full w-full select-none object-contain object-bottom drop-shadow-[0_40px_80px_rgba(0,0,0,0.7)]"
+          className="h-full w-full select-none object-contain object-bottom drop-shadow-[0_40px_80px_rgba(0,0,0,0.7)] mix-blend-screen"
         >
           <source src="/character-action.webm" type="video/webm" />
           <source src="/character-action.mov" type="video/quicktime" />
