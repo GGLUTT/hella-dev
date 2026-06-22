@@ -11,6 +11,17 @@ export default function InteractiveAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentScreen, setCurrentScreen] = useState<Screen>("welcome");
   const [showTooltip, setShowTooltip] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect viewport size on mount to avoid Next.js hydration mismatch
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Auto-hide tooltip after 12 seconds
   useEffect(() => {
@@ -26,7 +37,7 @@ export default function InteractiveAssistant() {
 
   const telegramLink = "https://t.me/GGLUTT";
 
-  // Data for chatbot screens focused entirely on business outcomes and values
+  // Data for chatbot screens focused on business outcomes
   const screensData = {
     welcome: {
       titleUA: "Розвиток бізнесу",
@@ -109,7 +120,7 @@ export default function InteractiveAssistant() {
       titleUA: "Ціни та окупність",
       titleEN: "Rates & Returns",
       messageUA: "Інвестиція в розробку окупається за рахунок нових продажів та економії робочих годин. Орієнтовні ціни:\n\n• **Лендінг (сайт для заявок)**: від $300\n• **Автоматизація та боти**: від $150\n• **Індивідуальні системи**: від $800\n\nНапишіть мені в Telegram, і я безкоштовно проаналізую ваш бізнес та розпишу детальний кошторис за 15 хвилин!",
-      messageEN: "Investing in development pays off quickly through new sales and saved working hours. General rates:\n\n• **Landing (sales page)**: from $300\n• **Automations & Bots**: from $150\n• **Custom Core Systems**: from $800\n\nMessage me on Telegram, and I will analyze your business for free and give you a detailed project estimate in 15 minutes!",
+      messageEN: "Investing in development pays off quickly through new sales and saved working hours. General rates:\n\n• **Landing (sales page)**: from $300\n• **Automations & Bots**: from $150\n• **Custom Core Systems**: from $800\n\nMessage me on Telegram, and I will calculate the exact price for your project in 15 minutes!",
       options: [
         {
           textUA: "Отримати кошторис в Telegram 🚀",
@@ -128,8 +139,38 @@ export default function InteractiveAssistant() {
 
   const data = screensData[currentScreen];
 
+  // Animation variants adapted dynamically for mobile bottom sheet vs desktop box
+  const drawerVariants = {
+    hidden: isMobile
+      ? { y: "100%", opacity: 1 }
+      : { y: 24, opacity: 0, scale: 0.95 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: { type: "spring", stiffness: 340, damping: 28 },
+    },
+    exit: isMobile
+      ? { y: "100%", opacity: 1, transition: { duration: 0.25 } }
+      : { y: 24, opacity: 0, scale: 0.95, transition: { duration: 0.2 } },
+  };
+
   return (
     <div className="fixed bottom-6 left-6 z-50 font-sans print:hidden">
+      {/* Dimmed background overlay - ONLY visible on mobile to focus on the assistant */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm sm:hidden"
+            style={{ width: "100vw", height: "100vh", left: "-1.5rem", bottom: "-1.5rem" }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Tooltip hint above the float button */}
       <AnimatePresence>
         {showTooltip && !isOpen && (
@@ -175,8 +216,8 @@ export default function InteractiveAssistant() {
         whileTap={{ scale: 0.94 }}
         className={`relative flex h-[72px] w-[72px] items-center justify-center rounded-full border shadow-2xl transition-all duration-300 ${
           isOpen
-            ? "bg-emerald-500 text-black border-emerald-400 shadow-emerald-500/20"
-            : "bg-zinc-950/90 text-emerald-400 border-white/10 hover:border-emerald-500/40 hover:shadow-[0_0_24px_rgba(16,185,129,0.3)]"
+            ? "bg-emerald-500 text-black border-emerald-400 shadow-emerald-500/20 z-50"
+            : "bg-zinc-950/90 text-emerald-400 border-white/10 hover:border-emerald-500/40 hover:shadow-[0_0_24px_rgba(16,185,129,0.3)] z-50"
         }`}
       >
         {/* Pulsing glow ring */}
@@ -230,18 +271,21 @@ export default function InteractiveAssistant() {
         </AnimatePresence>
       </motion.button>
 
-      {/* Expanded Chat Dialog Drawer */}
+      {/* Expanded Chat dialog - Responsive Bottom Sheet (Mobile) & Floating Dialog (Desktop) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 320, damping: 26 }}
-            className="absolute bottom-[88px] left-0 w-[calc(100vw-2rem)] sm:w-[380px] max-h-[520px] overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/95 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.8)] backdrop-blur-xl flex flex-col z-50"
+            variants={drawerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed bottom-0 left-0 right-0 w-full max-h-[82vh] rounded-t-[32px] border-t border-white/10 bg-zinc-950/98 shadow-[0_-20px_50px_rgba(0,0,0,0.85)] backdrop-blur-xl flex flex-col z-50 sm:absolute sm:bottom-[88px] sm:left-0 sm:right-auto sm:w-[380px] sm:max-h-[520px] sm:rounded-3xl sm:border sm:border-white/10 sm:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.8)]"
           >
+            {/* Mobile sheet drag indicator line */}
+            <div className="h-1.5 w-12 rounded-full bg-white/15 mx-auto my-3 shrink-0 sm:hidden" />
+
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-5 py-4">
+            <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-5 py-4 shrink-0">
               <div className="flex items-center gap-3.5">
                 <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-sky-400 font-mono text-sm font-bold text-black select-none">
                   YL
@@ -270,7 +314,7 @@ export default function InteractiveAssistant() {
             </div>
 
             {/* Conversation Messages */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4 max-h-[290px] scrollbar-thin">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 max-h-[220px] sm:max-h-[290px] scrollbar-thin">
               <div className="flex gap-3">
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 font-mono text-xs font-bold select-none border border-emerald-500/10">
                   H
@@ -282,7 +326,7 @@ export default function InteractiveAssistant() {
             </div>
 
             {/* Quick action buttons list */}
-            <div className="border-t border-white/5 bg-white/[0.01] p-4 space-y-2.5 max-h-[170px] overflow-y-auto">
+            <div className="border-t border-white/5 bg-white/[0.01] p-4 space-y-2.5 max-h-[220px] sm:max-h-[170px] overflow-y-auto shrink-0 pb-6 sm:pb-4">
               {data.options.map((opt, i) => {
                 const text = lang === "ua" ? opt.textUA : opt.textEN;
                 const isPrimary = opt.primary;
@@ -294,7 +338,7 @@ export default function InteractiveAssistant() {
                       href={opt.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-full block text-center rounded-xl px-4 py-2.5 text-xs transition duration-200 ${
+                      className={`w-full block text-center rounded-xl py-3 sm:py-2.5 px-4 text-xs transition duration-200 ${
                         isPrimary
                           ? "bg-gradient-to-r from-emerald-500 to-sky-500 hover:from-emerald-400 hover:to-sky-400 text-black font-bold shadow-lg shadow-emerald-500/10"
                           : "border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white"
@@ -309,7 +353,7 @@ export default function InteractiveAssistant() {
                   <button
                     key={i}
                     onClick={opt.action}
-                    className="w-full text-left rounded-xl px-4 py-2.5 text-xs border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white transition duration-200"
+                    className="w-full text-left rounded-xl py-3 sm:py-2.5 px-4 text-xs border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white transition duration-200"
                   >
                     {text}
                   </button>
@@ -318,7 +362,7 @@ export default function InteractiveAssistant() {
             </div>
 
             {/* Footer notice */}
-            <div className="border-t border-white/5 bg-black/60 px-5 py-2.5 text-[10px] text-center text-white/30 tracking-wide font-mono">
+            <div className="border-t border-white/5 bg-black/60 px-5 py-2.5 text-[10px] text-center text-white/30 tracking-wide font-mono shrink-0 mb-safe">
               {t("Відповім за 15 хвилин в Telegram", "I will reply within 15 mins on Telegram")}
             </div>
           </motion.div>
