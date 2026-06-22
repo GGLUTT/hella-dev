@@ -12,11 +12,11 @@ export default function InteractiveAssistant() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("welcome");
   const [showTooltip, setShowTooltip] = useState(true);
 
-  // Auto-hide tooltip after 10 seconds, or show every 30s
+  // Auto-hide tooltip after 12 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTooltip(false);
-    }, 10000);
+    }, 12000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -31,8 +31,8 @@ export default function InteractiveAssistant() {
     welcome: {
       titleUA: "Асистент Hella",
       titleEN: "Hella Assistant",
-      messageUA: "Привіт! 👋 Я ваш віртуальний провідник. Допоможу підібрати ідеальне рішення для вашого бізнесу. Що вас цікавить?",
-      messageEN: "Hello! 👋 I'm your virtual guide. I'll help you select the ideal solution for your business. What are you looking for?",
+      messageUA: "Привіт! 👋 Я ваш віртуальний провідник. Допоможу підібрати ідеальне рішення для вашого проєкту та розрахувати ціну. Що вас цікавить?",
+      messageEN: "Hello! 👋 I'm your virtual guide. I'll help you select the ideal solution for your project and calculate the cost. What are you looking for?",
       options: [
         {
           textUA: "Який план або продукт обрати? 🎯",
@@ -52,7 +52,7 @@ export default function InteractiveAssistant() {
         {
           textUA: "Написати мені в Telegram ⚡",
           textEN: "Write to me on Telegram ⚡",
-          action: () => window.open(telegramLink, "_blank"),
+          href: telegramLink,
           primary: true,
         },
       ],
@@ -71,7 +71,7 @@ export default function InteractiveAssistant() {
         {
           textUA: "Обговорити ідею в Telegram 💬",
           textEN: "Discuss my idea on Telegram 💬",
-          action: () => window.open(telegramLink, "_blank"),
+          href: telegramLink,
           primary: true,
         },
         {
@@ -95,7 +95,7 @@ export default function InteractiveAssistant() {
         {
           textUA: "Отримати безкоштовний аудит 📊",
           textEN: "Get a free audit 📊",
-          action: () => window.open(telegramLink, "_blank"),
+          href: telegramLink,
           primary: true,
         },
         {
@@ -114,7 +114,7 @@ export default function InteractiveAssistant() {
         {
           textUA: "Розрахувати вартість в Telegram 🚀",
           textEN: "Calculate cost on Telegram 🚀",
-          action: () => window.open(telegramLink, "_blank"),
+          href: telegramLink,
           primary: true,
         },
         {
@@ -134,18 +134,18 @@ export default function InteractiveAssistant() {
       <AnimatePresence>
         {showTooltip && !isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            initial={{ opacity: 0, y: 12, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute bottom-16 left-0 mb-2 w-48 rounded-xl border border-white/10 bg-zinc-950/90 p-3 text-xs text-white/90 shadow-xl backdrop-blur-md"
+            exit={{ opacity: 0, y: 12, scale: 0.95 }}
+            className="absolute bottom-[84px] left-0 mb-2 w-56 rounded-2xl border border-white/10 bg-zinc-950/95 p-3.5 text-xs text-white/90 shadow-2xl backdrop-blur-xl"
           >
             <div className="font-semibold text-emerald-400">
               {t("Потрібна допомога? 💬", "Need assistance? 💬")}
             </div>
-            <p className="mt-1 text-[11px] text-white/60">
+            <p className="mt-1 text-[11px] leading-relaxed text-white/60">
               {t(
-                "Підберемо план та розрахуємо ціну за 15 хв!",
-                "We'll find a plan & calculate cost in 15 min!"
+                "Запитайте мене про послуги та ціни, відповім за 15 хв!",
+                "Ask me about services and pricing, I'll reply in 15 min!"
               )}
             </p>
             {/* Close button for tooltip */}
@@ -154,32 +154,42 @@ export default function InteractiveAssistant() {
                 e.stopPropagation();
                 setShowTooltip(false);
               }}
-              className="absolute right-2 top-2 text-white/40 hover:text-white"
+              className="absolute right-2.5 top-2.5 text-white/40 hover:text-white"
             >
               <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <div className="absolute -bottom-1.5 left-6 h-3 w-3 rotate-45 border-b border-r border-white/10 bg-zinc-950/95" />
+            <div className="absolute -bottom-1.5 left-7 h-3 w-3 rotate-45 border-b border-r border-white/10 bg-zinc-950/95" />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Floating Button Toggle */}
+      {/* Floating Button Toggle - Enlarged and Improved */}
       <motion.button
         onClick={() => {
           setIsOpen(!isOpen);
           setShowTooltip(false);
         }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className={`relative flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-zinc-950 shadow-2xl transition-all duration-300 ${
-          isOpen ? "bg-emerald-500 text-black border-emerald-400" : "text-emerald-400 hover:text-emerald-300"
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
+        className={`relative flex h-[72px] w-[72px] items-center justify-center rounded-full border shadow-2xl transition-all duration-300 ${
+          isOpen
+            ? "bg-emerald-500 text-black border-emerald-400 shadow-emerald-500/20"
+            : "bg-zinc-950/90 text-emerald-400 border-white/10 hover:border-emerald-500/40 hover:shadow-[0_0_24px_rgba(16,185,129,0.3)]"
         }`}
       >
         {/* Pulsing glow ring */}
         {!isOpen && (
-          <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-emerald-500/20 opacity-75" />
+          <span className="absolute inset-0 -z-10 animate-pulse rounded-full bg-emerald-500/10 opacity-75 ring-4 ring-emerald-500/5" />
+        )}
+
+        {/* Dynamic chat online green pulse dot on the button */}
+        {!isOpen && (
+          <span className="absolute right-1 top-1 flex h-3.5 w-3.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-zinc-950" />
+          </span>
         )}
 
         <AnimatePresence mode="wait">
@@ -190,7 +200,7 @@ export default function InteractiveAssistant() {
               animate={{ rotate: 0, opacity: 1 }}
               exit={{ rotate: 90, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="h-6 w-6"
+              className="h-7 w-7"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -200,11 +210,11 @@ export default function InteractiveAssistant() {
           ) : (
             <motion.svg
               key="chat"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="h-6 w-6"
+              className="h-7 w-7"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -220,20 +230,20 @@ export default function InteractiveAssistant() {
         </AnimatePresence>
       </motion.button>
 
-      {/* Expanded Chat Dialog Drawer */}
+      {/* Expanded Chat Dialog Drawer - Fixed positioning issue */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 24, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="absolute bottom-18 left-0 w-[calc(100vw-2rem)] sm:w-[360px] max-h-[500px] overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/95 shadow-2xl backdrop-blur-xl flex flex-col"
+            exit={{ opacity: 0, y: 24, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 320, damping: 26 }}
+            className="absolute bottom-[88px] left-0 w-[calc(100vw-2rem)] sm:w-[380px] max-h-[520px] overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/95 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.8)] backdrop-blur-xl flex flex-col z-50"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-4 py-3.5">
-              <div className="flex items-center gap-3">
-                <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-sky-400 font-mono text-sm font-bold text-black select-none">
+            <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-5 py-4">
+              <div className="flex items-center gap-3.5">
+                <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-sky-400 font-mono text-sm font-bold text-black select-none">
                   YL
                   <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -241,17 +251,17 @@ export default function InteractiveAssistant() {
                   </span>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-white/90">
+                  <div className="text-xs font-semibold text-white/95 tracking-wide">
                     {lang === "ua" ? data.titleUA : data.titleEN}
                   </div>
-                  <div className="text-[9px] uppercase tracking-[0.1em] text-white/40">
+                  <div className="text-[9px] uppercase tracking-[0.12em] text-white/40 font-mono">
                     {t("Онлайн · Бот Hella", "Online · Hella Bot")}
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1 text-white/40 hover:bg-white/5 hover:text-white"
+                className="rounded-xl p-1.5 text-white/40 hover:bg-white/5 hover:text-white transition duration-150"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -260,31 +270,46 @@ export default function InteractiveAssistant() {
             </div>
 
             {/* Conversation Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[280px] scrollbar-thin">
-              <div className="flex gap-2">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold select-none">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 max-h-[290px] scrollbar-thin">
+              <div className="flex gap-3">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 font-mono text-xs font-bold select-none border border-emerald-500/10">
                   H
                 </div>
-                <div className="rounded-2xl rounded-tl-none bg-white/[0.04] px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed text-white/80 whitespace-pre-line">
+                <div className="rounded-2xl rounded-tl-none bg-white/[0.04] px-4 py-3 text-xs sm:text-sm leading-relaxed text-white/85 whitespace-pre-line border border-white/5">
                   {lang === "ua" ? data.messageUA : data.messageEN}
                 </div>
               </div>
             </div>
 
             {/* Quick action buttons list */}
-            <div className="border-t border-white/5 bg-white/[0.01] p-3 space-y-2 max-h-[160px] overflow-y-auto">
+            <div className="border-t border-white/5 bg-white/[0.01] p-4 space-y-2.5 max-h-[170px] overflow-y-auto">
               {data.options.map((opt, i) => {
                 const text = lang === "ua" ? opt.textUA : opt.textEN;
                 const isPrimary = opt.primary;
+
+                if (opt.href) {
+                  return (
+                    <a
+                      key={i}
+                      href={opt.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-full block text-center rounded-xl px-4 py-2.5 text-xs transition duration-200 ${
+                        isPrimary
+                          ? "bg-gradient-to-r from-emerald-500 to-sky-500 hover:from-emerald-400 hover:to-sky-400 text-black font-bold shadow-lg shadow-emerald-500/10"
+                          : "border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white"
+                      }`}
+                    >
+                      {text}
+                    </a>
+                  );
+                }
+
                 return (
                   <button
                     key={i}
                     onClick={opt.action}
-                    className={`w-full text-left rounded-xl px-4 py-2.5 text-xs transition duration-200 ${
-                      isPrimary
-                        ? "bg-gradient-to-r from-emerald-500 to-sky-500 hover:from-emerald-400 hover:to-sky-400 text-black font-semibold shadow-lg shadow-emerald-500/10"
-                        : "border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white"
-                    }`}
+                    className="w-full text-left rounded-xl px-4 py-2.5 text-xs border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white transition duration-200"
                   >
                     {text}
                   </button>
@@ -293,7 +318,7 @@ export default function InteractiveAssistant() {
             </div>
 
             {/* Footer notice */}
-            <div className="border-t border-white/5 bg-black/60 px-4 py-2 text-[10px] text-center text-white/30">
+            <div className="border-t border-white/5 bg-black/60 px-5 py-2.5 text-[10px] text-center text-white/30 tracking-wide font-mono">
               {t("Відповім за 15 хвилин в Telegram", "I will reply within 15 mins on Telegram")}
             </div>
           </motion.div>
