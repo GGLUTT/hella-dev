@@ -18,7 +18,7 @@ const socials = [
   { href: "https://www.linkedin.com/in/evgenii-lutiy-460797364/", label: "LinkedIn", icon: LinkedinIcon },
   { href: "https://www.instagram.com/gg_lutt/", label: "Instagram", icon: InstagramIcon },
   { href: "https://www.tiktok.com/@hella.work44", label: "TikTok", icon: TiktokIcon },
-  { href: "mailto:hello@hella.dev", label: "Email", icon: Mail01Icon },
+  { href: "mailto:newgglutt@gmail.com", label: "Email", icon: Mail01Icon },
 ];
 
 const container: Variants = {
@@ -85,10 +85,10 @@ export default function Footer() {
           className="mt-10 flex justify-center"
         >
           <a
-            href="mailto:hello@hella.dev"
+            href="mailto:newgglutt@gmail.com"
             className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition hover:bg-white/90"
           >
-            hello@hella.dev
+            newgglutt@gmail.com
             <span className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
               <HugeiconsIcon icon={ArrowUpRight01Icon} size={15} />
             </span>

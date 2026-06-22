@@ -5,18 +5,122 @@ import Reveal from "./Reveal";
 import CountUp from "./CountUp";
 import { useLang } from "@/context/LangContext";
 
-const STACK_UA = [
-  { name: "React",      desc: "Інтерфейси з акцентом на швидкість і UX." },
-  { name: "TypeScript", desc: "Надійний код, передбачуваний рефакторинг." },
-  { name: "Node.js",    desc: "API, інтеграції, реальний час." },
-  { name: "PostgreSQL", desc: "Структура даних і продуктивні запити." },
-];
-
-const STACK_EN = [
-  { name: "React",      desc: "Interfaces focused on speed and UX." },
-  { name: "TypeScript", desc: "Reliable code, predictable refactoring." },
-  { name: "Node.js",    desc: "APIs, integrations, real-time." },
-  { name: "PostgreSQL", desc: "Data structure and performant queries." },
+const STACK_ITEMS = [
+  {
+    name: "React",
+    descUA: "Інтерфейси з акцентом на швидкість і UX.",
+    descEN: "Interfaces focused on speed and UX.",
+    glow: "group-hover:border-cyan-500/30 group-hover:bg-cyan-500/[0.015]",
+    sheen: "via-cyan-400/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#61DAFB] transition duration-300 group-hover:scale-110" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2">
+        <ellipse cx="50" cy="50" rx="8" ry="20" />
+        <ellipse cx="50" cy="50" rx="8" ry="20" transform="rotate(60 50 50)" />
+        <ellipse cx="50" cy="50" rx="8" ry="20" transform="rotate(120 50 50)" />
+        <circle cx="50" cy="50" r="2" fill="currentColor" />
+      </svg>
+    )
+  },
+  {
+    name: "TypeScript",
+    descUA: "Надійний код, передбачуваний рефакторинг.",
+    descEN: "Reliable code, predictable refactoring.",
+    glow: "group-hover:border-blue-500/30 group-hover:bg-blue-500/[0.015]",
+    sheen: "via-blue-400/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#3178C6] transition duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="3" fill="currentColor" stroke="none" />
+        <text x="12" y="15.5" fill="#000" fontFamily="system-ui, sans-serif" fontWeight="bold" fontSize="9" textAnchor="middle">TS</text>
+      </svg>
+    )
+  },
+  {
+    name: "Node.js",
+    descUA: "API, інтеграції, реальний час.",
+    descEN: "APIs, integrations, real-time.",
+    glow: "group-hover:border-green-500/30 group-hover:bg-green-500/[0.015]",
+    sheen: "via-green-400/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#339933] transition duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 2L4.5 6.3v8.6L12 19.3l7.5-4.4V6.3L12 2z" />
+        <path d="M12 2v17.3" />
+        <path d="M12 6.5l4.5 2.6" />
+        <path d="M12 11.5l-4.5-2.6" />
+      </svg>
+    )
+  },
+  {
+    name: "PostgreSQL",
+    descUA: "Структура даних і продуктивні запити.",
+    descEN: "Data structure and performant queries.",
+    glow: "group-hover:border-indigo-500/30 group-hover:bg-indigo-500/[0.015]",
+    sheen: "via-indigo-400/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#4169E1] transition duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <ellipse cx="12" cy="5" rx="8" ry="2.5" />
+        <path d="M4 5v6c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5V5" />
+        <path d="M4 11v6c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5v-6" />
+      </svg>
+    )
+  },
+  {
+    name: "n8n Automation",
+    descUA: "Автоматизація процесів, сценарії, CRM-інтеграції.",
+    descEN: "Process automation, scenarios, CRM integrations.",
+    glow: "group-hover:border-rose-500/30 group-hover:bg-rose-500/[0.015]",
+    sheen: "via-rose-400/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#FF6D5A] transition duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="6" cy="12" r="3" />
+        <circle cx="18" cy="6" r="3" />
+        <circle cx="18" cy="18" r="3" />
+        <path d="M9 12h3M15 8l-3 4 3 4" />
+      </svg>
+    )
+  },
+  {
+    name: "HTML5",
+    descUA: "Валідна семантика, SEO-оптимізована структура.",
+    descEN: "Valid semantics, SEO-optimized structure.",
+    glow: "group-hover:border-orange-500/30 group-hover:bg-orange-500/[0.015]",
+    sheen: "via-orange-400/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#E34F26] transition duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M8 6L2 12L8 18" />
+        <path d="M16 6L22 12L16 18" />
+        <path d="M14 4L10 20" />
+      </svg>
+    )
+  },
+  {
+    name: "CSS3",
+    descUA: "Сучасні макети, Flexbox, Grid, адаптивність.",
+    descEN: "Modern layouts, Flexbox, Grid, responsiveness.",
+    glow: "group-hover:border-blue-400/30 group-hover:bg-blue-400/[0.015]",
+    sheen: "via-blue-300/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#1572B6] transition duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19" />
+        <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor" />
+        <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor" />
+        <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor" />
+      </svg>
+    )
+  },
+  {
+    name: "SCSS",
+    descUA: "Модульні стилі, змінні, вкладеність, Sass.",
+    descEN: "Modular styles, variables, nesting, Sass.",
+    glow: "group-hover:border-pink-500/30 group-hover:bg-pink-500/[0.015]",
+    sheen: "via-pink-400/40",
+    icon: (
+      <svg className="w-8 h-8 text-[#CC6699] transition duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 2a10 10 0 1 0 10 10" />
+        <path d="M12 6a6 6 0 1 0 6 6" />
+        <path d="M12 10a2 2 0 1 0 2 2" />
+      </svg>
+    )
+  }
 ];
 
 const STATS = [
@@ -53,7 +157,13 @@ const fadeUp: Variants = {
 export default function About() {
   const { lang, t } = useLang();
 
-  const stack = lang === "ua" ? STACK_UA : STACK_EN;
+  const stack = STACK_ITEMS.map((item) => ({
+    name: item.name,
+    desc: lang === "ua" ? item.descUA : item.descEN,
+    glow: item.glow,
+    sheen: item.sheen,
+    icon: item.icon,
+  }));
 
   const HEADLINE_UA = [
     { word: "Будую",             accent: false },
@@ -215,15 +325,21 @@ export default function About() {
             </p>
           </Reveal>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {stack.map((s, i) => (
-            <Reveal key={s.name} delay={0.05 + i * 0.08}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-sm transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.04]">
-                <div className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
-                <div className="text-2xl font-semibold tracking-tight">
+            <Reveal key={s.name} delay={0.05 + i * 0.06}>
+              <div className={`group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 ${s.glow}`}>
+                <div className={`pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent ${s.sheen} to-transparent opacity-0 transition duration-500 group-hover:opacity-100`} />
+                <div className="mb-4 flex items-center justify-between">
+                  {s.icon}
+                  <span className="font-mono text-[10px] text-white/20 select-none">
+                    //{(i + 1).toString().padStart(2, "0")}
+                  </span>
+                </div>
+                <div className="text-xl font-semibold tracking-tight text-white transition duration-300">
                   {s.name}
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-white/55">
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/55 group-hover:text-white/70 transition duration-300">
                   {s.desc}
                 </p>
               </div>
