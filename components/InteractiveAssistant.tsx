@@ -26,51 +26,51 @@ export default function InteractiveAssistant() {
 
   const telegramLink = "https://t.me/GGLUTT";
 
-  // Data for chatbot screens
+  // Data for chatbot screens focused entirely on business outcomes and values
   const screensData = {
     welcome: {
-      titleUA: "Асистент Hella",
-      titleEN: "Hella Assistant",
-      messageUA: "Привіт! 👋 Я ваш віртуальний провідник. Допоможу підібрати ідеальне рішення для вашого проєкту та розрахувати ціну. Що вас цікавить?",
-      messageEN: "Hello! 👋 I'm your virtual guide. I'll help you select the ideal solution for your project and calculate the cost. What are you looking for?",
+      titleUA: "Розвиток бізнесу",
+      titleEN: "Business Growth",
+      messageUA: "Привіт! 👋 Я допоможу підібрати рішення для зростання вашого бізнесу, залучення клієнтів та позбавлення від рутини. Яке завдання зараз пріоритетне?",
+      messageEN: "Hello! 👋 I will help you find a solution to grow your business, attract clients, and eliminate routine tasks. What is your priority right now?",
       options: [
         {
-          textUA: "Який план або продукт обрати? 🎯",
-          textEN: "Which plan or product to choose? 🎯",
+          textUA: "Залучити нових клієнтів (Сайт) 📈",
+          textEN: "Attract new clients (Website) 📈",
           action: () => navigateTo("plans"),
         },
         {
-          textUA: "Які послуги ви надаєте? 🌐",
-          textEN: "What services do you provide? 🌐",
+          textUA: "Автоматизувати рутину (Звільнити час) 🤖",
+          textEN: "Automate routine (Save time) 🤖",
           action: () => navigateTo("services"),
         },
         {
-          textUA: "Яка вартість розробки? 💰",
-          textEN: "What is the development cost? 💰",
+          textUA: "Дізнатися вартість та терміни 💰",
+          textEN: "Find out cost and timeline 💰",
           action: () => navigateTo("pricing"),
         },
         {
-          textUA: "Написати мені в Telegram ⚡",
-          textEN: "Write to me on Telegram ⚡",
+          textUA: "Отримати консультацію в Telegram ⚡",
+          textEN: "Get a consultation on Telegram ⚡",
           href: telegramLink,
           primary: true,
         },
       ],
     },
     plans: {
-      titleUA: "Оберіть свій продукт",
-      titleEN: "Choose your product",
-      messageUA: "Ми створюємо цифрові продукти будь-якої складності. Ось основні формати:\n\n• **Лендінг / Промо**: Швидкий старт для збору заявок.\n• **Корпоративний сайт**: Презентація послуг компанії на преміум-рівні.\n• **Платформи / SaaS**: Веб-додатки зі складним функціоналом.\n• **Автоматизація (n8n)**: Об'єднання CRM, Telegram та баз даних без рутини.",
-      messageEN: "We build digital products of any complexity. Here are the main formats:\n\n• **Landing / Promo Page**: Quick launch for lead capture.\n• **Corporate Website**: Presenting services at a premium level.\n• **Platforms / SaaS**: Web apps with complex functionalities.\n• **n8n Automations**: Connecting CRM, Telegram, and databases.",
+      titleUA: "Залучення клієнтів",
+      titleEN: "Client Attraction",
+      messageUA: "Сайт — це ваш цілодобовий менеджер з продажів. Ми створюємо рішення, які:\n\n• **Приводять клієнтів з Google** завдяки вбудованому SEO під Київ та Білу Церкву.\n• **Підвищують довіру** за рахунок сучасного дизайну преміум-рівня.\n• **Утримують користувачів** завдяки миттєвому завантаженню та ідеальній роботі на телефонах.",
+      messageEN: "A website is your 24/7 sales manager. We build solutions that:\n\n• **Bring clients from Google** with built-in SEO optimized for search results.\n• **Build instant trust** through custom, high-end premium designs.\n• **Convert visitors** with lightning-fast speeds and perfect mobile interfaces.",
       options: [
         {
-          textUA: "Які ціни на розробку? 💰",
+          textUA: "Яка вартість розробки? 💰",
           textEN: "What are the rates? 💰",
           action: () => navigateTo("pricing"),
         },
         {
-          textUA: "Обговорити ідею в Telegram 💬",
-          textEN: "Discuss my idea on Telegram 💬",
+          textUA: "Замовити прорахунок сайту 🚀",
+          textEN: "Order website estimation 🚀",
           href: telegramLink,
           primary: true,
         },
@@ -82,19 +82,19 @@ export default function InteractiveAssistant() {
       ],
     },
     services: {
-      titleUA: "Наші послуги",
-      titleEN: "Our Services",
-      messageUA: "Ми закриваємо повний цикл розробки:\n\n🌐 **Фулстек-розробка** (React, Next.js, Node.js)\n🤖 **n8n-автоматизація** (інтеграції CRM, авто-воронки)\n⚡ **SEO-оптимізація** під ключові запити (Київ, Біла Церква)\n🎨 **Преміальний UX/UI** (сучасний кібер-стиль)",
-      messageEN: "We cover the full product development lifecycle:\n\n🌐 **Fullstack Development** (React, Next.js, Node.js)\n🤖 **n8n Automation** (CRM integrations, auto-funnels)\n⚡ **SEO Optimization** for keywords (Kyiv, Bila Tserkva)\n🎨 **Premium UX/UI** (modern cyber dark aesthetics)",
+      titleUA: "Звільнення від рутини",
+      titleEN: "Routine Automation",
+      messageUA: "Автоматизація процесів звільняє до 80% вашого часу. Ми впроваджуємо рішення, які:\n\n• **Об'єднують системи в одну**: зв'язуємо вашу CRM, Telegram, пошту та Google Таблиці.\n• **Автоматизують замовлення**: система сама опрацьовує заявку та сповіщає команду.\n• **Працюють 24/7**: розумні боти відповідають клієнтам моментально без вихідних.",
+      messageEN: "Process automation frees up to 80% of your time. We implement systems that:\n\n• **Connect everything in one place**: link your CRM, Telegram, email, and Google Sheets.\n• **Handle orders automatically**: the system processes leads and alerts your team instantly.\n• **Work 24/7**: smart bots reply to customers immediately without days off.",
       options: [
         {
-          textUA: "Скільки це коштує? 💰",
-          textEN: "How much does it cost? 💰",
+          textUA: "Скільки коштує автоматизація? 💰",
+          textEN: "What is the cost of automation? 💰",
           action: () => navigateTo("pricing"),
         },
         {
-          textUA: "Отримати безкоштовний аудит 📊",
-          textEN: "Get a free audit 📊",
+          textUA: "Створити схему під мій бізнес 📊",
+          textEN: "Map out my business workflow 📊",
           href: telegramLink,
           primary: true,
         },
@@ -106,14 +106,14 @@ export default function InteractiveAssistant() {
       ],
     },
     pricing: {
-      titleUA: "Вартість розробки",
-      titleEN: "Development Pricing",
-      messageUA: "Вартість залежить від обсягу та складності. Орієнтовні ціни:\n\n• **Лендінг / Промо**: від $300\n• **Автоматизація (n8n)**: від $150\n• **Складні системи**: від $800\n\nНапишіть мені в Telegram, і я розрахую точну вартість вашого проєкту за 15 хвилин!",
-      messageEN: "Pricing depends on scope and complexity. General starting rates:\n\n• **Landing / Promo Page**: from $300\n• **n8n Automation**: from $150\n• **Complex Systems**: from $800\n\nMessage me on Telegram, and I will calculate the exact price for your project in 15 minutes!",
+      titleUA: "Ціни та окупність",
+      titleEN: "Rates & Returns",
+      messageUA: "Інвестиція в розробку окупається за рахунок нових продажів та економії робочих годин. Орієнтовні ціни:\n\n• **Лендінг (сайт для заявок)**: від $300\n• **Автоматизація та боти**: від $150\n• **Індивідуальні системи**: від $800\n\nНапишіть мені в Telegram, і я безкоштовно проаналізую ваш бізнес та розпишу детальний кошторис за 15 хвилин!",
+      messageEN: "Investing in development pays off quickly through new sales and saved working hours. General rates:\n\n• **Landing (sales page)**: from $300\n• **Automations & Bots**: from $150\n• **Custom Core Systems**: from $800\n\nMessage me on Telegram, and I will analyze your business for free and give you a detailed project estimate in 15 minutes!",
       options: [
         {
-          textUA: "Розрахувати вартість в Telegram 🚀",
-          textEN: "Calculate cost on Telegram 🚀",
+          textUA: "Отримати кошторис в Telegram 🚀",
+          textEN: "Get project estimate on Telegram 🚀",
           href: telegramLink,
           primary: true,
         },
@@ -144,8 +144,8 @@ export default function InteractiveAssistant() {
             </div>
             <p className="mt-1 text-[11px] leading-relaxed text-white/60">
               {t(
-                "Запитайте мене про послуги та ціни, відповім за 15 хв!",
-                "Ask me about services and pricing, I'll reply in 15 min!"
+                "Підкажу, як залучити клієнтів та автоматизувати рутину!",
+                "I'll show you how to attract clients and automate routine!"
               )}
             </p>
             {/* Close button for tooltip */}
@@ -165,7 +165,7 @@ export default function InteractiveAssistant() {
         )}
       </AnimatePresence>
 
-      {/* Floating Button Toggle - Enlarged and Improved */}
+      {/* Floating Button Toggle */}
       <motion.button
         onClick={() => {
           setIsOpen(!isOpen);
@@ -184,7 +184,7 @@ export default function InteractiveAssistant() {
           <span className="absolute inset-0 -z-10 animate-pulse rounded-full bg-emerald-500/10 opacity-75 ring-4 ring-emerald-500/5" />
         )}
 
-        {/* Dynamic chat online green pulse dot on the button */}
+        {/* Dynamic chat online green pulse dot */}
         {!isOpen && (
           <span className="absolute right-1 top-1 flex h-3.5 w-3.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -230,7 +230,7 @@ export default function InteractiveAssistant() {
         </AnimatePresence>
       </motion.button>
 
-      {/* Expanded Chat Dialog Drawer - Fixed positioning issue */}
+      {/* Expanded Chat Dialog Drawer */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
