@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     locale: "uk_UA",
     images: [
       {
-        url: "/og-image.png",
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Hella — Fullstack & Automation Agency",
@@ -106,7 +106,7 @@ export const metadata: Metadata = {
     description:
       "Євгеній Лютий (Hella) — Fullstack розробник та засновник digital-агенції Hella. Професійне створення та розробка сайтів і програм у Києві, Білій Церкві та області. Преміальні веб-застосунки на React, Next.js, Node.js та комплексна автоматизація бізнес-процесів за допомогою n8n.",
     creator: "@hella_dev",
-    images: ["/og-image.png"],
+    images: [`${SITE_URL}/og-image.png`],
   },
   icons: {
     icon: [

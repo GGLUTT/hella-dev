@@ -197,10 +197,10 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const dpr = window.devicePixelRatio || 1;
     ctx.globalCompositeOperation = "destination-out";
     ctx.beginPath();
-    ctx.arc(x * dpr, y * dpr, 28 * dpr, 0, Math.PI * 2); // wider radius for full card
+    // Since ctx.scale(dpr, dpr) is active, coordinates and radius must be specified in CSS pixels.
+    ctx.arc(x, y, 34, 0, Math.PI * 2); 
     ctx.fill();
 
     checkProgress();
