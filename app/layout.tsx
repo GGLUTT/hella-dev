@@ -86,17 +86,26 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Hella Dev Agency",
-    title: "Hella — Fullstack Developer & Agency | React, Next.js, n8n Automation",
+    title: "Hella — Створення та розробка сайтів і програм | Біла Церква, Київ | Hella Dev Agency",
     description:
-      "Розробка веб-застосунків і автоматизація бізнес-процесів. React, Next.js, TypeScript, Node.js, PostgreSQL, n8n. Digital-агенція Hella.",
+      "Євгеній Лютий (Hella) — Fullstack розробник та засновник digital-агенції Hella. Професійне створення та розробка сайтів і програм у Києві, Білій Церкві та області. Преміальні веб-застосунки на React, Next.js, Node.js та комплексна автоматизація бізнес-процесів за допомогою n8n.",
     locale: "uk_UA",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Hella — Fullstack & Automation Agency",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hella — Fullstack Developer & Agency",
+    title: "Hella — Створення та розробка сайтів і програм | Біла Церква, Київ",
     description:
-      "Розробка веб-застосунків і автоматизація бізнес-процесів. React, Next.js, Node.js, n8n.",
+      "Євгеній Лютий (Hella) — Fullstack розробник та засновник digital-агенції Hella. Професійне створення та розробка сайтів і програм у Києві, Білій Церкві та області. Преміальні веб-застосунки на React, Next.js, Node.js та комплексна автоматизація бізнес-процесів за допомогою n8n.",
     creator: "@hella_dev",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [

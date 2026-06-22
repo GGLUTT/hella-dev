@@ -336,25 +336,23 @@ export default function About() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 grid-flow-row-dense">
           {stack.map((s, i) => (
-            <div key={s.name} className={s.span}>
-              <Reveal delay={0.05 + i * 0.06}>
-                <div className={`group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 ${s.glow}`}>
-                  <div className={`pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent ${s.sheen} to-transparent opacity-0 transition duration-500 group-hover:opacity-100`} />
-                  <div className="mb-4 flex items-center justify-between">
-                    {s.icon}
-                    <span className="font-mono text-[10px] text-white/20 select-none">
-                      //{(i + 1).toString().padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div className="text-xl font-semibold tracking-tight text-white transition duration-300">
-                    {s.name}
-                  </div>
-                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/55 group-hover:text-white/70 transition duration-300">
-                    {s.desc}
-                  </p>
+            <Reveal key={s.name} delay={0.05 + i * 0.06} className={`${s.span} h-full`}>
+              <div className={`group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 ${s.glow}`}>
+                <div className={`pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent ${s.sheen} to-transparent opacity-0 transition duration-500 group-hover:opacity-100`} />
+                <div className="mb-4 flex items-center justify-between">
+                  {s.icon}
+                  <span className="font-mono text-[10px] text-white/20 select-none">
+                    //{(i + 1).toString().padStart(2, "0")}
+                  </span>
                 </div>
-              </Reveal>
-            </div>
+                <div className="text-xl font-semibold tracking-tight text-white transition duration-300">
+                  {s.name}
+                </div>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/55 group-hover:text-white/70 transition duration-300">
+                  {s.desc}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
