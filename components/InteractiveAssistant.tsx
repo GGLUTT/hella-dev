@@ -279,7 +279,7 @@ export default function InteractiveAssistant() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed bottom-0 left-0 right-0 w-full max-h-[82vh] rounded-t-[32px] border-t border-white/10 bg-zinc-950/98 shadow-[0_-20px_50px_rgba(0,0,0,0.85)] backdrop-blur-xl flex flex-col z-50 sm:absolute sm:bottom-[88px] sm:left-0 sm:right-auto sm:w-[380px] sm:max-h-[520px] sm:rounded-3xl sm:border sm:border-white/10 sm:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.8)]"
+            className="fixed bottom-0 left-0 right-0 w-full max-h-[82vh] rounded-t-[32px] border-t border-white/10 bg-zinc-950/98 shadow-[0_-20px_50px_rgba(0,0,0,0.85)] backdrop-blur-xl flex flex-col z-50 sm:absolute sm:bottom-[88px] sm:left-0 sm:right-auto sm:w-[380px] sm:max-h-[580px] sm:rounded-3xl sm:border sm:border-white/10 sm:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.8)]"
           >
             {/* Mobile sheet drag indicator line */}
             <div className="h-1.5 w-12 rounded-full bg-white/15 mx-auto my-3 shrink-0 sm:hidden" />
@@ -287,8 +287,8 @@ export default function InteractiveAssistant() {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-5 py-4 shrink-0">
               <div className="flex items-center gap-3.5">
-                <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-sky-400 font-mono text-sm font-bold text-black select-none">
-                  YL
+                <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-zinc-900 border border-white/10 select-none overflow-hidden">
+                  <img src="/favicon.png" alt="Hella Logo" className="h-full w-full object-cover p-1.5" />
                   <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
@@ -314,10 +314,10 @@ export default function InteractiveAssistant() {
             </div>
 
             {/* Conversation Messages */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4 max-h-[220px] sm:max-h-[290px] scrollbar-thin">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 max-h-[220px] sm:max-h-[260px] scrollbar-thin">
               <div className="flex gap-3">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 font-mono text-xs font-bold select-none border border-emerald-500/10">
-                  H
+                <div className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-900 border border-white/10 select-none overflow-hidden">
+                  <img src="/favicon.png" alt="Hella" className="h-full w-full object-cover p-1" />
                 </div>
                 <div className="rounded-2xl rounded-tl-none bg-white/[0.04] px-4 py-3 text-xs sm:text-sm leading-relaxed text-white/85 whitespace-pre-line border border-white/5">
                   {lang === "ua" ? data.messageUA : data.messageEN}
@@ -326,7 +326,7 @@ export default function InteractiveAssistant() {
             </div>
 
             {/* Quick action buttons list */}
-            <div className="border-t border-white/5 bg-white/[0.01] p-4 space-y-2.5 max-h-[220px] sm:max-h-[170px] overflow-y-auto shrink-0 pb-6 sm:pb-4">
+            <div className="border-t border-white/5 bg-white/[0.01] p-4 space-y-2.5 max-h-[220px] sm:max-h-[190px] overflow-y-auto shrink-0 pb-6 sm:pb-4">
               {data.options.map((opt, i) => {
                 const text = lang === "ua" ? opt.textUA : opt.textEN;
                 const isPrimary = opt.primary;
@@ -338,7 +338,7 @@ export default function InteractiveAssistant() {
                       href={opt.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-full block text-center rounded-xl py-3 sm:py-2.5 px-4 text-xs transition duration-200 ${
+                      className={`w-full block text-center rounded-xl py-3 sm:py-2 px-4 text-xs transition duration-200 ${
                         isPrimary
                           ? "bg-gradient-to-r from-emerald-500 to-sky-500 hover:from-emerald-400 hover:to-sky-400 text-black font-bold shadow-lg shadow-emerald-500/10"
                           : "border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white"
@@ -353,7 +353,7 @@ export default function InteractiveAssistant() {
                   <button
                     key={i}
                     onClick={opt.action}
-                    className="w-full text-left rounded-xl py-3 sm:py-2.5 px-4 text-xs border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white transition duration-200"
+                    className="w-full text-left rounded-xl py-3 sm:py-2 px-4 text-xs border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] text-white/70 hover:text-white transition duration-200"
                   >
                     {text}
                   </button>
