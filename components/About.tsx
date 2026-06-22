@@ -334,7 +334,7 @@ export default function About() {
             </p>
           </Reveal>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 grid-flow-row-dense">
           {stack.map((s, i) => (
             <div key={s.name} className={s.span}>
               <Reveal delay={0.05 + i * 0.06}>

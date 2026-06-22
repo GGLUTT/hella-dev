@@ -69,13 +69,87 @@ export default function Hero() {
   const smoothLensX = useSpring(lensX, { stiffness: 90, damping: 20 });
   const smoothLensY = useSpring(lensY, { stiffness: 90, damping: 20 });
 
-  // Initialize lens coords at the center of the screen on mount
+  // Initialize and run auto-floating searchlight when idle
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    let isInteracting = false;
+    let idleTimeout: NodeJS.Timeout;
+    let animationFrameId: number;
+    let startTime = Date.now();
+
+    // Default coordinates set
     const rect = container.getBoundingClientRect();
-    lensX.set(rect.width / 2);
-    lensY.set(rect.height * 0.38);
+    const initX = rect.width > 0 ? rect.width / 2 : window.innerWidth / 2;
+    const initY = rect.height > 0 ? rect.height * 0.38 : window.innerHeight * 0.38;
+    lensX.set(initX);
+    lensY.set(initY);
+
+    const startInteraction = () => {
+      isInteracting = true;
+      clearTimeout(idleTimeout);
+    };
+
+    const stopInteraction = () => {
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(() => {
+        isInteracting = false;
+        startTime = Date.now(); // Reset time to avoid jump in math
+      }, 2500); // Resume floating after 2.5s of idle
+    };
+
+    const updateFloat = () => {
+      if (!isInteracting) {
+        const containerRect = container.getBoundingClientRect();
+        const w = containerRect.width > 0 ? containerRect.width : window.innerWidth;
+        const h = containerRect.height > 0 ? containerRect.height : window.innerHeight;
+        
+        const elapsed = (Date.now() - startTime) / 1000;
+        
+        // Dynamic smooth orbit around center
+        const centerX = w / 2;
+        const centerY = h * 0.38;
+        const radiusX = w * 0.25; 
+        const radiusY = h * 0.12;
+
+        const targetX = centerX + Math.cos(elapsed * 0.6) * radiusX;
+        const targetY = centerY + Math.sin(elapsed * 1.0) * radiusY;
+
+        lensX.set(targetX);
+        lensY.set(targetY);
+      }
+      animationFrameId = requestAnimationFrame(updateFloat);
+    };
+
+    // Listeners to track interaction
+    const handleMouseMoveStart = () => {
+      startInteraction();
+      stopInteraction();
+    };
+
+    const handleTouchStart = () => {
+      startInteraction();
+    };
+
+    const handleTouchEnd = () => {
+      stopInteraction();
+    };
+
+    window.addEventListener("mousemove", handleMouseMoveStart);
+    container.addEventListener("touchstart", handleTouchStart);
+    container.addEventListener("touchend", handleTouchEnd);
+
+    // Start auto-floating loop
+    updateFloat();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      clearTimeout(idleTimeout);
+      window.removeEventListener("mousemove", handleMouseMoveStart);
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchend", handleTouchEnd);
+    };
   }, [lensX, lensY]);
 
   // Subscribe and map lens coordinates to CSS variables
