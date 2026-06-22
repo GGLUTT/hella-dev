@@ -11,6 +11,7 @@ import {
 import { useRef } from "react";
 import Reveal from "./Reveal";
 import { useLang } from "@/context/LangContext";
+import ScratchPrice from "./ScratchPrice";
 
 type Tier = {
   name: string;
@@ -165,8 +166,8 @@ export default function Services() {
         <Reveal delay={0.1}>
           <p className="mt-6 max-w-xl text-base text-white/55 md:text-lg">
             {t(
-              "Орієнтовні бюджети для типових задач. Точна оцінка — після короткого брифу.",
-              "Ballpark budgets for typical tasks. Exact estimate — after a short brief."
+              "Створення та розробка сайтів і програм у Києві, Білій Церкві та області. Орієнтовні бюджети для задач. Точна оцінка — після короткого брифу.",
+              "Creation and development of websites and software in Kyiv, Bila Tserkva, and region. Ballpark budgets for tasks. Exact estimate — after a short brief."
             )}
           </p>
         </Reveal>
@@ -304,23 +305,23 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
         </h3>
 
         {/* Price */}
-        <div className="mt-4 flex items-end gap-2">
-          <span
-            className={`text-5xl font-semibold tracking-tight ${
-              isHi
-                ? "text-black"
-                : "bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent"
-            }`}
-          >
-            {tier.price}
-          </span>
-          <span
-            className={`pb-1.5 text-[10px] uppercase tracking-[0.25em] ${
-              isHi ? "text-black/50" : "text-white/40"
-            }`}
-          >
-            {fromLabel}
-          </span>
+        <div className="mt-4 min-h-[64px] flex items-end">
+          {isHi ? (
+            <ScratchPrice price={tier.price} fromLabel={fromLabel} />
+          ) : (
+            <div className="flex items-end gap-2">
+              <span
+                className="text-5xl font-semibold tracking-tight bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent"
+              >
+                {tier.price}
+              </span>
+              <span
+                className="pb-1.5 text-[10px] uppercase tracking-[0.25em] text-white/40"
+              >
+                {fromLabel}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Description */}

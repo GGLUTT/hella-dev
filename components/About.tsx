@@ -150,8 +150,8 @@ export default function About() {
               className="mt-8 max-w-xl text-base leading-relaxed text-white/60 md:text-lg"
             >
               {t(
-                "Привіт, я Євгеній — засновник digital-агенції Hella. Створюю цифрові рішення з фокусом на продуктивність, чистий код та вимірювані бізнес-результати: від висококласних інтерфейсів до фулстек-платформ та сценаріїв автоматизації n8n.",
-                "Hi, I'm Yevhenii — founder of Hella dev agency. I build digital solutions focused on performance, clean code, and measurable business results: from high-end interfaces to fullstack platforms and complex n8n automation scenarios."
+                "Привіт, я Євгеній — засновник digital-агенції Hella. Наша веб-студія та агенція розробки пропонує професійне створення та розробку сайтів і програм у Києві, Білій Церкві та області. Створюю цифрові рішення з фокусом на продуктивність, чистий код та вимірювані бізнес-результати: від фулстек-платформ до сценаріїв автоматизації n8n.",
+                "Hi, I'm Yevhenii — founder of Hella dev agency. Our web studio and development agency offers professional creation and development of websites and programs in Kyiv, Bila Tserkva, and the region. I build digital solutions focused on performance, clean code, and business results: from fullstack platforms to n8n automation scenarios."
               )}
             </motion.p>
 
