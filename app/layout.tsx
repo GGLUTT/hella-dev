@@ -4,6 +4,7 @@ import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import ConsoleEasterEgg from "@/components/ConsoleEasterEgg";
 import { LangProvider } from "@/context/LangContext";
+import InteractiveAssistant from "@/components/InteractiveAssistant";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -175,6 +176,7 @@ export default function RootLayout({
           <ConsoleEasterEgg />
           {children}
           <CookieBanner />
+          <InteractiveAssistant />
         </LangProvider>
       </body>
     </html>

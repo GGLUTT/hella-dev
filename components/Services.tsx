@@ -34,7 +34,7 @@ type RawTier = Omit<Tier, "desc" | "features" | "cta" | "tagline"> & {
 const RAW_TIERS: RawTier[] = [
   {
     name: "Landing Page",
-    price: "$200",
+    price: "$150",
     descUA: "Презентаційний сайт із фокусом на конверсії.",
     descEN: "Presentation site focused on conversion.",
     taglineUA: "Старт", taglineEN: "Starter",
@@ -46,7 +46,7 @@ const RAW_TIERS: RawTier[] = [
   },
   {
     name: "Fullstack Web App",
-    price: "$2000",
+    price: "$1500",
     descUA: "Продукт з фронтом, API і базою даних.",
     descEN: "Product with frontend, API and database.",
     taglineUA: "Найпопулярніше", taglineEN: "Most popular",
@@ -221,8 +221,8 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
   const restTransform = isHi
     ? "md:scale-[1.04] md:-translate-y-3"
     : index === 0
-    ? "md:[transform:perspective(1400px)_rotateY(8deg)_rotateZ(-2deg)_translateY(12px)_scale(0.97)]"
-    : "md:[transform:perspective(1400px)_rotateY(-8deg)_rotateZ(2deg)_translateY(12px)_scale(0.97)]";
+      ? "md:[transform:perspective(1400px)_rotateY(8deg)_rotateZ(-2deg)_translateY(12px)_scale(0.97)]"
+      : "md:[transform:perspective(1400px)_rotateY(-8deg)_rotateZ(2deg)_translateY(12px)_scale(0.97)]";
 
   // Hover: side cards straighten + lift; center just lifts a bit more.
   const hoverTransform = isHi
@@ -233,9 +233,8 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
     <motion.div
       variants={cardItem}
       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      className={`group relative h-full transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${restTransform} ${hoverTransform} ${
-        isHi ? "md:z-20" : "md:z-10"
-      }`}
+      className={`group relative h-full transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${restTransform} ${hoverTransform} ${isHi ? "md:z-20" : "md:z-10"
+        }`}
       style={{ transformStyle: "preserve-3d" }}
     >
       {/* Highlight glow ring */}
@@ -263,11 +262,10 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
       )}
 
       <div
-        className={`relative flex h-full flex-col overflow-hidden rounded-3xl p-6 transition-[border-color,background-color,box-shadow] duration-300 sm:p-8 ${
-          isHi
-            ? "border border-white/30 bg-white text-black shadow-[0_40px_100px_-20px_rgba(255,255,255,0.35)]"
-            : "border border-white/10 bg-white/[0.02] text-white backdrop-blur-md group-hover:border-white/25 group-hover:bg-white/[0.035] group-hover:shadow-[0_20px_60px_-20px_rgba(255,255,255,0.08)]"
-        }`}
+        className={`relative flex h-full flex-col overflow-hidden rounded-3xl p-6 transition-[border-color,background-color,box-shadow] duration-300 sm:p-8 ${isHi
+          ? "border border-white/30 bg-white text-black shadow-[0_40px_100px_-20px_rgba(255,255,255,0.35)]"
+          : "border border-white/10 bg-white/[0.02] text-white backdrop-blur-md group-hover:border-white/25 group-hover:bg-white/[0.035] group-hover:shadow-[0_20px_60px_-20px_rgba(255,255,255,0.08)]"
+          }`}
       >
         {isHi && (
           <ScratchCardOverlay
@@ -279,11 +277,10 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
         {/* Top sheen */}
         <div
           aria-hidden
-          className={`pointer-events-none absolute inset-x-0 -top-px h-px ${
-            isHi
-              ? "bg-gradient-to-r from-transparent via-black/30 to-transparent"
-              : "bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 transition duration-150 group-hover:opacity-100"
-          }`}
+          className={`pointer-events-none absolute inset-x-0 -top-px h-px ${isHi
+            ? "bg-gradient-to-r from-transparent via-black/30 to-transparent"
+            : "bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 transition duration-150 group-hover:opacity-100"
+            }`}
         />
 
         <motion.div
@@ -293,9 +290,8 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
         >
           {/* Eyebrow */}
           <div
-            className={`mb-4 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] ${
-              isHi ? "text-black/50" : "text-white/45"
-            }`}
+            className={`mb-4 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] ${isHi ? "text-black/50" : "text-white/45"
+              }`}
           >
             <span className="font-mono">
               {String(index + 1).padStart(2, "0")}
@@ -309,9 +305,8 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
 
           {/* Name */}
           <h3
-            className={`text-2xl font-semibold tracking-tight ${
-              isHi ? "text-black" : "text-white"
-            }`}
+            className={`text-2xl font-semibold tracking-tight ${isHi ? "text-black" : "text-white"
+              }`}
           >
             {tier.name}
           </h3>
@@ -319,18 +314,16 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
           {/* Price */}
           <div className="mt-4 flex items-end gap-2">
             <span
-              className={`text-5xl font-semibold tracking-tight ${
-                isHi
-                  ? "text-black"
-                  : "bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent"
-              }`}
+              className={`text-5xl font-semibold tracking-tight ${isHi
+                ? "text-black"
+                : "bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent"
+                }`}
             >
               {tier.price}
             </span>
             <span
-              className={`pb-1.5 text-[10px] uppercase tracking-[0.25em] ${
-                isHi ? "text-black/50" : "text-white/40"
-              }`}
+              className={`pb-1.5 text-[10px] uppercase tracking-[0.25em] ${isHi ? "text-black/50" : "text-white/40"
+                }`}
             >
               {fromLabel}
             </span>
@@ -338,20 +331,18 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
 
           {/* Description */}
           <p
-            className={`mt-3 text-sm leading-relaxed ${
-              isHi ? "text-black/65" : "text-white/55"
-            }`}
+            className={`mt-3 text-sm leading-relaxed ${isHi ? "text-black/65" : "text-white/55"
+              }`}
           >
             {tier.desc}
           </p>
 
           {/* Divider */}
           <div
-            className={`my-7 h-px ${
-              isHi
-                ? "bg-gradient-to-r from-transparent via-black/15 to-transparent"
-                : "bg-gradient-to-r from-transparent via-white/12 to-transparent"
-            }`}
+            className={`my-7 h-px ${isHi
+              ? "bg-gradient-to-r from-transparent via-black/15 to-transparent"
+              : "bg-gradient-to-r from-transparent via-white/12 to-transparent"
+              }`}
           />
 
           {/* Features */}
@@ -371,11 +362,10 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
                 className="flex items-start gap-3"
               >
                 <span
-                  className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
-                    isHi
-                      ? "bg-black"
-                      : "border border-emerald-300/30 bg-emerald-300/10"
-                  }`}
+                  className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${isHi
+                    ? "bg-black"
+                    : "border border-emerald-300/30 bg-emerald-300/10"
+                    }`}
                 >
                   <span className={isHi ? "text-white" : "text-emerald-300"}>
                     <HugeiconsIcon icon={Tick02Icon} size={10} strokeWidth={3} />
@@ -391,11 +381,10 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
           {/* CTA */}
           <a
             href="#contact"
-            className={`mt-9 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-medium transition ${
-              isHi
-                ? "bg-black text-white hover:bg-black/85"
-                : "border border-white/15 bg-white/[0.04] text-white hover:border-white/30 hover:bg-white/[0.08]"
-            }`}
+            className={`mt-9 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-medium transition ${isHi
+              ? "bg-black text-white hover:bg-black/85"
+              : "border border-white/15 bg-white/[0.04] text-white hover:border-white/30 hover:bg-white/[0.08]"
+              }`}
           >
             {tier.cta}
             <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
