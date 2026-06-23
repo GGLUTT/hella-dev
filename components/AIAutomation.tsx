@@ -134,7 +134,7 @@ export default function AIAutomation() {
           ease: "easeInOut",
         }}
         aria-hidden
-        className="pointer-events-none absolute -right-24 top-12 w-[350px] sm:w-[550px] md:w-[750px] opacity-[0.07] z-0 select-none"
+        className="pointer-events-none absolute -right-24 top-12 w-[350px] sm:w-[550px] md:w-[750px] opacity-[0.14] z-0 select-none"
       >
         <img
           src="/vis.png"

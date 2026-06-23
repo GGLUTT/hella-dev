@@ -241,7 +241,7 @@ export default function About() {
           ease: "easeInOut",
         }}
         aria-hidden
-        className="pointer-events-none absolute -left-36 bottom-[5%] w-[380px] sm:w-[580px] md:w-[850px] opacity-[0.06] z-0 select-none"
+        className="pointer-events-none absolute -left-36 bottom-[5%] w-[380px] sm:w-[580px] md:w-[850px] opacity-[0.14] z-0 select-none"
       >
         <img
           src="/vis.png"

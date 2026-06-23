@@ -116,7 +116,7 @@ export default function Contact() {
           ease: "easeInOut",
         }}
         aria-hidden
-        className="pointer-events-none absolute -left-36 top-1/4 w-[350px] sm:w-[550px] md:w-[750px] opacity-[0.06] z-0 select-none"
+        className="pointer-events-none absolute -left-36 top-1/4 w-[350px] sm:w-[550px] md:w-[750px] opacity-[0.14] z-0 select-none"
       >
         <img
           src="/vis2.png"
