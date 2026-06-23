@@ -175,21 +175,27 @@ export default function About() {
   }));
 
   const HEADLINE_UA = [
-    { word: "Будую",             accent: false },
-    { word: "швидкі",            accent: true  },
-    { word: "веб-застосунки", accent: false },
-    { word: "і",                accent: false },
-    { word: "автоматизую",     accent: true  },
-    { word: "бізнес-процеси.", accent: false },
+    { word: "Hella",             accent: false },
+    { word: "Dev",               accent: false },
+    { word: "Agency",            accent: false },
+    { word: "—",                 accent: false },
+    { word: "персональна",       accent: true  },
+    { word: "dev-студія",        accent: true  },
+    { word: "Євгенія",           accent: false },
+    { word: "Лютого",            accent: false },
   ];
 
   const HEADLINE_EN = [
-    { word: "Building",  accent: false },
-    { word: "fast",      accent: true  },
-    { word: "web apps",  accent: false },
-    { word: "and",       accent: false },
-    { word: "automating", accent: true },
-    { word: "workflows.", accent: false },
+    { word: "Hella",             accent: false },
+    { word: "Dev",               accent: false },
+    { word: "Agency",            accent: false },
+    { word: "—",                 accent: false },
+    { word: "personal",          accent: true  },
+    { word: "dev",               accent: true  },
+    { word: "studio",            accent: true  },
+    { word: "of",                accent: false },
+    { word: "Yevhenii",          accent: false },
+    { word: "Liutyi",            accent: false },
   ];
 
   const HEADLINE = lang === "ua" ? HEADLINE_UA : HEADLINE_EN;
@@ -264,15 +270,29 @@ export default function About() {
             </h2>
 
             {/* Description */}
-            <motion.p
+            <motion.div
               variants={fadeUp}
-              className="mt-8 max-w-xl text-base leading-relaxed text-white/60 md:text-lg"
+              className="mt-8 max-w-xl text-base leading-relaxed text-white/60 md:text-lg space-y-4"
             >
-              {t(
-                "Привіт, я Євгеній — засновник digital-агенції Hella. Наша веб-студія та агенція розробки пропонує професійне створення та розробку сайтів і програм у Києві, Білій Церкві та області. Створюю цифрові рішення з фокусом на продуктивність, чистий код та вимірювані бізнес-результати: від фулстек-платформ до сценаріїв автоматизації n8n.",
-                "Hi, I'm Yevhenii — founder of Hella dev agency. Our web studio and development agency offers professional creation and development of websites and programs in Kyiv, Bila Tserkva, and the region. I build digital solutions focused on performance, clean code, and business results: from fullstack platforms to n8n automation scenarios."
-              )}
-            </motion.p>
+              <p>
+                {t(
+                  "Я допомагаю бізнесам запускати швидкі сайти, веб-застосунки, CRM, кабінети клієнтів та автоматизації. Працюю напряму з клієнтом: занурююсь у задачу, пропоную технічне рішення, розробляю frontend, backend, інтеграції й доводжу проєкт до запуску.",
+                  "I help businesses launch fast websites, web applications, CRMs, client portals and automations. I work directly with the client: diving deep into the task, proposing technical solutions, developing frontend, backend, integrations, and driving the project to launch."
+                )}
+              </p>
+              <p>
+                {t(
+                  "Мій фокус — не просто написати код, а побудувати рішення, яке допомагає бізнесу приймати заявки, швидше обробляти клієнтів, зменшувати ручну роботу й бачити процеси прозоріше.",
+                  "My focus is not just to write code, but to build a solution that helps the business capture leads, process clients faster, reduce manual work, and see workflows more transparently."
+                )}
+              </p>
+              <p>
+                {t(
+                  "Для більших задач можу підключати перевірених спеціалістів під конкретний етап: дизайн, SEO, контент або додаткову розробку. Але основна комунікація, технічна логіка й відповідальність за результат залишаються на мені.",
+                  "For larger scale tasks, I can pull in proven specialists for specific phases: design, SEO, content or extra development. However, the main communication, technical logic, and responsibility for the final outcome remain solely with me."
+                )}
+              </p>
+            </motion.div>
 
             {/* Stats */}
             <motion.div
@@ -313,6 +333,108 @@ export default function About() {
         {/* Right: character pinned to section bottom, equal height to text column */}
         <div className="relative self-end lg:col-span-6">
           <CharacterStage />
+        </div>
+      </div>
+
+      {/* ============ Why Choose Me block ============ */}
+      <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-20">
+        <div className="mb-10 flex items-end justify-between gap-6">
+          <Reveal>
+            <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-white/45">
+              <span className="inline-block h-px w-10 bg-gradient-to-r from-transparent to-white/50" />
+              {t("Чому працювати зі мною", "Why work with me")}
+            </div>
+          </Reveal>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Card 1 */}
+          <Reveal delay={0.05} className="h-full">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+              <div>
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
+                  {t("Працюєте напряму з розробником", "Work directly with developer")}
+                </h3>
+                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
+                  {t(
+                    "Без зайвих менеджерів і втрати контексту. Я сам розумію задачу, пропоную рішення, пишу код і відповідаю за реалізацію.",
+                    "No middle managers or lost context. I understand the task, propose solutions, write the code, and own the execution."
+                  )}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+          {/* Card 2 */}
+          <Reveal delay={0.1} className="h-full">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+              <div>
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
+                  {t("Fullstack-підхід", "Fullstack approach")}
+                </h3>
+                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
+                  {t(
+                    "Можу закрити frontend, backend, базу даних, інтеграції, автоматизацію, деплой і базову підтримку після запуску.",
+                    "I cover frontend, backend, databases, integrations, workflow automation, deployment, and post-launch support."
+                  )}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+          {/* Card 3 */}
+          <Reveal delay={0.15} className="h-full">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+              <div>
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
+                  {t("Фокус на бізнес-процесах", "Focus on business processes")}
+                </h3>
+                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
+                  {t(
+                    "Дивлюсь не тільки на сайт, а на весь шлях заявки: форма, CRM, Telegram, Google Sheets, email, сповіщення, follow-up і аналітика.",
+                    "I look beyond the website to the entire lead journey: forms, CRM, Telegram alerts, Google Sheets, emails, follow-ups, and analytics."
+                  )}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+          {/* Card 4 */}
+          <Reveal delay={0.2} className="h-full">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+              <div>
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
+                  {t("Гнучкість маленької студії", "Boutique studio flexibility")}
+                </h3>
+                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
+                  {t(
+                    "Швидко приймаю рішення, адаптуюсь під задачу й не додаю зайвої бюрократії. Це зручно для малого й середнього бізнесу, якому потрібен результат без довгих процесів.",
+                    "Fast decision-making, adaptive workflows, and zero bureaucracy. Perfect for small and medium businesses needing quick results without overhead."
+                  )}
+                </p>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
 
@@ -415,7 +537,7 @@ function CharacterStage() {
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-10 isolate"
       >
         <video
           autoPlay
@@ -424,7 +546,8 @@ function CharacterStage() {
           playsInline
           preload="auto"
           disablePictureInPicture
-          className="h-full w-full select-none object-contain object-bottom drop-shadow-[0_40px_80px_rgba(0,0,0,0.7)] mix-blend-screen"
+          className="h-full w-full select-none object-contain object-bottom mix-blend-screen [will-change:transform]"
+          style={{ transform: "translate3d(0, 0, 0)" }}
         >
           <source src="/character-action.webm" type="video/webm" />
           <source src="/character-action.mov" type="video/quicktime" />

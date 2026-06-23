@@ -123,7 +123,7 @@ export default function Footer() {
         {/* Bottom strip */}
         <motion.div
           variants={item}
-          className="mt-6 flex flex-col items-center justify-between gap-2 text-[11px] text-white/40 sm:flex-row"
+          className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 text-[11px] text-white/40 sm:flex-row"
         >
           <div className="flex items-center gap-2">
             <span className="flex h-5 w-5 items-center justify-center rounded-md bg-white/[0.04] font-mono text-[9px] font-bold text-white/70">
@@ -142,6 +142,19 @@ export default function Footer() {
               Cookies
             </Link>
           </div>
+        </motion.div>
+
+        {/* Localized SEO paragraph */}
+        <motion.div
+          variants={item}
+          className="mt-6 text-center text-[10px] leading-relaxed text-white/20 sm:text-left"
+        >
+          <p>
+            {t(
+              "Hella Dev Agency — персональна web development та automation студія. Розробка сайтів, веб-застосунків, CRM, кабінетів клієнтів, інтеграцій та автоматизацій для бізнесу. Працюю онлайн з клієнтами з України та інших країн.",
+              "Hella Dev Agency is Yevhenii Liutyi's personal web development and automation studio. Developing websites, web applications, CRMs, client portals, integrations, and business automations. Working online with clients from Ukraine and other countries."
+            )}
+          </p>
         </motion.div>
       </motion.div>
     </footer>

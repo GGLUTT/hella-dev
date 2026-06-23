@@ -302,54 +302,62 @@ export default function Hero() {
             {/* Eyebrow Label with tech-flicker character entry */}
             <motion.div
               variants={eyebrowContainerVariants}
-              className="flex flex-wrap justify-center items-center text-[9px] sm:text-[11px] font-display uppercase tracking-[0.35em] text-cyan-400/95 mt-6 select-none"
+              className="flex flex-wrap justify-center items-center text-[8px] sm:text-[10px] font-display uppercase tracking-[0.25em] sm:tracking-[0.35em] text-cyan-400/95 mt-5 select-none px-4"
             >
-              <span className="text-cyan-500/40 mr-3 font-mono font-bold">[</span>
-              {t("ФУЛСТЕК-ІНЖЕНЕР // АВТОМАТИЗАТОР", "FULLSTACK ENGINEER // AUTOMATOR")
-                .split("")
-                .map((char, index) => (
+              <span className="text-cyan-500/40 mr-2 sm:mr-3 font-mono font-bold">[</span>
+              {t(
+                "PERSONAL DEV STUDIO // FULLSTACK // AUTOMATION // AI INTEGRATIONS",
+                "PERSONAL DEV STUDIO // FULLSTACK // AUTOMATION // AI INTEGRATIONS"
+              )
+                .split(" ")
+                .map((word, index) => (
                   <motion.span
                     key={index}
                     variants={charVariants}
-                    className={char === " " ? "w-1.5" : "inline-block"}
+                    className="inline-block mx-0.5 sm:mx-1 whitespace-nowrap"
                   >
-                    {char}
+                    {word}
                   </motion.span>
                 ))}
-              <span className="text-cyan-500/40 ml-3 font-mono font-bold">]</span>
+              <span className="text-cyan-500/40 ml-2 sm:ml-3 font-mono font-bold">]</span>
             </motion.div>
 
             {/* Main Giant Title - Mask Slide Up Reveal */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-extrabold tracking-tighter font-display leading-none mt-4 max-w-xl sm:max-w-2xl md:max-w-4xl flex flex-wrap justify-center gap-x-4 sm:gap-x-6 text-balance uppercase"
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] font-bold tracking-tight leading-[1.15] mt-3 max-w-lg sm:max-w-2xl md:max-w-4xl lg:max-w-5xl flex flex-wrap justify-center gap-x-2 sm:gap-x-3 text-balance uppercase"
             >
-              {["Yevhenii", "Lutiy"].map((word, i) => (
-                <span key={i} className="overflow-hidden inline-block py-1 sm:py-2">
-                  <motion.span
-                    initial={{ y: "110%" }}
-                    animate={{ y: 0 }}
-                    transition={{
-                      duration: 0.95,
-                      delay: 0.4 + i * 0.12,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="inline-block bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent"
-                  >
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
+              {t(
+                "Будую швидкі веб-застосунки та автоматизую бізнес-процеси",
+                "I build fast web applications and automate business processes"
+              )
+                .split(" ")
+                .map((word, i) => (
+                  <span key={i} className="overflow-hidden inline-block py-0.5 sm:py-1">
+                    <motion.span
+                      initial={{ y: "110%" }}
+                      animate={{ y: 0 }}
+                      transition={{
+                        duration: 0.95,
+                        delay: 0.4 + i * 0.05,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                      className="inline-block bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent"
+                    >
+                      {word}
+                    </motion.span>
+                  </span>
+                ))}
             </motion.h1>
 
             {/* Detailed Tagline */}
             <motion.p
               variants={itemVariants}
-              className="text-xs sm:text-sm md:text-base leading-relaxed text-zinc-400 max-w-lg sm:max-w-xl md:max-w-2xl mt-6 px-4 text-balance"
+              className="text-xs sm:text-sm leading-relaxed text-zinc-400/80 max-w-md sm:max-w-xl mt-5 px-4 text-balance"
             >
               {t(
-                "Створюю надійні цифрові продукти та автоматизую складні бізнес-процеси — від інтерактивних інтерфейсів до масштабованих систем та n8n сценаріїв.",
-                "Building robust digital products and automating complex workflows — from high-performance interfaces to scalable backend engines and n8n scripts."
+                "Допомагаю бізнесу запускати сайти, CRM, кабінети клієнтів, інтеграції та автоматизації, які приймають заявки, обробляють клієнтів і прибирають ручну роботу.",
+                "I help businesses launch websites, CRMs, client portals, integrations and automations that capture leads, handle clients and eliminate manual work."
               )}
             </motion.p>
 
@@ -366,7 +374,7 @@ export default function Hero() {
                 strength={0.25}
                 className="relative overflow-hidden bg-white text-black font-semibold border border-white px-8 py-3.5 rounded-full text-xs font-mono tracking-widest uppercase hover:bg-white/90 transition duration-300 flex items-center justify-center w-full sm:w-auto pointer-events-auto"
               >
-                <span className="relative z-10">{t("ЗВ'ЯЗАТИСЯ ЗІ МНОЮ", "START A PROJECT")}</span>
+                <span className="relative z-10">{t("Обговорити проєкт", "Discuss project")}</span>
                 
                 {/* Micro-shimmer sheen */}
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/5 to-transparent group-hover/magnetic:translate-x-full transition-transform duration-1000 ease-out" />
@@ -385,7 +393,7 @@ export default function Hero() {
                 strength={0.25}
                 className="relative overflow-hidden bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-white px-8 py-3.5 rounded-full text-xs font-mono tracking-widest uppercase hover:bg-zinc-900 transition duration-300 flex items-center justify-center w-full sm:w-auto pointer-events-auto"
               >
-                <span className="relative z-10">{t("МОЇ ПРОЄКТИ", "VIEW PROJECTS")}</span>
+                <span className="relative z-10">{t("Подивитися кейси", "View case studies")}</span>
                 
                 {/* micro-shimmer sheen */}
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover/magnetic:translate-x-full transition-transform duration-1000 ease-out" />

@@ -35,35 +35,47 @@ const RAW_TIERS: RawTier[] = [
   {
     name: "Landing Page",
     price: "$150",
-    descUA: "Презентаційний сайт із фокусом на конверсії.",
-    descEN: "Presentation site focused on conversion.",
-    taglineUA: "Старт", taglineEN: "Starter",
-    featuresUA: ["Дизайн і верстка", "Адаптив, анімації", "SEO-базис, аналітика", "Деплой і CI"],
-    featuresEN: ["Design & markup", "Responsive, animations", "SEO basics, analytics", "Deploy & CI"],
-    ctaUA: "Замовити лендінг", ctaEN: "Order a landing",
+    descUA: "Швидкий односторінковий сайт для старту продажів та залучення заявок.",
+    descEN: "High-converting single-page website to launch sales and capture leads.",
+    taglineUA: "Швидкий старт", taglineEN: "Quick Start",
+    featuresUA: ["Маркетингова структура", "Унікальний дизайн & верстка", "Адаптація під мобільні", "SEO-оптимізація, аналітика"],
+    featuresEN: ["Marketing-focused structure", "Custom design & coding", "Fully mobile responsive", "SEO basics & analytics"],
+    ctaUA: "Замовити лендінг", ctaEN: "Order landing",
     highlight: false,
     accent: "from-sky-500/30 via-cyan-400/15 to-transparent",
   },
   {
+    name: "AI Website Starter",
+    price: "$350",
+    descUA: "Багатосторінковий сайт або лендінг з інтегрованим розумним чат-ботом.",
+    descEN: "Multi-page site or landing page with an integrated smart AI chatbot.",
+    taglineUA: "Інновація", taglineEN: "Innovation",
+    featuresUA: ["Налаштування AI-чатбота", "Інтеграція з Telegram/CRM", "До 5 сторінок контенту", "Збирання лідів 24/7"],
+    featuresEN: ["Custom AI chatbot setup", "Telegram & CRM connection", "Up to 5 content pages", "24/7 lead generation"],
+    ctaUA: "Отримати сайт з ШІ", ctaEN: "Get AI website",
+    highlight: false,
+    accent: "from-blue-500/30 via-indigo-400/15 to-transparent",
+  },
+  {
     name: "Fullstack Web App",
     price: "$1500",
-    descUA: "Продукт з фронтом, API і базою даних.",
-    descEN: "Product with frontend, API and database.",
-    taglineUA: "Найпопулярніше", taglineEN: "Most popular",
-    featuresUA: ["React / Next.js + TypeScript", "Node.js API, PostgreSQL", "Авторизація, ролі, платежі", "Тести, моніторинг"],
-    featuresEN: ["React / Next.js + TypeScript", "Node.js API, PostgreSQL", "Auth, roles, payments", "Tests, monitoring"],
-    ctaUA: "Обговорити продукт", ctaEN: "Discuss the product",
+    descUA: "Складні веб-додатки, особисті кабінети, SaaS та CRM-системи з нуля.",
+    descEN: "Complex web applications, client portals, SaaS and CRM systems from scratch.",
+    taglineUA: "Максимум можливостей", taglineEN: "Maximum power",
+    featuresUA: ["React / Next.js + Node.js", "Бази даних, авторизація", "Особисті кабінети, оплати", "Преміальний дизайн & анімації"],
+    featuresEN: ["React / Next.js + Node.js", "Databases & user auth", "Client portals & payments", "Premium design & motion"],
+    ctaUA: "Обговорити продукт", ctaEN: "Discuss project",
     highlight: true,
     accent: "from-emerald-400/40 via-sky-400/20 to-transparent",
   },
   {
-    name: "Automation / n8n",
+    name: "Automation / n8n / AI",
     price: "$300",
-    descUA: "Автоматизація рутинних процесів і інтеграції.",
-    descEN: "Automating routine processes and integrations.",
-    taglineUA: "Швидкий результат", taglineEN: "Quick wins",
-    featuresUA: ["Сценарії n8n / Zapier", "Інтеграції з CRM, API", "Тригери і нотифікації", "Документація"],
-    featuresEN: ["n8n / Zapier scenarios", "CRM & API integrations", "Triggers & notifications", "Documentation"],
+    descUA: "Автоматизація рутини, інтеграція сервісів та ШІ-сценаріїв для бізнесу.",
+    descEN: "Workflow automation, API integrations, and custom AI scenarios for business.",
+    taglineUA: "Оптимізація часу", taglineEN: "Time optimization",
+    featuresUA: ["Сценарії n8n / Make", "Зв'язок CRM, таблиць, ботів", "Генерація відповідей ШІ", "Звільнення до 80% часу"],
+    featuresEN: ["n8n & Make scenarios", "CRM, Sheets, bot sync", "AI auto-response setups", "Save up to 80% of work hours"],
     ctaUA: "Налаштувати автоматизацію", ctaEN: "Set up automation",
     highlight: false,
     accent: "from-violet-500/30 via-fuchsia-400/15 to-transparent",
@@ -178,7 +190,7 @@ export default function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="mt-16 grid grid-cols-1 gap-5 sm:gap-6 md:mt-28 md:grid-cols-3 md:items-stretch"
+          className="mt-16 grid grid-cols-1 gap-5 sm:gap-6 md:mt-28 sm:grid-cols-2 lg:grid-cols-4 md:items-stretch"
           style={{ perspective: 1400 }}
         >
           {tiers.map((tier, i) => (
@@ -222,7 +234,9 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
     ? "md:scale-[1.04] md:-translate-y-3"
     : index === 0
       ? "md:[transform:perspective(1400px)_rotateY(8deg)_rotateZ(-2deg)_translateY(12px)_scale(0.97)]"
-      : "md:[transform:perspective(1400px)_rotateY(-8deg)_rotateZ(2deg)_translateY(12px)_scale(0.97)]";
+      : index === 3
+        ? "md:[transform:perspective(1400px)_rotateY(-8deg)_rotateZ(2deg)_translateY(12px)_scale(0.97)]"
+        : "md:translate-y-1 md:scale-[0.99]";
 
   // Hover: side cards straighten + lift; center just lifts a bit more.
   const hoverTransform = isHi

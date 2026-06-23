@@ -71,8 +71,8 @@ export default function InteractiveAssistant() {
     plans: {
       titleUA: "Залучення клієнтів",
       titleEN: "Client Attraction",
-      messageUA: "Сайт — це ваш цілодобовий менеджер з продажів. Ми створюємо рішення, які:\n\n• **Приводять клієнтів з Google** завдяки вбудованому SEO під Київ та Білу Церкву.\n• **Підвищують довіру** за рахунок сучасного дизайну преміум-рівня.\n• **Утримують користувачів** завдяки миттєвому завантаженню та ідеальній роботі на телефонах.",
-      messageEN: "A website is your 24/7 sales manager. We build solutions that:\n\n• **Bring clients from Google** with built-in SEO optimized for search results.\n• **Build instant trust** through custom, high-end premium designs.\n• **Convert visitors** with lightning-fast speeds and perfect mobile interfaces.",
+      messageUA: "Сайт — це ваш цілодобовий менеджер з продажів. Я створюю рішення, які:\n\n• **Приводять клієнтів з Google** завдяки вбудованому SEO під Київ та Білу Церкву.\n• **Підвищують довіру** за рахунок сучасного дизайну преміум-рівня.\n• **Утримують користувачів** завдяки миттєвому завантаженню та ідеальній роботі на телефонах.",
+      messageEN: "A website is your 24/7 sales manager. I build solutions that:\n\n• **Bring clients from Google** with built-in SEO optimized for search results.\n• **Build instant trust** through custom, high-end premium designs.\n• **Convert visitors** with lightning-fast speeds and perfect mobile interfaces.",
       options: [
         {
           textUA: "Яка вартість розробки? 💰",
@@ -95,8 +95,8 @@ export default function InteractiveAssistant() {
     services: {
       titleUA: "Звільнення від рутини",
       titleEN: "Routine Automation",
-      messageUA: "Автоматизація процесів звільняє до 80% вашого часу. Ми впроваджуємо рішення, які:\n\n• **Об'єднують системи в одну**: зв'язуємо вашу CRM, Telegram, пошту та Google Таблиці.\n• **Автоматизують замовлення**: система сама опрацьовує заявку та сповіщає команду.\n• **Працюють 24/7**: розумні боти відповідають клієнтам моментально без вихідних.",
-      messageEN: "Process automation frees up to 80% of your time. We implement systems that:\n\n• **Connect everything in one place**: link your CRM, Telegram, email, and Google Sheets.\n• **Handle orders automatically**: the system processes leads and alerts your team instantly.\n• **Work 24/7**: smart bots reply to customers immediately without days off.",
+      messageUA: "Автоматизація процесів звільняє до 80% вашого часу. Я впроваджую рішення, які:\n\n• **Об'єднують системи в одну**: зв'язуємо вашу CRM, Telegram, пошту та Google Таблиці.\n• **Автоматизують замовлення**: система сама опрацьовує заявку та сповіщає команду.\n• **Працюють 24/7**: розумні боти відповідають клієнтам моментально без вихідних.",
+      messageEN: "Process automation frees up to 80% of your time. I implement systems that:\n\n• **Connect everything in one place**: link your CRM, Telegram, email, and Google Sheets.\n• **Handle orders automatically**: the system processes leads and alerts your team instantly.\n• **Work 24/7**: smart bots reply to customers immediately without days off.",
       options: [
         {
           textUA: "Скільки коштує автоматизація? 💰",

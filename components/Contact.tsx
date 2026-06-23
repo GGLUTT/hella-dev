@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
+import Image from "next/image";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useLang } from "@/context/LangContext";
 import {
@@ -102,6 +103,8 @@ export default function Contact() {
         }}
       />
 
+      <HangingBag />
+
       <div className="relative mx-auto max-w-6xl">
         {/* Header — centered */}
         <div className="text-center">
@@ -115,20 +118,61 @@ export default function Contact() {
             </div>
           </Reveal>
           <Reveal delay={0.05}>
-            <h2 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
-              {t("Готові", "Ready to")}{" "}
-              <span className="bg-gradient-to-r from-white via-emerald-200 to-sky-200 bg-clip-text text-transparent">
-                {t("обговорити", "discuss")}
-              </span>
-              ?
+            <h2 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl uppercase">
+              {t("Готові перетворити сайт на систему продажів?", "Ready to turn your website into a sales system?")}
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mx-auto mt-5 max-w-md text-base text-white/55">
-              {t("Заповни коротку форму — відповім протягом доби з планом і оцінкою.", "Fill out the short form — I'll reply within 24h with a plan and estimate.")}
+            <p className="mx-auto mt-5 max-w-2xl text-base text-white/55">
+              {t(
+                "Заповніть коротку форму — я розберу задачу, запропоную рішення й підкажу, що краще: лендінг, веб-додаток, AI-чатбот або автоматизація процесів.",
+                "Fill out the short form — I'll review your task, propose a solution, and suggest what fits best: a landing page, a web app, an AI chatbot, or workflow automation."
+              )}
             </p>
           </Reveal>
         </div>
+
+        {/* Lead Magnet Card */}
+        <Reveal delay={0.15}>
+          <div className="relative mt-12 overflow-hidden rounded-3xl border border-emerald-500/20 bg-emerald-500/[0.02] p-6 backdrop-blur-md">
+            {/* Visual pulse glow */}
+            <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-emerald-500/10 blur-2xl" />
+            
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-3 py-1 text-[10px] font-mono font-semibold tracking-wider text-emerald-300 uppercase">
+                  ⚡️ {t("Безкоштовно", "Free Value")}
+                </span>
+                <h3 className="mt-3 text-xl font-bold tracking-tight text-white sm:text-2xl">
+                  {t(
+                    "Отримайте безкоштовний AI-аудит сайту або бізнес-процесів",
+                    "Get a Free AI Audit of Your Website or Business Processes"
+                  )}
+                </h3>
+                <p className="mt-2 text-sm text-white/60 max-w-2xl">
+                  {t(
+                    "Я особисто проаналізую ваш поточний сайт або робочі процеси й покажу на конкретних прикладах, які завдання можна делегувати ШІ чи автоматизації, щоб заощадити час та збільшити продажі.",
+                    "I will personally analyze your current website or workflows and show you exactly where AI and automation can save time and boost sales."
+                  )}
+                </p>
+              </div>
+              <div className="shrink-0 flex flex-col gap-1.5 justify-center font-mono text-[10px] text-white/45">
+                <span className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  {t("Аналіз за 24 години", "24-hour turnaround")}
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  {t("Детальний PDF-звіт", "Actionable PDF report")}
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  {t("Без зайвих дзвінків", "Zero pushy sales calls")}
+                </span>
+              </div>
+            </div>
+          </div>
+        </Reveal>
 
         {/* Two-column: process steps (left) + form (right) */}
         <div className="mt-10 grid grid-cols-1 gap-8 sm:mt-14 md:mt-16 lg:grid-cols-12 lg:gap-8">
@@ -150,26 +194,26 @@ export default function Contact() {
             <ProcessStep
               num="01"
               icon={<HugeiconsIcon icon={Note01Icon} size={16} />}
-              title={t("Заявка", "Submit")}
-              hint={t("Заповнюєш форму — потрібно ~30 секунд", "Fill the form — takes ~30 seconds")}
+              title={t("Формулювання задачі", "Scoping")}
+              hint={t("Описуєте вашу бізнес-ідею або проблему за 30 секунд.", "Describe your business idea or problem in 30 seconds.")}
             />
             <ProcessStep
               num="02"
               icon={<HugeiconsIcon icon={BubbleChatIcon} size={16} />}
-              title={t("Відповідь до 24 год", "Reply within 24h")}
-              hint={t("Розглядаю і пишу пропозицію особисто", "I review and write a personal proposal")}
+              title={t("Аналіз та аудит", "Analysis & Audit")}
+              hint={t("Я розбираю задачу та готую початковий план рішень протягом 24 годин.", "I analyze your task and prepare an initial solution plan within 24 hours.")}
             />
             <ProcessStep
               num="03"
               icon={<HugeiconsIcon icon={Calendar03Icon} size={16} />}
-              title={t("Зустріч 30 хв", "30-min call")}
-              hint={t("Узгоджуємо обсяг, терміни і стек", "We align scope, timeline and stack")}
+              title={t("Дзвінок чи чат", "Discovery call/chat")}
+              hint={t("Узгоджуємо деталі, обираємо найкращий формат (лендінг, веб-додаток чи n8n).", "We align on details and choose the best format (landing, web app, or n8n).")}
             />
             <ProcessStep
               num="04"
               icon={<HugeiconsIcon icon={CheckmarkCircle02Icon} size={16} />}
-              title={t("План + фікс-оцінка", "Plan + fixed quote")}
-              hint={t("Письмово, з відповідальністю — без розмитих 'десь $X'", "Written, accountable — no vague 'around $X'")}
+              title={t("Початок розробки", "Development Kickoff")}
+              hint={t("Запуск проекту з чіткими термінами та фіксованою ціною без переплат.", "Launch the project with clear deadlines and a fixed price, no hidden fees.")}
               last
             />
 
@@ -419,5 +463,46 @@ function Input({
           : "border-white/10 focus:border-emerald-300/40"
       }`}
     />
+  );
+}
+
+/* ===================== HANGING PENDULUM BAG ===================== */
+
+function HangingBag() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  return (
+    <motion.div
+      animate={{ rotate: [-3, 3, -3] }}
+      transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+      style={{ transformOrigin: "50% 0px" }}
+      className="absolute top-0 right-0 xl:right-[4%] z-20 w-[180px] h-[300px] hidden lg:block pointer-events-none"
+    >
+      {/* Peg anchor */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-zinc-800 border border-zinc-700 shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10">
+        <div className="absolute inset-1 rounded-full bg-emerald-400 opacity-60 animate-pulse" />
+      </div>
+
+      {/* Interactive Bag */}
+      <motion.div
+        drag
+        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+        dragElastic={0.65}
+        dragTransition={{ bounceStiffness: 140, bounceDamping: 10 }}
+        style={{ x, y }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ cursor: "grabbing" }}
+        className="absolute top-[8px] left-1/2 -translate-x-1/2 w-32 h-40 cursor-grab pointer-events-auto"
+      >
+        <Image
+          src="/bag.png"
+          alt="Hella Dev Agency shopping bag automation mockup"
+          fill
+          className="object-contain select-none pointer-events-none drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
+          sizes="128px"
+        />
+      </motion.div>
+    </motion.div>
   );
 }

@@ -14,7 +14,7 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [isDrawing, setIsDrawing] = useState(false);
+  const isDrawingRef = useRef(false);
 
   // Monitor size of the parent card to fit canvas perfectly
   useEffect(() => {
@@ -180,8 +180,19 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     if (!canvas) return null;
 
     const rect = canvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    
+    let clientX = e.clientX;
+    let clientY = e.clientY;
+
+    if (e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else if (e.changedTouches && e.changedTouches.length > 0) {
+      clientX = e.changedTouches[0].clientX;
+      clientY = e.changedTouches[0].clientY;
+    }
+
+    if (clientX === undefined || clientY === undefined) return null;
 
     return {
       x: clientX - rect.left,
@@ -199,7 +210,6 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
 
     ctx.globalCompositeOperation = "destination-out";
     ctx.beginPath();
-    // Since ctx.scale(dpr, dpr) is active, coordinates and radius must be specified in CSS pixels.
     ctx.arc(x, y, 34, 0, Math.PI * 2); 
     ctx.fill();
 
@@ -239,29 +249,62 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     }
   };
 
-  // Listeners
-  const handleStart = (e: any) => {
+  // Touch handlers with passive: false to prevent mobile scrolling
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (isRevealed) return;
+      isDrawingRef.current = true;
+      const coords = getCoordinates(e);
+      if (coords) scratch(coords.x, coords.y);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDrawingRef.current || isRevealed) return;
+      if (e.cancelable) e.preventDefault(); // absolutely blocks mobile screen scroll
+      const coords = getCoordinates(e);
+      if (coords) scratch(coords.x, coords.y);
+    };
+
+    const handleTouchEnd = () => {
+      isDrawingRef.current = false;
+    };
+
+    canvas.addEventListener("touchstart", handleTouchStart, { passive: true });
+    canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+    canvas.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    return () => {
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [dimensions, isRevealed]);
+
+  // Desktop Mouse Listeners
+  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (isRevealed) return;
-    setIsDrawing(true);
+    isDrawingRef.current = true;
     const coords = getCoordinates(e);
     if (coords) scratch(coords.x, coords.y);
   };
 
-  const handleMove = (e: any) => {
-    if (!isDrawing || isRevealed) return;
-    if (e.cancelable) e.preventDefault();
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawingRef.current || isRevealed) return;
     const coords = getCoordinates(e);
     if (coords) scratch(coords.x, coords.y);
   };
 
-  const handleEnd = () => {
-    setIsDrawing(false);
+  const handleMouseUp = () => {
+    isDrawingRef.current = false;
   };
 
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-40 select-none overflow-hidden rounded-3xl"
+      className="absolute inset-0 z-40 select-none overflow-hidden rounded-3xl touch-none"
       style={{ pointerEvents: isRevealed ? "none" : "auto" }}
     >
       <motion.canvas
@@ -272,13 +315,10 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
             : { opacity: 1, scale: 1 }
         }
         transition={{ duration: 0.55, ease: "easeInOut" }}
-        onMouseDown={handleStart}
-        onMouseMove={handleMove}
-        onMouseUp={handleEnd}
-        onMouseLeave={handleEnd}
-        onTouchStart={handleStart}
-        onTouchMove={handleMove}
-        onTouchEnd={handleEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
         className="absolute inset-0 touch-none cursor-pointer"
       />
     </div>
