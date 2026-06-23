@@ -114,11 +114,11 @@ export default function AIAutomation() {
       {/* Glow layers */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 top-1/4 h-[350px] w-[350px] rounded-full bg-fuchsia-500/[0.08] blur-[80px] md:h-[650px] md:w-[650px] md:blur-[160px] z-0"
+        className="pointer-events-none absolute -right-32 top-1/4 h-[350px] w-[350px] rounded-full bg-fuchsia-500/20 blur-[80px] md:h-[650px] md:w-[650px] md:blur-[160px] z-0"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-32 bottom-1/4 h-[350px] w-[350px] rounded-full bg-teal-500/[0.08] blur-[80px] md:h-[650px] md:w-[650px] md:blur-[160px] z-0"
+        className="pointer-events-none absolute -left-32 bottom-1/4 h-[350px] w-[350px] rounded-full bg-teal-500/20 blur-[80px] md:h-[650px] md:w-[650px] md:blur-[160px] z-0"
       />
 
       <div className="relative mx-auto max-w-7xl px-6">

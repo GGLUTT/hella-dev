@@ -477,7 +477,7 @@ function HangingBag() {
       className="absolute top-0 right-0 xl:right-[4%] z-20 w-[240px] h-[360px] hidden lg:block pointer-events-none"
     >
       {/* Peg anchor */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-zinc-800 border border-zinc-700 shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10">
+      <div className="absolute top-0 left-[113px] w-3.5 h-3.5 rounded-full bg-zinc-800 border border-zinc-700 shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10">
         <div className="absolute inset-1 rounded-full bg-emerald-400 opacity-60 animate-pulse" />
       </div>
 
@@ -489,14 +489,14 @@ function HangingBag() {
         dragTransition={{ bounceStiffness: 140, bounceDamping: 10 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.98, cursor: "grabbing" }}
-        className="absolute top-[12px] left-1/2 -translate-x-1/2 w-[160px] h-[200px] cursor-grab pointer-events-auto"
+        className="absolute top-[12px] left-[30px] w-[180px] h-[225px] cursor-grab pointer-events-auto"
       >
         <Image
           src="/bag.png"
           alt="Hella Dev Agency shopping bag automation mockup"
           fill
           className="object-contain select-none pointer-events-none drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
-          sizes="160px"
+          sizes="180px"
         />
       </motion.div>
     </motion.div>

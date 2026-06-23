@@ -96,11 +96,11 @@ export default function FAQ() {
       {/* Glow layers */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-40 top-10 h-[300px] w-[300px] rounded-full bg-cyan-500/[0.08] blur-[80px] md:h-[600px] md:w-[600px] md:blur-[150px] z-0"
+        className="pointer-events-none absolute -left-40 top-10 h-[300px] w-[300px] rounded-full bg-sky-500/20 blur-[80px] md:h-[600px] md:w-[600px] md:blur-[150px] z-0"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-40 bottom-10 h-[300px] w-[300px] rounded-full bg-indigo-500/[0.08] blur-[80px] md:h-[600px] md:w-[600px] md:blur-[150px] z-0"
+        className="pointer-events-none absolute -right-40 bottom-10 h-[300px] w-[300px] rounded-full bg-indigo-500/20 blur-[80px] md:h-[600px] md:w-[600px] md:blur-[150px] z-0"
       />
 
       {/* Background elements */}
