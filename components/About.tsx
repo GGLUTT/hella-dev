@@ -228,6 +228,28 @@ export default function About() {
         className="pointer-events-none absolute -right-32 top-0 h-[300px] w-[300px] rounded-full bg-sky-500/10 blur-[110px] md:-right-40 md:h-[520px] md:w-[520px] md:blur-[160px]"
       />
 
+      {/* Decorative chain background asset for lower sections (Why work with me & Stack) */}
+      <motion.div
+        initial={{ y: 0, rotate: -25 }}
+        animate={{
+          y: [-15, 15, -15],
+          rotate: [-25, -23, -25],
+        }}
+        transition={{
+          duration: 22,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        aria-hidden
+        className="pointer-events-none absolute -left-36 bottom-[5%] w-[380px] sm:w-[580px] md:w-[850px] opacity-[0.06] z-0 select-none"
+      >
+        <img
+          src="/vis.png"
+          alt=""
+          className="w-full h-auto object-contain pointer-events-none"
+        />
+      </motion.div>
+
       {/* ============ Main grid ============ */}
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-end gap-12 px-6 pt-28 md:pt-36 lg:grid-cols-12 lg:gap-12 lg:pt-0">
         {/* Left: Copy — same height as character, content vertically centered */}
