@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, type FormEvent } from "react";
 import Image from "next/image";
@@ -469,15 +469,12 @@ function Input({
 /* ===================== HANGING PENDULUM BAG ===================== */
 
 function HangingBag() {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
   return (
     <motion.div
       animate={{ rotate: [-3, 3, -3] }}
       transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
       style={{ transformOrigin: "50% 0px" }}
-      className="absolute top-0 right-0 xl:right-[4%] z-20 w-[180px] h-[300px] hidden lg:block pointer-events-none"
+      className="absolute top-0 right-0 xl:right-[4%] z-20 w-[240px] h-[360px] hidden lg:block pointer-events-none"
     >
       {/* Peg anchor */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-zinc-800 border border-zinc-700 shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10">
@@ -490,17 +487,16 @@ function HangingBag() {
         dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
         dragElastic={0.65}
         dragTransition={{ bounceStiffness: 140, bounceDamping: 10 }}
-        style={{ x, y }}
         whileHover={{ scale: 1.05 }}
-        whileTap={{ cursor: "grabbing" }}
-        className="absolute top-[8px] left-1/2 -translate-x-1/2 w-32 h-40 cursor-grab pointer-events-auto"
+        whileTap={{ scale: 0.98, cursor: "grabbing" }}
+        className="absolute top-[12px] left-1/2 -translate-x-1/2 w-[160px] h-[200px] cursor-grab pointer-events-auto"
       >
         <Image
           src="/bag.png"
           alt="Hella Dev Agency shopping bag automation mockup"
           fill
           className="object-contain select-none pointer-events-none drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
-          sizes="128px"
+          sizes="160px"
         />
       </motion.div>
     </motion.div>

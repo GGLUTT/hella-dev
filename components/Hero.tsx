@@ -60,6 +60,11 @@ const eyebrowContainerVariants = {
 export default function Hero() {
   const { t } = useLang();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   // Raw motion values for cursor lens coords
   const lensX = useMotionValue(0);
@@ -186,7 +191,12 @@ export default function Hero() {
 
   const blurRaw = useTransform(scrollY, [0, 500], [0, 8]);
   const blurVal = useSpring(blurRaw, { stiffness: 90, damping: 20 });
-  const videoFilter = useTransform(blurVal, (b) => `saturate(1.1) brightness(0.8) blur(${b}px)`);
+  const videoFilter = useTransform(blurVal, (b) => {
+    if (isMobile) {
+      return "saturate(1.1) brightness(0.8)";
+    }
+    return `saturate(1.1) brightness(0.8) blur(${b}px)`;
+  });
 
   // Text container scroll parallax exit (smoothed)
   const textOpacityRaw = useTransform(scrollY, [0, 450], [1.0, 0]);
