@@ -103,6 +103,28 @@ export default function Contact() {
         }}
       />
 
+      {/* Decorative chain background asset (vis2.png) */}
+      <motion.div
+        initial={{ y: 0, rotate: 15 }}
+        animate={{
+          y: [-10, 10, -10],
+          rotate: [15, 17, 15],
+        }}
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        aria-hidden
+        className="pointer-events-none absolute -left-36 top-1/4 w-[350px] sm:w-[550px] md:w-[750px] opacity-[0.06] z-0 select-none"
+      >
+        <img
+          src="/vis2.png"
+          alt=""
+          className="w-full h-auto object-contain pointer-events-none"
+        />
+      </motion.div>
+
       <HangingBag />
 
       <div className="relative mx-auto max-w-6xl">
