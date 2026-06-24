@@ -17,6 +17,7 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
   const isDrawingRef = useRef(false);
   const lastCheckRef = useRef<number>(0);
   const [shouldRender, setShouldRender] = useState(true);
+  const [scratchRatio, setScratchRatio] = useState(0);
 
   // Unmount canvas completely after card is revealed to save memory and GPU
   useEffect(() => {
@@ -261,8 +262,9 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     }
 
     const ratio = clearCount / totalSamples;
+    setScratchRatio(ratio);
 
-    if (ratio > 0.35) { // 35% is enough to reveal the card details completely
+    if (ratio > 0.18) { // 18% is enough to reveal the card details completely
       onReveal();
     }
   };
@@ -333,10 +335,10 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
         ref={canvasRef}
         animate={
           isRevealed
-            ? { opacity: 0, scale: 0.96, filter: "blur(5px)" }
-            : { opacity: 1, scale: 1 }
+            ? { opacity: 0, scale: 0.98, filter: "blur(2px)" }
+            : { opacity: Math.max(0.2, 1 - (scratchRatio * 3.5)), scale: 1, filter: "none" }
         }
-        transition={{ duration: 0.55, ease: "easeInOut" }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
