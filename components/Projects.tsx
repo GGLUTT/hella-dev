@@ -240,7 +240,7 @@ function MobileDeck({ projects, viewLabel }: { projects: Project[]; viewLabel: s
     <div
       ref={ref}
       className="relative md:hidden"
-      style={{ height: `${(total + 0.5) * 100}vh` }}
+      style={{ height: `${total * 100}vh` }}
     >
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden px-5" style={{ perspective: 1200 }}>
         {projects.map((p, i) => (
@@ -274,7 +274,7 @@ function DeckCard({
   // relProg < 0 => buried in deck
   // relProg in [0..1] => exiting
   // relProg > 1 => gone
-  const relProg = useTransform(progress, (p) => p * total - index);
+  const relProg = useTransform(progress, (p) => p * (total - 1) - index);
 
   // Stack vertical offset with non-linear spacing (denser stack)
   const y = useTransform(relProg, (r) => {

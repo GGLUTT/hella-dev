@@ -298,8 +298,6 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
         />
 
         <motion.div
-          animate={isHi && !isScratchRevealed ? { filter: "blur(7px)", opacity: 0.15 } : { filter: "blur(0px)", opacity: 1 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
           className="flex h-full flex-col animate-none"
         >
           {/* Eyebrow */}
