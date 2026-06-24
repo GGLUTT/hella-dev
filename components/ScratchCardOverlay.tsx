@@ -270,7 +270,7 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
 
     for (let i = 3; i < pixels.length; i += 4 * step) {
       totalSamples++;
-      if (pixels[i] === 0) {
+      if (pixels[i] < 150) {
         clearCount++;
       }
     }
@@ -278,7 +278,7 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     const ratio = clearCount / totalSamples;
     setScratchRatio(ratio);
 
-    if (ratio > 0.18) { // 18% is enough to reveal the card details completely
+    if (ratio > 0.08) { // 8% is enough to reveal the card details completely
       onReveal();
     }
   };
