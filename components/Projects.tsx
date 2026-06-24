@@ -30,6 +30,16 @@ type RawProject = Omit<Project, "desc"> & { descUA: string; descEN: string };
 
 const RAW_PROJECTS: RawProject[] = [
   {
+    name: "Agency Realtor Vibe",
+    tag: "Real Estate · Brand",
+    descUA: "Преміальний лендінг для агентства елітної нерухомості з кінематографічною скрол-інтерактивністю та бездоганним UX.",
+    descEN: "Premium landing page for a luxury real estate agency with cinematic scroll interactivity and seamless UX.",
+    stack: ["HTML5", "CSS3", "JavaScript", "GSAP"],
+    href: "https://gglutt.github.io/agency-vibe/",
+    bannerPath: "/agency.jpg",
+    accent: "from-amber-600/40 via-yellow-500/20 to-transparent",
+  },
+  {
     name: "Budle",
     tag: "Startup · Social Network",
     descUA: "Стартап нової соцмережі: стрічка, профілі, чати, real-time реакції та modern-стек.",
