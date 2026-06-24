@@ -176,7 +176,7 @@ export default function AIAutomation() {
             const IconComponent = icons[i % icons.length];
             return (
               <Reveal key={c.title} delay={0.05 + i * 0.05}>
-                <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+                <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
                   {/* Sheen indicator */}
                   <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                   

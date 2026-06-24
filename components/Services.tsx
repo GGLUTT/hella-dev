@@ -278,7 +278,7 @@ function TierCard({ tier, index, fromLabel, hiLabel }: { tier: Tier; index: numb
       <div
         className={`relative flex h-full flex-col overflow-hidden rounded-3xl p-6 transition-[border-color,background-color,box-shadow] duration-300 sm:p-8 ${isHi
           ? "border border-white/30 bg-white text-black shadow-[0_40px_100px_-20px_rgba(255,255,255,0.35)]"
-          : "border border-white/10 bg-white/[0.02] text-white backdrop-blur-md group-hover:border-white/25 group-hover:bg-white/[0.035] group-hover:shadow-[0_20px_60px_-20px_rgba(255,255,255,0.08)]"
+          : "border border-white/10 bg-white/[0.02] text-white backdrop-blur-none md:backdrop-blur-md group-hover:border-white/25 group-hover:bg-white/[0.035] group-hover:shadow-[0_20px_60px_-20px_rgba(255,255,255,0.08)]"
           }`}
       >
         {isHi && (

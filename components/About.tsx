@@ -371,7 +371,7 @@ export default function About() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1 */}
           <Reveal delay={0.05} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
               <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
               <div>
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
@@ -393,7 +393,7 @@ export default function About() {
           </Reveal>
           {/* Card 2 */}
           <Reveal delay={0.1} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
               <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
               <div>
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
@@ -415,7 +415,7 @@ export default function About() {
           </Reveal>
           {/* Card 3 */}
           <Reveal delay={0.15} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
               <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
               <div>
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
@@ -437,7 +437,7 @@ export default function About() {
           </Reveal>
           {/* Card 4 */}
           <Reveal delay={0.2} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
+            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
               <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
               <div>
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
@@ -481,7 +481,7 @@ export default function About() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 grid-flow-row-dense">
           {stack.map((s, i) => (
             <Reveal key={s.name} delay={0.05 + i * 0.06} className={`${s.span} h-full`}>
-              <div className={`group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 ${s.glow}`}>
+              <div className={`group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-none md:backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 ${s.glow}`}>
                 <div className={`pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent ${s.sheen} to-transparent opacity-0 transition duration-500 group-hover:opacity-100`} />
                 <div className="mb-4 flex items-center justify-between">
                   {s.icon}

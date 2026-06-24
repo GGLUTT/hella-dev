@@ -15,6 +15,20 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const isDrawingRef = useRef(false);
+  const lastCheckRef = useRef<number>(0);
+  const [shouldRender, setShouldRender] = useState(true);
+
+  // Unmount canvas completely after card is revealed to save memory and GPU
+  useEffect(() => {
+    if (isRevealed) {
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 600);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldRender(true);
+    }
+  }, [isRevealed]);
 
   // Monitor size of the parent card to fit canvas perfectly
   useEffect(() => {
@@ -213,7 +227,11 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     ctx.arc(x, y, 34, 0, Math.PI * 2); 
     ctx.fill();
 
-    checkProgress();
+    const now = Date.now();
+    if (now - lastCheckRef.current > 200) {
+      checkProgress();
+      lastCheckRef.current = now;
+    }
   };
 
   // Check progress
@@ -270,6 +288,7 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
 
     const handleTouchEnd = () => {
       isDrawingRef.current = false;
+      checkProgress();
     };
 
     canvas.addEventListener("touchstart", handleTouchStart, { passive: true });
@@ -299,7 +318,10 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
 
   const handleMouseUp = () => {
     isDrawingRef.current = false;
+    checkProgress();
   };
+
+  if (!shouldRender) return null;
 
   return (
     <div
