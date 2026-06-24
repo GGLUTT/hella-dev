@@ -16,6 +16,7 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const isDrawingRef = useRef(false);
   const lastCheckRef = useRef<number>(0);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
   const [shouldRender, setShouldRender] = useState(true);
   const [scratchRatio, setScratchRatio] = useState(0);
 
@@ -225,32 +226,24 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
 
     ctx.globalCompositeOperation = "destination-out";
 
-    // Draw main finger rub shape (tilted ellipse representing a finger pad press)
-    ctx.beginPath();
-    ctx.ellipse(x, y, 36, 26, Math.PI / 6, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Draw overlapping smaller ellipses to make it irregular and natural
-    ctx.beginPath();
-    ctx.ellipse(x - 4, y + 3, 22, 18, -Math.PI / 12, 0, Math.PI * 2);
-    ctx.ellipse(x + 5, y - 4, 25, 20, Math.PI / 4, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Add some random texture speckles around the edges to break clean geometric lines
-    for (let i = 0; i < 6; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 22 + Math.random() * 12;
-      const px = x + Math.cos(angle) * dist;
-      const py = y + Math.sin(angle) * dist;
-      const r = 2 + Math.random() * 4;
-      
+    if (lastPointRef.current) {
       ctx.beginPath();
-      ctx.arc(px, py, r, 0, Math.PI * 2);
+      ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
+      ctx.lineTo(x, y);
+      ctx.lineWidth = 52; // finger rub thickness
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(x, y, 26, 0, Math.PI * 2);
       ctx.fill();
     }
 
+    lastPointRef.current = { x, y };
+
     const now = Date.now();
-    if (now - lastCheckRef.current > 200) {
+    if (now - lastCheckRef.current > 150) {
       checkProgress();
       lastCheckRef.current = now;
     }
@@ -299,7 +292,10 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
       if (isRevealed) return;
       isDrawingRef.current = true;
       const coords = getCoordinates(e);
-      if (coords) scratch(coords.x, coords.y);
+      if (coords) {
+        lastPointRef.current = coords;
+        scratch(coords.x, coords.y);
+      }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -311,6 +307,7 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
 
     const handleTouchEnd = () => {
       isDrawingRef.current = false;
+      lastPointRef.current = null;
       checkProgress();
     };
 
@@ -330,17 +327,23 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     if (isRevealed) return;
     isDrawingRef.current = true;
     const coords = getCoordinates(e);
-    if (coords) scratch(coords.x, coords.y);
+    if (coords) {
+      lastPointRef.current = coords;
+      scratch(coords.x, coords.y);
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawingRef.current || isRevealed) return;
     const coords = getCoordinates(e);
-    if (coords) scratch(coords.x, coords.y);
+    if (coords) {
+      scratch(coords.x, coords.y);
+    }
   };
 
   const handleMouseUp = () => {
     isDrawingRef.current = false;
+    lastPointRef.current = null;
     checkProgress();
   };
 
