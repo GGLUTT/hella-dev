@@ -224,9 +224,30 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     if (!ctx) return;
 
     ctx.globalCompositeOperation = "destination-out";
+
+    // Draw main finger rub shape (tilted ellipse representing a finger pad press)
     ctx.beginPath();
-    ctx.arc(x, y, 34, 0, Math.PI * 2); 
+    ctx.ellipse(x, y, 36, 26, Math.PI / 6, 0, Math.PI * 2);
     ctx.fill();
+
+    // Draw overlapping smaller ellipses to make it irregular and natural
+    ctx.beginPath();
+    ctx.ellipse(x - 4, y + 3, 22, 18, -Math.PI / 12, 0, Math.PI * 2);
+    ctx.ellipse(x + 5, y - 4, 25, 20, Math.PI / 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Add some random texture speckles around the edges to break clean geometric lines
+    for (let i = 0; i < 6; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 22 + Math.random() * 12;
+      const px = x + Math.cos(angle) * dist;
+      const py = y + Math.sin(angle) * dist;
+      const r = 2 + Math.random() * 4;
+      
+      ctx.beginPath();
+      ctx.arc(px, py, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
     const now = Date.now();
     if (now - lastCheckRef.current > 200) {
@@ -335,10 +356,10 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
         ref={canvasRef}
         animate={
           isRevealed
-            ? { opacity: 0, scale: 0.98, filter: "blur(2px)" }
-            : { opacity: Math.max(0.2, 1 - (scratchRatio * 3.5)), scale: 1, filter: "none" }
+            ? { opacity: 0, scale: 0.98, filter: "blur(1px)" }
+            : { opacity: 1, scale: 1, filter: "none" }
         }
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
