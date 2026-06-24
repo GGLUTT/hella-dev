@@ -30,7 +30,7 @@ type RawProject = Omit<Project, "desc"> & { descUA: string; descEN: string };
 
 const RAW_PROJECTS: RawProject[] = [
   {
-    name: "Agency Realtor Vibe",
+    name: "Kronos Agency",
     tag: "Real Estate · Brand",
     descUA: "Преміальний лендінг для агентства елітної нерухомості з кінематографічною скрол-інтерактивністю та бездоганним UX.",
     descEN: "Premium landing page for a luxury real estate agency with cinematic scroll interactivity and seamless UX.",
