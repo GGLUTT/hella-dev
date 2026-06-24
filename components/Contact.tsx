@@ -34,6 +34,7 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [social, setSocial] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -64,7 +65,7 @@ export default function Contact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message, type }),
+        body: JSON.stringify({ name, email, message, type, social }),
       });
       if (!res.ok) throw new Error("send failed");
       const params = new URLSearchParams({ type, name });
@@ -322,6 +323,15 @@ export default function Contact() {
                 <span className="pl-1 text-[11px] text-red-400">{errors.email}</span>
               )}
             </div>
+          </div>
+
+          {/* Telegram / Instagram (optional) */}
+          <div className="relative mt-3">
+            <Input
+              value={social}
+              onChange={(v) => setSocial(v)}
+              placeholder={t("Telegram / Instagram (необовʼязково)", "Telegram / Instagram (optional)")}
+            />
           </div>
 
           {/* Message */}

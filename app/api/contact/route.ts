@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { name, email, message, type } = await req.json();
+  const { name, email, message, type, social } = await req.json();
 
   const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
@@ -12,15 +12,34 @@ export async function POST(req: NextRequest) {
 
   const meetingLabel = type === "call" ? "📞 Дзвінок" : "💬 Консультація";
 
+  let socialLink = "";
+  if (social) {
+    const clean = social.trim();
+    if (clean.startsWith("http://") || clean.startsWith("https://")) {
+      socialLink = clean;
+    } else if (clean.startsWith("@")) {
+      socialLink = `https://t.me/${clean.slice(1)}`;
+    } else if (/^[a-zA-Z0-9_.]+$/.test(clean)) {
+      socialLink = `https://t.me/${clean}`;
+    }
+  }
+
+  const replyHtml = [
+    `<i>Відповісти: <a href="mailto:${email}">${email}</a>`,
+    socialLink ? ` або <a href="${socialLink}">${social.trim()}</a>` : social ? ` (Контакт: ${social.trim()})` : "",
+    `</i>`
+  ].join("");
+
   const text = [
     `🔔 <b>Нова заявка з hella.dev</b>`,
     ``,
     `${meetingLabel}`,
     `👤 <b>Ім'я:</b> ${name}`,
     `📧 <b>Email:</b> ${email}`,
+    social ? `📱 <b>Telegram/Instagram:</b> ${social}` : null,
     message ? `💭 <b>Повідомлення:</b>\n${message}` : null,
     ``,
-    `<i>Відповісти: <a href="mailto:${email}">${email}</a></i>`,
+    replyHtml,
   ]
     .filter(Boolean)
     .join("\n");
