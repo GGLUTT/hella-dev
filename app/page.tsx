@@ -8,6 +8,9 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import ForWhom from "@/components/ForWhom";
+import WhatYouGet from "@/components/WhatYouGet";
+import Workflow from "@/components/Workflow";
 
 export default function Page() {
   return (
@@ -15,9 +18,12 @@ export default function Page() {
       <Nav />
       <Hero />
       <About />
+      <ForWhom />
+      <WhatYouGet />
       <Projects />
       <Services />
       <AIAutomation />
+      <Workflow />
       <FAQ />
       <Contact />
       <Footer />

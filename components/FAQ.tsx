@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useLang } from "@/context/LangContext";
 import Reveal from "./Reveal";
 import Image from "next/image";
@@ -165,20 +165,19 @@ export default function FAQ() {
                     </span>
                   </button>
 
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
-                      >
-                        <div className="border-t border-white/5 px-6 pb-6 pt-4 text-sm leading-relaxed text-white/60">
-                          {item.a}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {/* DOM-indexable transition wrapper */}
+                  <div
+                    className="overflow-hidden transition-all duration-300 ease-in-out border-white/5"
+                    style={{
+                      height: isOpen ? "auto" : 0,
+                      opacity: isOpen ? 1 : 0,
+                      borderTopWidth: isOpen ? "1px" : 0,
+                    }}
+                  >
+                    <div className="px-6 pb-6 pt-4 text-sm leading-relaxed text-white/60">
+                      {item.a}
+                    </div>
+                  </div>
                 </div>
               </Reveal>
             );

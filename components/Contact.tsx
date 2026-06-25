@@ -40,6 +40,19 @@ export default function Contact() {
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [sendError, setSendError] = useState(false);
 
+  const handleAiAuditClick = () => {
+    setType("consult");
+    setMessage(t("Привіт! Хочу отримати безкоштовний AI-аудит мого сайту / бізнес-процесів.", "Hello! I'd like to get a free AI audit of my website / business processes."));
+    const el = document.getElementById("contact");
+    if (el) {
+      const firstInput = el.querySelector("input");
+      if (firstInput) {
+        firstInput.focus({ preventScroll: false });
+        firstInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  };
+
   function validate(): FormErrors {
     const e: FormErrors = {};
     if (!name.trim()) e.name = t("Введіть ваше ім\u02bcя", "Enter your name");
@@ -168,7 +181,7 @@ export default function Contact() {
                 </span>
                 <h3 className="mt-3 text-xl font-bold tracking-tight text-white sm:text-2xl">
                   {t(
-                    "Отримайте безкоштовний AI-аудит сайту або бізнес-процесів",
+                    "Отримати безкоштовний AI-аудит сайту або бізнес-процесів",
                     "Get a Free AI Audit of Your Website or Business Processes"
                   )}
                 </h3>
@@ -193,6 +206,18 @@ export default function Contact() {
                   {t("Без зайвих дзвінків", "Zero pushy sales calls")}
                 </span>
               </div>
+            </div>
+
+            {/* CTA Button in card */}
+            <div className="mt-5 border-t border-emerald-500/10 pt-4 flex justify-start">
+              <button
+                type="button"
+                onClick={handleAiAuditClick}
+                data-event="click_ai_audit"
+                className="relative overflow-hidden bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 border border-emerald-500/20 px-6 py-2.5 rounded-full text-xs font-mono tracking-widest uppercase transition duration-300 flex items-center justify-center pointer-events-auto cursor-pointer"
+              >
+                {t("Отримати безкоштовний AI-аудит", "Get Free AI Audit")}
+              </button>
             </div>
           </div>
         </Reveal>
@@ -355,6 +380,7 @@ export default function Contact() {
             type="submit"
             disabled={submitting}
             whileTap={{ scale: 0.98 }}
+            data-event="submit_contact_form"
             className="group relative mt-5 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition hover:bg-white/95 disabled:opacity-60"
           >
             <span className="relative z-10">

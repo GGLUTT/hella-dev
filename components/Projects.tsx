@@ -14,8 +14,12 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import Reveal from "./Reveal";
 import { useLang } from "@/context/LangContext";
+import Link from "next/link";
+
+const MotionLink = motion(Link);
 
 type Project = {
+  slug: string;
   name: string;
   tag: string;
   desc: string;
@@ -30,6 +34,7 @@ type RawProject = Omit<Project, "desc"> & { descUA: string; descEN: string };
 
 const RAW_PROJECTS: RawProject[] = [
   {
+    slug: "kronos-agency",
     name: "Kronos Agency",
     tag: "Real Estate · Brand",
     descUA: "Преміальний лендінг для агентства елітної нерухомості з кінематографічною скрол-інтерактивністю та бездоганним UX.",
@@ -40,6 +45,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-amber-600/40 via-yellow-500/20 to-transparent",
   },
   {
+    slug: "budle-startup",
     name: "Budle",
     tag: "Startup · Social Network",
     descUA: "Стартап нової соцмережі: стрічка, профілі, чати, real-time реакції та modern-стек.",
@@ -51,6 +57,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-indigo-500/40 via-violet-500/20 to-transparent",
   },
   {
+    slug: "iphone-3d-landing",
     name: "iPhone 3D Landing",
     tag: "Landing · 3D Animation",
     descUA: "Кінематографічний лендінг нового iPhone з 3D-сценою, скрол-анімаціями та плавними переходами.",
@@ -61,6 +68,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-slate-300/40 via-zinc-400/20 to-transparent",
   },
   {
+    slug: "3d-nexus",
     name: "3D Nexus",
     tag: "Commercial · 3D / WebGL",
     descUA: "Сайт для комерційного комп'ютерного клубу з інтерактивними 3D-об'єктами — демонструє роботу з 3D у вебі.",
@@ -71,6 +79,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-cyan-500/40 via-emerald-400/20 to-transparent",
   },
   {
+    slug: "nts-soccer-academy",
     name: "NTS SOCCER ACADEMY",
     tag: "Sports · SaaS",
     descUA: "Платформа для футбольних турнірів зі статистикою у реальному часі та live-таблицями.",
@@ -81,6 +90,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-emerald-500/40 via-emerald-400/20 to-transparent",
   },
   {
+    slug: "nike-concept",
     name: "Nike Concept",
     tag: "E-commerce · Brand",
     descUA: "Концептуальний інтернет-магазин з динамічним 3D-конфігуратором кросівок.",
@@ -91,6 +101,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-orange-500/40 via-rose-500/20 to-transparent",
   },
   {
+    slug: "wine-hood",
     name: "Wine Hood",
     tag: "Mobile · Lifestyle",
     descUA: "Мобільний застосунок для гурманів вина: AI-рекомендації, дегустаційні нотатки, спільнота.",
@@ -101,6 +112,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-rose-500/40 via-amber-500/20 to-transparent",
   },
   {
+    slug: "d4ys-dance-studio",
     name: "D4YS Dance Studio",
     tag: "Brand · Identity",
     descUA: "Сайт для креативної студії танців з кінематографічними переходами і складною типографікою.",
@@ -111,6 +123,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-violet-500/40 via-fuchsia-500/20 to-transparent",
   },
   {
+    slug: "svitdtv",
     name: "SvitDTV",
     tag: "Streaming · OTT",
     descUA: "OTT-платформа стрімінгу з live-каналами, відеотекою та персоналізованими рекомендаціями.",
@@ -121,6 +134,7 @@ const RAW_PROJECTS: RawProject[] = [
     accent: "from-sky-500/40 via-cyan-500/20 to-transparent",
   },
   {
+    slug: "store-platform",
     name: "Store Platform",
     tag: "E-commerce · Headless",
     descUA: "Headless комерц-платформа з блискавичним пошуком, А/Б-тестами та інтеграцією n8n.",
@@ -271,6 +285,7 @@ function DeckCard({
   progress: MotionValue<number>;
   viewLabel: string;
 }) {
+  const { t } = useLang();
   // relProg < 0 => buried in deck
   // relProg in [0..1] => exiting
   // relProg > 1 => gone
@@ -329,10 +344,8 @@ function DeckCard({
   const isExternal = project.href?.startsWith("http");
 
   return (
-    <motion.a
-      href={project.href}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
+    <MotionLink
+      href={`/cases/${project.slug}`}
       style={{
         y,
         scale,
@@ -344,6 +357,7 @@ function DeckCard({
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",
       }}
+      data-event="click_case_details"
       className="absolute left-5 right-5 mx-auto block aspect-[3/4.2] max-w-md overflow-hidden rounded-3xl border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.6)]"
     >
       <Image
@@ -386,12 +400,12 @@ function DeckCard({
             ))}
           </div>
           <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
-            {viewLabel}
+            {t("Детальніше про кейс", "Case details")}
             <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
           </div>
         </div>
       </div>
-    </motion.a>
+    </MotionLink>
   );
 }
 
@@ -411,6 +425,7 @@ function ProjectCard({
   progress: MotionValue<number>;
   viewLabel: string;
 }) {
+  const { t } = useLang();
   // Each card is “in focus” at progress = index / (total - 1).
   // Distance from focus drives scale + opacity for a cinematic per-card animation.
   const focus = total > 1 ? index / (total - 1) : 0;
@@ -478,17 +493,16 @@ function ProjectCard({
             </div>
           </div>
 
-          <a
-            href={project.href}
-            target={isExternal ? "_blank" : undefined}
-            rel={isExternal ? "noopener noreferrer" : undefined}
+          <Link
+            href={`/cases/${project.slug}`}
+            data-event="click_case_details"
             className="group/btn mt-10 inline-flex w-fit items-center gap-3 rounded-full border border-white/20 bg-white/[0.06] px-5 py-3 text-sm font-medium text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/[0.12]"
           >
-            <span>{viewLabel}</span>
+            <span>{t("Детальніше про кейс", "Case details")}</span>
             <span className="transition group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5">
               <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
             </span>
-          </a>
+          </Link>
         </div>
 
         {/* RIGHT — framed banner photo with 3D tilt */}

@@ -298,8 +298,8 @@ export default function About() {
             >
               <p>
                 {t(
-                  "Я допомагаю бізнесам запускати швидкі сайти, веб-застосунки, CRM, кабінети клієнтів та автоматизації. Працюю напряму з клієнтом: занурююсь у задачу, пропоную технічне рішення, розробляю frontend, backend, інтеграції й доводжу проєкт до запуску.",
-                  "I help businesses launch fast websites, web applications, CRMs, client portals and automations. I work directly with the client: diving deep into the task, proposing technical solutions, developing frontend, backend, integrations, and driving the project to launch."
+                  "Я допомагаю бізнесам запускати швидкі сайти, веб-застосунки, кабінети клієнтів, інтеграції з CRM та автоматизації. Працюю напряму з клієнтом: занурююсь у задачу, пропоную технічне рішення, розробляю frontend, backend, інтеграції й доводжу проєкт до запуску.",
+                  "I help businesses launch fast websites, web applications, client portals, CRM integrations, and automations. I work directly with the client: diving deep into the task, proposing technical solutions, developing frontend, backend, integrations, and driving the project to launch."
                 )}
               </p>
               <p>

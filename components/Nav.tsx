@@ -30,10 +30,10 @@ export default function Nav() {
   const { lang, toggleLang, t } = useLang();
 
   const navLinks = [
-    { href: "#about",    label: t("Про мене",  "About")    },
-    { href: "#projects", label: t("Проєкти",   "Projects") },
-    { href: "#services", label: t("Послуги",   "Services") },
-    { href: "#contact",  label: t("Контакти",  "Contact")  },
+    { href: "/#about",    label: t("Про мене",  "About")    },
+    { href: "/#projects", label: t("Проєкти",   "Projects") },
+    { href: "/#services", label: t("Послуги",   "Services") },
+    { href: "/#contact",  label: t("Контакти",  "Contact")  },
   ];
 
   // Lock body scroll while menu is open
@@ -65,7 +65,7 @@ export default function Nav() {
         <div className="mx-auto mt-4 max-w-6xl px-4">
           <div className="glass flex items-center justify-between rounded-full px-5 py-2.5">
             <Link
-              href="#"
+              href="/"
               className="flex items-center gap-2 text-sm font-semibold tracking-wide"
             >
               <span className="inline-block h-2 w-2 rounded-full bg-white" />
@@ -203,7 +203,7 @@ export default function Nav() {
               {/* CTA */}
               <motion.div variants={itemVariants} className="mt-10">
                 <MagneticButton
-                  href="#contact"
+                  href="/#contact"
                   onClick={() => setOpen(false)}
                   className="flex w-full items-center justify-center rounded-full bg-white px-6 py-4 text-base font-medium text-black transition hover:bg-white/90"
                   strength={0.25}
@@ -275,7 +275,7 @@ function NavCTA({ label }: { label: string }) {
     <motion.div style={{ x, y }} className="hidden md:inline-flex">
       <a
         ref={ref}
-        href="#contact"
+        href="/#contact"
         onMouseMove={handleMouseMove}
         onMouseLeave={() => { rawX.set(0); rawY.set(0); }}
         className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-5 py-2 text-sm font-medium text-white"

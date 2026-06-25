@@ -366,10 +366,24 @@ export default function Hero() {
               className="text-xs sm:text-sm leading-relaxed text-zinc-400/80 max-w-md sm:max-w-xl mt-5 px-4 text-balance"
             >
               {t(
-                "Допомагаю бізнесу запускати сайти, CRM, кабінети клієнтів, інтеграції та автоматизації, які приймають заявки, обробляють клієнтів і прибирають ручну роботу.",
-                "I help businesses launch websites, CRMs, client portals, integrations and automations that capture leads, handle clients and eliminate manual work."
+                "Допомагаю бізнесу запускати сайти, веб-застосунки, кабінети клієнтів, інтеграції з CRM та автоматизації, які приймають заявки, обробляють клієнтів і прибирають ручну роботу.",
+                "I help businesses launch websites, web applications, client portals, CRM integrations, and automations that capture leads, handle clients and eliminate manual work."
               )}
             </motion.p>
+
+            {/* Compact Trust-row */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[10px] sm:text-xs font-mono tracking-wider text-zinc-400/90 max-w-2xl px-4 select-none bg-zinc-950/40 border border-white/5 py-2 px-4 rounded-full backdrop-blur-sm"
+            >
+              <span className="text-white/80">10+ {t("проєктів", "projects")}</span>
+              <span className="text-emerald-500/50 font-bold">·</span>
+              <span className="text-white/80">{t("сайти від", "sites from")} $150</span>
+              <span className="text-emerald-500/50 font-bold">·</span>
+              <span className="text-white/80">{t("AI-аудит за 24 години", "AI-audit in 24h")}</span>
+              <span className="text-emerald-500/50 font-bold">·</span>
+              <span className="text-white/80">{t("Київ / Біла Церква / онлайн", "Kyiv / Bila Tserkva / online")}</span>
+            </motion.div>
 
             {/* CTA Buttons Side-by-Side */}
             <motion.div
@@ -382,6 +396,7 @@ export default function Hero() {
                 onClick={handleScrollToContact}
                 glowBorder={false}
                 strength={0.25}
+                data-event="click_hero_cta"
                 className="relative overflow-hidden bg-white text-black font-semibold border border-white px-8 py-3.5 rounded-full text-xs font-mono tracking-widest uppercase hover:bg-white/90 transition duration-300 flex items-center justify-center w-full sm:w-auto pointer-events-auto"
               >
                 <span className="relative z-10">{t("Обговорити проєкт", "Discuss project")}</span>
@@ -401,6 +416,7 @@ export default function Hero() {
                 }}
                 glowBorder={false}
                 strength={0.25}
+                data-event="click_view_cases"
                 className="relative overflow-hidden bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-white px-8 py-3.5 rounded-full text-xs font-mono tracking-widest uppercase hover:bg-zinc-900 transition duration-300 flex items-center justify-center w-full sm:w-auto pointer-events-auto"
               >
                 <span className="relative z-10">{t("Подивитися кейси", "View case studies")}</span>
