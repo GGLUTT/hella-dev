@@ -5,25 +5,25 @@
 :root {
   color-scheme: light;
   
-  --color-bg-black: 255 255 255; /* #ffffff - light background */
-  --color-text-white: 15 23 42; /* #0f172a - dark text */
+  --color-bg-black: 244 244 247; /* #f4f4f7 - premium soft gray background */
+  --color-text-white: 9 9 11;    /* #09090b - deep dark zinc text (high contrast) */
   
-  --color-zinc-950: 248 250 252; /* #f8fafc */
-  --color-zinc-900: 241 245 249; /* #f1f5f9 */
-  --color-zinc-800: 226 232 240; /* #e2e8f0 */
-  --color-zinc-700: 203 213 225; /* #cbd5e1 */
-  --color-zinc-600: 148 163 184; /* #94a3b8 */
-  --color-zinc-500: 100 116 139; /* #64748b */
-  --color-zinc-400: 71 85 105;   /* #475569 */
-  --color-zinc-300: 51 65 85;    /* #334155 */
-  --color-zinc-200: 30 41 59;    /* #1e293b */
-  --color-zinc-100: 15 23 42;    /* #0f172a */
-  --color-zinc-50: 2 6 23;      /* #020617 */
+  --color-zinc-950: 255 255 255; /* #ffffff - pure white cards on soft background */
+  --color-zinc-900: 235 238 243; /* #ebeeef */
+  --color-zinc-800: 226 230 236; /* #e2e6ec */
+  --color-zinc-700: 180 188 200; /* #b4bcc8 */
+  --color-zinc-600: 120 130 145; /* #788291 */
+  --color-zinc-500: 85 95 110;   /* #555f6e */
+  --color-zinc-400: 50 60 75;    /* #323c4b */
+  --color-zinc-300: 30 40 50;     /* #1e2832 */
+  --color-zinc-200: 9 9 11;      /* #09090b */
+  --color-zinc-100: 2 6 23;       /* #020617 */
+  --color-zinc-50: 2 6 23;
 
   --color-ink-950: 255 255 255; /* #ffffff */
-  --color-ink-900: 248 250 252; /* #f8fafc */
-  --color-ink-800: 241 245 249; /* #f1f5f9 */
-  --color-ink-700: 226 232 240; /* #e2e8f0 */
+  --color-ink-900: 244 244 247; /* #f4f4f7 */
+  --color-ink-800: 235 238 243; /* #ebeeef */
+  --color-ink-700: 226 230 236; /* #e2e6ec */
 }
 
 [data-theme="dark"] {
