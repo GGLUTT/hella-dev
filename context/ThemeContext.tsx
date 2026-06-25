@@ -27,13 +27,12 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   // Read from storage and apply immediately on mount — no flash
   useEffect(() => {
     const stored = localStorage.getItem("theme") as Theme | null;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const resolved: Theme = stored ?? (prefersDark ? "dark" : "light");
+    const resolved: Theme = stored ?? "light";
     setTheme(resolved);
     applyTheme(resolved);
   }, []);

@@ -5,6 +5,8 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
 import { useLang } from "@/context/LangContext";
+import { useTheme } from "@/context/ThemeContext";
+import { Sun, Moon } from "lucide-react";
 
 
 const overlayVariants: Variants = {
@@ -28,6 +30,7 @@ const itemVariants: Variants = {
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const { lang, toggleLang, t } = useLang();
+  const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
     { href: "/#about",    label: t("Про мене",  "About")    },
@@ -102,6 +105,26 @@ export default function Nav() {
                     className="absolute"
                   >
                     {lang === "ua" ? "EN" : "UA"}
+                  </motion.span>
+                </AnimatePresence>
+              </button>
+
+              {/* Theme toggle */}
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/55 transition hover:border-white/20 hover:text-white"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={theme}
+                    initial={{ scale: 0.8, opacity: 0, rotate: -45 }}
+                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                    exit={{ scale: 0.8, opacity: 0, rotate: 45 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute flex items-center justify-center"
+                  >
+                    {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
                   </motion.span>
                 </AnimatePresence>
               </button>
@@ -219,6 +242,15 @@ export default function Nav() {
               >
                 <span>YL // hella</span>
                 <div className="flex items-center gap-3">
+                  {/* Theme toggle mobile */}
+                  <button
+                    onClick={toggleTheme}
+                    aria-label="Toggle theme"
+                    className="relative flex h-6 w-6 items-center justify-center rounded-full border border-white/15 text-white/50 transition hover:text-white"
+                  >
+                    {theme === "dark" ? <Sun size={12} /> : <Moon size={12} />}
+                  </button>
+
                   {/* Lang toggle mobile */}
                   <button
                     onClick={toggleLang}

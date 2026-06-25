@@ -168,7 +168,7 @@ export default function Workflow() {
                 <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-white transition duration-300 group-hover:text-emerald-300">
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/50 max-w-3xl transition duration-300 group-hover:text-white/70">
+                <p className="mt-2 text-sm sm:text-sm md:text-base leading-relaxed text-white/65 max-w-3xl transition duration-300 group-hover:text-white/70">
                   {step.desc}
                 </p>
               </div>

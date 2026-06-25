@@ -363,7 +363,7 @@ export default function Hero() {
             {/* Detailed Tagline */}
             <motion.p
               variants={itemVariants}
-              className="text-xs sm:text-sm leading-relaxed text-zinc-400/80 max-w-md sm:max-w-xl mt-5 px-4 text-balance"
+              className="text-[13px] sm:text-sm md:text-base leading-relaxed text-zinc-400 max-w-md sm:max-w-xl mt-5 px-4 text-balance"
             >
               {t(
                 "Допомагаю бізнесу запускати сайти, веб-застосунки, кабінети клієнтів, інтеграції з CRM та автоматизації, які приймають заявки, обробляють клієнтів і прибирають ручну роботу.",

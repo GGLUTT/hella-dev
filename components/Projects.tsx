@@ -9,7 +9,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import Reveal from "./Reveal";
@@ -242,170 +242,176 @@ export default function Projects() {
 /* ============================ MOBILE DECK STACK ============================ */
 
 function MobileDeck({ projects, viewLabel }: { projects: Project[]; viewLabel: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
-
+  const [activeIndex, setActiveIndex] = useState(0);
   const total = projects.length;
 
+  const handleNext = () => {
+    setActiveIndex((prev) => Math.min(total - 1, prev + 1));
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => Math.max(0, prev - 1));
+  };
+
   return (
-    <div
-      ref={ref}
-      className="relative md:hidden"
-      style={{ height: `${total * 100}vh` }}
-    >
-      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden px-5" style={{ perspective: 1200 }}>
+    <div className="relative md:hidden px-5 py-12 flex flex-col items-center justify-center min-h-[75vh] overflow-hidden bg-black/5">
+      {/* Card stack container */}
+      <div className="relative w-full aspect-[3/4.2] max-w-sm flex items-center justify-center" style={{ perspective: 1200 }}>
         {projects.map((p, i) => (
-          <DeckCard
+          <MobileSwipeCard
             key={p.name}
             project={p}
             index={i}
+            activeIndex={activeIndex}
             total={total}
-            progress={scrollYProgress}
             viewLabel={viewLabel}
+            onSwipeLeft={handleNext}
+            onSwipeRight={handlePrev}
           />
         ))}
+      </div>
+
+      {/* Progress & Pagination Controls */}
+      <div className="mt-8 flex items-center gap-6 z-20">
+        <button
+          onClick={handlePrev}
+          disabled={activeIndex === 0}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-white backdrop-blur-md transition disabled:opacity-30 disabled:pointer-events-none hover:bg-white/[0.12]"
+          aria-label="Previous project"
+        >
+          ←
+        </button>
+        <span className="font-mono text-xs text-white/50 tracking-wider">
+          {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+        <button
+          onClick={handleNext}
+          disabled={activeIndex === total - 1}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-white backdrop-blur-md transition disabled:opacity-30 disabled:pointer-events-none hover:bg-white/[0.12]"
+          aria-label="Next project"
+        >
+          →
+        </button>
       </div>
     </div>
   );
 }
 
-function DeckCard({
+function MobileSwipeCard({
   project,
   index,
+  activeIndex,
   total,
-  progress,
   viewLabel,
+  onSwipeLeft,
+  onSwipeRight,
 }: {
   project: Project;
   index: number;
+  activeIndex: number;
   total: number;
-  progress: MotionValue<number>;
   viewLabel: string;
+  onSwipeLeft: () => void;
+  onSwipeRight: () => void;
 }) {
   const { t } = useLang();
-  // relProg < 0 => buried in deck
-  // relProg in [0..1] => exiting
-  // relProg > 1 => gone
-  const relProg = useTransform(progress, (p) => p * (total - 1) - index);
+  const isTop = index === activeIndex;
+  const isPast = index < activeIndex;
+  const depth = index - activeIndex;
 
-  // Stack vertical offset with non-linear spacing (denser stack)
-  const y = useTransform(relProg, (r) => {
-    if (r <= 0) {
-      const depth = Math.min(-r, 4);
-      return `${Math.pow(depth, 1.25) * 15}px`;
-    }
-    return `-${r * 115}vh`;
-  });
+  // Visual offsets for stacked items
+  const cardScale = isPast ? 0.9 : Math.max(0.85, 1 - depth * 0.05);
+  const cardY = isPast ? -60 : depth * 12;
+  const cardZIndex = total - index;
+  const cardOpacity = isPast ? 0 : depth > 3 ? 0 : 1;
 
-  // Stacking scale
-  const scale = useTransform(relProg, (r) => {
-    if (r <= 0) {
-      const depth = Math.min(-r, 4);
-      return 1 - Math.pow(depth, 1.1) * 0.045;
-    }
-    return 1;
-  });
-
-  // Opacity fading
-  const opacity = useTransform(relProg, (r) => {
-    if (r <= 0) {
-      const depth = -r;
-      if (depth > 4) return 0;
-      return 1;
-    }
-    return Math.max(0, 1 - r * 1.4);
-  });
-
-  // 3D rotations for fanned-out deck feel and tilt exit
-  const rotate = useTransform(relProg, (r) => {
-    if (r <= 0) {
-      const fanning = (index % 2 === 0 ? 1.5 : -1.5) * (1 - Math.min(-r, 4) * 0.15);
-      return fanning;
-    }
-    // Tilt sideways as it flies up
-    return r * (index % 2 === 0 ? 5 : -5);
-  });
-
-  const rotateX = useTransform(relProg, (r) => {
-    if (r <= 0) return 0;
-    // Slants back slightly during vertical slide
-    return -r * -12;
-  });
-
-  const rotateY = useTransform(relProg, (r) => {
-    if (r <= 0) return 0;
-    return r * (index % 2 === 0 ? 3 : -3);
-  });
-
-  const zIndex = total - index + 10;
-  const isExternal = project.href?.startsWith("http");
+  // Horizontal offsets for animations
+  const customX = isPast ? -400 : 0;
 
   return (
-    <MotionLink
-      href={`/cases/${project.slug}`}
-      style={{
-        y,
-        scale,
-        opacity,
-        rotate,
-        rotateX,
-        rotateY,
-        zIndex,
-        transformStyle: "preserve-3d",
-        willChange: "transform, opacity",
+    <motion.div
+      drag={isTop ? "x" : false}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.6}
+      onDragEnd={(e, info) => {
+        if (info.offset.x < -100 || info.velocity.x < -200) {
+          onSwipeLeft();
+        } else if (info.offset.x > 100 || info.velocity.x > 200) {
+          onSwipeRight();
+        }
       }}
-      data-event="click_case_details"
-      className="absolute left-5 right-5 mx-auto block aspect-[3/4.2] max-w-md overflow-hidden rounded-3xl border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.6)]"
+      animate={{
+        x: customX,
+        y: cardY,
+        scale: cardScale,
+        opacity: cardOpacity,
+        rotate: isTop ? 0 : (index % 2 === 0 ? 1.5 : -1.5) * Math.max(0, 1 - depth * 0.15)
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8
+      }}
+      style={{
+        zIndex: cardZIndex,
+        transformStyle: "preserve-3d",
+        touchAction: "pan-y"
+      }}
+      className="absolute inset-0 w-full h-full max-w-sm"
     >
-      <Image
-        src={project.bannerPath}
-        alt={`${project.name} - ${project.tag} by Hella Dev Agency`}
-        fill
-        sizes="100vw"
-        priority={index < 2}
-        className="object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${project.accent} opacity-30 mix-blend-screen`}
-      />
+      <Link
+        href={`/cases/${project.slug}`}
+        data-event="click_case_details"
+        className="relative block w-full h-full overflow-hidden rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+      >
+        <Image
+          src={project.bannerPath}
+          alt={`${project.name} - ${project.tag} by Hella Dev Agency`}
+          fill
+          sizes="(max-width: 768px) 100vw, 380px"
+          priority={index < 2}
+          className="object-cover pointer-events-none"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+        <div
+          aria-hidden
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${project.accent} opacity-30 mix-blend-screen`}
+        />
 
-      <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
-        <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.3em] text-white/70 sm:text-[10px]">
-          <span className="font-mono">
-            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-          <span className="truncate pl-3">{project.tag}</span>
-        </div>
+        <div className="relative flex h-full flex-col justify-between p-6 select-none">
+          <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.3em] text-white/70">
+            <span className="font-mono">
+              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+            <span className="truncate pl-3">{project.tag}</span>
+          </div>
 
-        <div>
-          <h3 className="text-[30px] font-semibold leading-[1.02] tracking-tight sm:text-[40px]">
-            {project.name}
-          </h3>
-          <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-white/75 sm:text-sm">
-            {project.desc}
-          </p>
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {project.stack.slice(0, 3).map((s) => (
-              <span
-                key={s}
-                className="rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[10px] text-white/85 backdrop-blur-md"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
-            {t("Детальніше про кейс", "Case details")}
-            <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
+          <div>
+            <h3 className="text-[28px] font-semibold leading-[1.05] tracking-tight text-white">
+              {project.name}
+            </h3>
+            <p className="mt-3 text-[13px] leading-relaxed text-white/75">
+              {project.desc}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {project.stack.slice(0, 3).map((s) => (
+                <span
+                  key={s}
+                  className="rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[10px] text-white/85 backdrop-blur-md"
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
+              {t("Детальніше про кейс", "Case details")}
+              <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
+            </div>
           </div>
         </div>
-      </div>
-    </MotionLink>
+      </Link>
+    </motion.div>
   );
 }
 

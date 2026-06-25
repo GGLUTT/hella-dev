@@ -195,7 +195,7 @@ export default function ForWhom() {
                   <h3 className="text-lg font-semibold tracking-tight text-white transition duration-300 group-hover:text-emerald-300">
                     {item.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/50 transition duration-300 group-hover:text-white/70">
+                  <p className="mt-3 text-sm sm:text-sm md:text-base leading-relaxed text-white/65 transition duration-300 group-hover:text-white/70">
                     {item.desc}
                   </p>
                 </div>

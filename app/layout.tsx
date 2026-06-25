@@ -5,6 +5,7 @@ import CookieBanner from "@/components/CookieBanner";
 import ConsoleEasterEgg from "@/components/ConsoleEasterEgg";
 import { LangProvider } from "@/context/LangContext";
 import InteractiveAssistant from "@/components/InteractiveAssistant";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -236,14 +237,36 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('theme');
+                  var resolved = stored || 'light';
+                  document.documentElement.setAttribute('data-theme', resolved);
+                  if (resolved === 'light') {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                  } else {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                  }
+                } catch (e) {}
+              })();
+            `
+          }}
+        />
       </head>
-      <body className="font-sans bg-ink-950 text-white antialiased">
-        <LangProvider>
-          <ConsoleEasterEgg />
-          {children}
-          <CookieBanner />
-          <InteractiveAssistant />
-        </LangProvider>
+      <body className="font-sans bg-black text-white antialiased">
+        <ThemeProvider>
+          <LangProvider>
+            <ConsoleEasterEgg />
+            {children}
+            <CookieBanner />
+            <InteractiveAssistant />
+          </LangProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
