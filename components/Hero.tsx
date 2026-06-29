@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useLang } from "@/context/LangContext";
+import { useTheme } from "@/context/ThemeContext";
 import MagneticButton from "@/components/MagneticButton";
 
 /* ===================== CONFIG ===================== */
@@ -59,12 +60,19 @@ const eyebrowContainerVariants = {
 
 export default function Hero() {
   const { t } = useLang();
+  const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
   }, []);
+
+  // Shutter scale animation on mount
+  const entranceScale = useSpring(0, { stiffness: 85, damping: 18 });
+  useEffect(() => {
+    entranceScale.set(1);
+  }, [entranceScale]);
 
   // Raw motion values for cursor lens coords
   const lensX = useMotionValue(0);
@@ -157,20 +165,6 @@ export default function Hero() {
     };
   }, [lensX, lensY]);
 
-  // Subscribe and map lens coordinates to CSS variables
-  useEffect(() => {
-    const unsubX = smoothLensX.on("change", (v) => {
-      containerRef.current?.style.setProperty("--mouse-x", `${v}px`);
-    });
-    const unsubY = smoothLensY.on("change", (v) => {
-      containerRef.current?.style.setProperty("--mouse-y", `${v}px`);
-    });
-    return () => {
-      unsubX();
-      unsubY();
-    };
-  }, [smoothLensX, smoothLensY]);
-
   // Scroll animations
   const { scrollY } = useScroll();
 
@@ -178,12 +172,34 @@ export default function Hero() {
   const lensRadius = useTransform(scrollY, [0, 380], [140, 0]);
   const smoothRadius = useSpring(lensRadius, { stiffness: 110, damping: 22 });
 
+  // Subscribe and map lens coordinates, radius, and entrance scale variables
   useEffect(() => {
-    const unsubRadius = smoothRadius.on("change", (v) => {
-      containerRef.current?.style.setProperty("--lens-radius", `${v}px`);
+    const updateRadius = () => {
+      const radiusVal = smoothRadius.get();
+      const scaleVal = entranceScale.get();
+      containerRef.current?.style.setProperty("--lens-radius", `${radiusVal * scaleVal}px`);
+    };
+
+    const unsubX = smoothLensX.on("change", (v) => {
+      containerRef.current?.style.setProperty("--mouse-x", `${v}px`);
     });
-    return () => unsubRadius();
-  }, [smoothRadius]);
+    const unsubY = smoothLensY.on("change", (v) => {
+      containerRef.current?.style.setProperty("--mouse-y", `${v}px`);
+    });
+    const unsubRadius = smoothRadius.on("change", () => {
+      updateRadius();
+    });
+    const unsubEntrance = entranceScale.on("change", () => {
+      updateRadius();
+    });
+
+    return () => {
+      unsubX();
+      unsubY();
+      unsubRadius();
+      unsubEntrance();
+    };
+  }, [smoothLensX, smoothLensY, smoothRadius, entranceScale]);
 
   // Background video zoom & exit blur (smoothed with springs)
   const scaleRaw = useTransform(scrollY, [0, 600], [1.0, 1.12]);
@@ -244,20 +260,42 @@ export default function Hero() {
           } as any
         }
       >
-        {/* Layer 0: Cinematic Video Background */}
-        <motion.video
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            scale,
-            filter: videoFilter,
-          }}
-          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
-        >
-          <source src="/new-heros.mp4" type="video/mp4" />
-        </motion.video>
+        {/* Layer 0: Cinematic Video Background (with dynamic cross-fade) */}
+        <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+          {/* Light Theme Video */}
+          <motion.video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              scale,
+              filter: videoFilter,
+            }}
+            animate={{ opacity: theme === "light" ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/new-heros.mp4" type="video/mp4" />
+          </motion.video>
+
+          {/* Dark Theme Video */}
+          <motion.video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              scale,
+              filter: videoFilter,
+            }}
+            animate={{ opacity: theme === "dark" ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/dark-hero.mp4" type="video/mp4" />
+          </motion.video>
+        </div>
 
         {/* Layer 1: Solid Black Shroud (Reveals video underneath via radial gradient mask) */}
         <div
@@ -345,8 +383,8 @@ export default function Hero() {
                 .map((word, i) => (
                   <span key={i} className="overflow-hidden inline-block py-0.5 sm:py-1">
                     <motion.span
-                      initial={{ y: "110%" }}
-                      animate={{ y: 0 }}
+                      initial={{ y: "110%", rotate: 2, skewY: 3 }}
+                      animate={{ y: 0, rotate: 0, skewY: 0 }}
                       transition={{
                         duration: 0.95,
                         delay: 0.4 + i * 0.05,
