@@ -61,11 +61,9 @@ export default function ScratchCardOverlay({ isRevealed, onReveal }: ScratchCard
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Adjust resolution for Retina displays
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = dimensions.width * dpr;
-    canvas.height = dimensions.height * dpr;
-    ctx.scale(dpr, dpr);
+    // Keep resolution low/native (no DPR scaling) to optimize memory and CPU pixel sampling
+    canvas.width = dimensions.width;
+    canvas.height = dimensions.height;
 
     canvas.style.width = `${dimensions.width}px`;
     canvas.style.height = `${dimensions.height}px`;

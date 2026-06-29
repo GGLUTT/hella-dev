@@ -62,7 +62,10 @@ export default function Hero() {
   const { t } = useLang();
   const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
+  const lightVideoRef = useRef<HTMLVideoElement>(null);
+  const darkVideoRef = useRef<HTMLVideoElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -82,7 +85,24 @@ export default function Hero() {
   const smoothLensX = useSpring(lensX, { stiffness: 90, damping: 20 });
   const smoothLensY = useSpring(lensY, { stiffness: 90, damping: 20 });
 
-  // Initialize and run auto-floating searchlight when idle
+  // Control playing/pausing of video elements dynamically based on visibility and theme
+  useEffect(() => {
+    if (!isHeroVisible) {
+      lightVideoRef.current?.pause();
+      darkVideoRef.current?.pause();
+      return;
+    }
+
+    if (theme === "light") {
+      lightVideoRef.current?.play().catch(() => {});
+      darkVideoRef.current?.pause();
+    } else {
+      darkVideoRef.current?.play().catch(() => {});
+      lightVideoRef.current?.pause();
+    }
+  }, [theme, isHeroVisible]);
+
+  // Initialize and run auto-floating searchlight with visibility detection
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -91,6 +111,7 @@ export default function Hero() {
     let idleTimeout: NodeJS.Timeout;
     let animationFrameId: number;
     let startTime = Date.now();
+    let localVisible = true;
 
     // Default coordinates set
     const rect = container.getBoundingClientRect();
@@ -113,6 +134,7 @@ export default function Hero() {
     };
 
     const updateFloat = () => {
+      if (!localVisible) return;
       if (!isInteracting) {
         const containerRect = container.getBoundingClientRect();
         const w = containerRect.width > 0 ? containerRect.width : window.innerWidth;
@@ -135,7 +157,23 @@ export default function Hero() {
       animationFrameId = requestAnimationFrame(updateFloat);
     };
 
-    // Listeners to track interaction
+    // Use IntersectionObserver to stop floating rendering loop when offscreen
+    const isMobileDevice = window.innerWidth < 768;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const becameVisible = entry.isIntersecting && !localVisible;
+        localVisible = entry.isIntersecting;
+        setIsHeroVisible(entry.isIntersecting);
+        if (becameVisible) {
+          startTime = Date.now(); // Reset animation time anchor
+          updateFloat();
+        }
+      },
+      { threshold: 0.01 }
+    );
+    observer.observe(container);
+
+    // Listeners to track interaction on desktop
     const handleMouseMoveStart = () => {
       startInteraction();
       stopInteraction();
@@ -149,19 +187,24 @@ export default function Hero() {
       stopInteraction();
     };
 
-    window.addEventListener("mousemove", handleMouseMoveStart);
-    container.addEventListener("touchstart", handleTouchStart);
-    container.addEventListener("touchend", handleTouchEnd);
-
-    // Start auto-floating loop
-    updateFloat();
+    if (!isMobileDevice) {
+      window.addEventListener("mousemove", handleMouseMoveStart);
+      container.addEventListener("touchstart", handleTouchStart);
+      container.addEventListener("touchend", handleTouchEnd);
+    } else {
+      // Trigger floating cycle directly on mobile
+      updateFloat();
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       clearTimeout(idleTimeout);
-      window.removeEventListener("mousemove", handleMouseMoveStart);
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchend", handleTouchEnd);
+      observer.disconnect();
+      if (!isMobileDevice) {
+        window.removeEventListener("mousemove", handleMouseMoveStart);
+        container.removeEventListener("touchstart", handleTouchStart);
+        container.removeEventListener("touchend", handleTouchEnd);
+      }
     };
   }, [lensX, lensY]);
 
@@ -209,7 +252,7 @@ export default function Hero() {
   const blurVal = useSpring(blurRaw, { stiffness: 90, damping: 20 });
   const videoFilter = useTransform(blurVal, (b) => {
     if (isMobile) {
-      return "saturate(1.1) brightness(0.8)";
+      return "none"; // Disable costly filters on mobile to maintain 60/120fps scrolling
     }
     return `saturate(1.1) brightness(0.8) blur(${b}px)`;
   });
@@ -249,8 +292,8 @@ export default function Hero() {
 
       <section
         ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
+        onMouseMove={isMobile ? undefined : handleMouseMove}
+        onTouchMove={isMobile ? undefined : handleTouchMove}
         className="min-h-[100svh] w-full relative bg-zinc-950 overflow-hidden flex flex-col justify-center items-center py-20 px-6 select-none"
         style={
           {
@@ -264,6 +307,7 @@ export default function Hero() {
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           {/* Light Theme Video */}
           <motion.video
+            ref={lightVideoRef}
             autoPlay
             loop
             muted
@@ -281,6 +325,7 @@ export default function Hero() {
 
           {/* Dark Theme Video */}
           <motion.video
+            ref={darkVideoRef}
             autoPlay
             loop
             muted

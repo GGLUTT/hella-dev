@@ -1,23 +1,18 @@
 "use client";
 
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
 
-  // Show after scrolling past ~80vh
-  useEffect(() => {
-    const onScroll = () => {
-      setVisible(window.scrollY > window.innerHeight * 0.8);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const limit = typeof window !== "undefined" ? window.innerHeight * 0.8 : 800;
+    setVisible(latest > limit);
+  });
 
   const dash = useTransform(scrollYProgress, [0, 1], [113, 0]);
 
