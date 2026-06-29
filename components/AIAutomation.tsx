@@ -163,8 +163,8 @@ export default function AIAutomation() {
           <Reveal delay={0.1}>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/55 md:text-lg">
               {t(
-                "Hella Dev Agency позбавляє ваш бізнес від рутинних процесів, пов'язуючи системи в єдиний злагоджений організм та підключаючи штучний інтелект.",
-                "Hella Dev Agency eliminates routine tasks from your business by connecting systems into a unified workflow and integrating artificial intelligence."
+                "Lutiy Digital позбавляє ваш бізнес від рутинних процесів, пов'язуючи системи в єдиний злагоджений організм та підключаючи штучний інтелект.",
+                "Lutiy Digital eliminates routine tasks from your business by connecting systems into a unified workflow and integrating artificial intelligence."
               )}
             </p>
           </Reveal>

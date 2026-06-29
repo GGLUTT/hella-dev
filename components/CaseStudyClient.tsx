@@ -74,7 +74,7 @@ export default function CaseStudyClient({ caseItem }: { caseItem: CaseStudy }) {
     "genre": caseItem.category,
     "creator": {
       "@type": "Organization",
-      "name": "Hella Dev Agency"
+      "name": "Lutiy Digital"
     }
   };
 

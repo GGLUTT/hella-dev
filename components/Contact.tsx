@@ -551,7 +551,7 @@ function HangingBag() {
       >
         <Image
           src="/bag.png"
-          alt="Hella Dev Agency shopping bag automation mockup"
+          alt="Lutiy Digital shopping bag automation mockup"
           fill
           className="object-contain select-none pointer-events-none drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
           sizes="180px"

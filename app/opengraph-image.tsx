@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Hella Dev Agency — Fullstack & Automation";
+export const alt = "Lutiy Digital — Fullstack & Automation";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -81,9 +81,9 @@ export default async function Image() {
             marginBottom: 24,
           }}
         >
-          Hella Dev
+          Lutiy
           <br />
-          <span style={{ color: "#10b981" }}>Agency</span>
+          <span style={{ color: "#10b981" }}>Digital</span>
         </div>
         {/* Subtitle */}
         <div
@@ -120,7 +120,7 @@ export default async function Image() {
             YL
           </div>
           <span style={{ fontSize: 20, color: "rgba(255,255,255,0.6)" }}>
-            hella.dev
+            agency-hella.site
           </span>
         </div>
       </div>

@@ -367,7 +367,7 @@ function MobileSwipeCard({
       >
         <Image
           src={project.bannerPath}
-          alt={`${project.name} - ${project.tag} by Hella Dev Agency`}
+          alt={`${project.name} - ${project.tag} by Lutiy Digital`}
           fill
           sizes="(max-width: 768px) 100vw, 380px"
           priority={index < 2}
@@ -450,7 +450,7 @@ function ProjectCard({
       {/* Banner background */}
       <Image
         src={project.bannerPath}
-        alt={`${project.name} - Premium Project from Hella Dev Agency`}
+        alt={`${project.name} - Premium Project from Lutiy Digital`}
         fill
         sizes="90vw"
         priority={index < 2}

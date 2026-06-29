@@ -72,7 +72,7 @@ export default function Nav() {
               className="flex items-center gap-2 text-sm font-semibold tracking-wide"
             >
               <span className="inline-block h-2 w-2 rounded-full bg-white" />
-              hella<span className="text-white/40">/dev</span>
+              lutiy<span className="text-white/40">/digital</span>
             </Link>
 
             {/* Desktop nav */}
@@ -240,7 +240,7 @@ export default function Nav() {
                 variants={itemVariants}
                 className="mt-auto flex items-center justify-between pt-10 text-[10px] uppercase tracking-[0.3em] text-white/40"
               >
-                <span>YL // hella</span>
+                <span>YL // lutiy.digital</span>
                 <div className="flex items-center gap-3">
                   {/* Theme toggle mobile */}
                   <button

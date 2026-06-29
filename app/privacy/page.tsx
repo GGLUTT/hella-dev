@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Hella Dev",
-  description: "Як ми збираємо, використовуємо і захищаємо ваші дані на hella.dev.",
+  title: "Privacy Policy — Lutiy Digital",
+  description: "Як ми збираємо, використовуємо і захищаємо ваші дані на agency-hella.site.",
 };
 
 export default function PrivacyPage() {
@@ -38,8 +38,8 @@ export default function PrivacyPage() {
         {/* Content */}
         <div className="space-y-8 text-[15px] leading-relaxed text-white/60">
           <Section title="Хто ми">
-            Цей сайт належить Євгенію Лютому (hella.dev) — портфоліо та сайт-візитка
-            fullstack-розробника. Контакт: hello@hella.dev.
+            Цей сайт належить Євгенію Лютому (agency-hella.site) — портфоліо та сайт-візитка
+            fullstack-розробника. Контакт: newgglutt@gmail.com.
           </Section>
 
           <Section title="Які дані ми збираємо">
@@ -102,10 +102,10 @@ export default function PrivacyPage() {
             Ви маєте право: запитати доступ до даних, виправити їх, видалити,
             обмежити обробку або відкликати згоду. Надішліть запит на{" "}
             <a
-              href="mailto:hello@hella.dev"
+              href="mailto:newgglutt@gmail.com"
               className="text-white/70 underline underline-offset-2 transition hover:text-white"
             >
-              hello@hella.dev
+              newgglutt@gmail.com
             </a>
             .
           </Section>
@@ -133,7 +133,7 @@ export default function PrivacyPage() {
             Cookie Policy →
           </Link>
           <Link href="/" className="transition hover:text-white/60">
-            hella.dev →
+            agency-hella.site →
           </Link>
         </div>
       </div>

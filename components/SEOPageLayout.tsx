@@ -95,7 +95,7 @@ export default function SEOPageLayout({ service }: { service: ServiceDetail }) {
     "description": service.description,
     "provider": {
       "@type": "ProfessionalService",
-      "name": "Hella Dev Agency",
+      "name": "Lutiy Digital",
       "url": SITE_URL
     },
     "offers": {

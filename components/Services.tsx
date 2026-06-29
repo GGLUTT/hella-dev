@@ -442,7 +442,7 @@ function ScatteredMockups({
       >
         <Image
           src="/laptop.png"
-          alt="Hella Dev Agency premium web app mockup on laptop"
+          alt="Lutiy Digital premium web app mockup on laptop"
           fill
           className="object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
           sizes="288px"
@@ -456,7 +456,7 @@ function ScatteredMockups({
       >
         <Image
           src="/pc.png"
-          alt="Fullstack web platform on desktop PC screen by Hella Digital Studio"
+          alt="Fullstack web platform on desktop PC screen by Lutiy Digital Studio"
           fill
           className="object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
           sizes="224px"
@@ -498,7 +498,7 @@ function ScatteredMockups({
       >
         <Image
           src="/phone.png"
-          alt="Modern mobile app screen mockup by Hella Dev"
+          alt="Modern mobile app screen mockup by Lutiy Digital"
           fill
           className="object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
           sizes="80px"

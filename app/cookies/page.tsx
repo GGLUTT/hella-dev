@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Cookie Policy — Hella Dev",
-  description: "Як і чому ми використовуємо cookies на сайті hella.dev.",
+  title: "Cookie Policy — Lutiy Digital",
+  description: "Як і чому ми використовуємо cookies на сайті agency-hella.site.",
 };
 
 export default function CookiesPage() {
@@ -99,10 +99,10 @@ export default function CookiesPage() {
           <Section title="Контакт">
             Питання? Пишіть:{" "}
             <a
-              href="mailto:hello@hella.dev"
+              href="mailto:newgglutt@gmail.com"
               className="text-white/70 underline underline-offset-2 transition hover:text-white"
             >
-              hello@hella.dev
+              newgglutt@gmail.com
             </a>
           </Section>
         </div>
@@ -113,7 +113,7 @@ export default function CookiesPage() {
             Privacy Policy →
           </Link>
           <Link href="/" className="transition hover:text-white/60">
-            hella.dev →
+            agency-hella.site →
           </Link>
         </div>
       </div>

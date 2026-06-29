@@ -25,11 +25,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.agency-hella.s
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Веб-застосунки та автоматизація бізнес-процесів | Hella Dev Agency",
-    template: "%s | Hella Dev Agency",
+    default: "Веб-застосунки та автоматизація бізнес-процесів | Lutiy Digital",
+    template: "%s | Lutiy Digital",
   },
   description:
-    "Персональна dev-студія Євгенія Лютого. Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
+    "Персональна dev-студія Євгенія Лютого (Lutiy Digital). Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
   keywords: [
     "fullstack developer",
     "web developer ukraine",
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
     "typescript",
     "postgresql",
     "n8n automation",
-    "hella dev agency",
-    "hella digital agency",
-    "агенція автоматизації hella",
+    "lutiy digital",
+    "лютий діджитал",
+    "lutiy digital studio",
     "розробка сайтів київ",
     "створення сайтів біла церква",
     "розробка сайтів біла церква",
@@ -56,13 +56,13 @@ export const metadata: Metadata = {
     "інтеграція n8n",
     "n8n integration ukraine",
     "фулстек агенція",
-    "веб студія hella",
+    "веб студія lutiy digital",
     "веб розробник",
     "фулстек розробник",
     "замовити сайт",
     "розробка сайтів",
     "Євгеній Лютий",
-    "hella dev",
+    "lutiy digital",
   ],
   authors: [{ name: "Yevhenii Liutyi", url: SITE_URL }],
   creator: "Yevhenii Liutyi",
@@ -87,26 +87,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Hella Dev Agency",
-    title: "Веб-застосунки та автоматизація бізнес-процесів | Hella Dev Agency",
+    siteName: "Lutiy Digital",
+    title: "Веб-застосунки та автоматизація бізнес-процесів | Lutiy Digital",
     description:
-      "Персональна dev-студія Євгенія Лютого. Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
+      "Персональна dev-студія Євгенія Лютого (Lutiy Digital). Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
     locale: "uk_UA",
     images: [
       {
         url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Hella — Fullstack & Automation Agency",
+        alt: "Lutiy Digital — Fullstack & Automation Studio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Веб-застосунки та автоматизація бізнес-процесів | Hella Dev Agency",
+    title: "Веб-застосунки та автоматизація бізнес-процесів | Lutiy Digital",
     description:
-      "Персональна dev-студія Євгенія Лютого. Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
-    creator: "@hella_dev",
+      "Персональна dev-студія Євгенія Лютого (Lutiy Digital). Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
+    creator: "@yevhenii_liutyi",
     images: [`${SITE_URL}/og-image.png`],
   },
   icons: {
@@ -127,7 +127,7 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      "name": "Hella Dev Agency",
+      "name": "Lutiy Digital",
       "url": SITE_URL,
       "logo": `${SITE_URL}/favicon.png`,
       "sameAs": [
@@ -138,7 +138,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       "url": SITE_URL,
-      "name": "Hella Dev Agency",
+      "name": "Lutiy Digital",
       "description": "Веб-застосунки та автоматизація бізнес-процесів",
       "publisher": {
         "@id": `${SITE_URL}/#organization`
@@ -147,7 +147,7 @@ const jsonLd = {
     {
       "@type": "ProfessionalService",
       "@id": `${SITE_URL}/#service`,
-      "name": "Hella Dev Agency",
+      "name": "Lutiy Digital",
       "url": SITE_URL,
       "logo": `${SITE_URL}/favicon.png`,
       "image": `${SITE_URL}/og-image.png`,

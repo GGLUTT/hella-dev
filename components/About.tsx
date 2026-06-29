@@ -175,9 +175,8 @@ export default function About() {
   }));
 
   const HEADLINE_UA = [
-    { word: "Hella",             accent: false },
-    { word: "Dev",               accent: false },
-    { word: "Agency",            accent: false },
+    { word: "Lutiy",             accent: false },
+    { word: "Digital",           accent: false },
     { word: "—",                 accent: false },
     { word: "персональна",       accent: true  },
     { word: "dev-студія",        accent: true  },
@@ -186,9 +185,8 @@ export default function About() {
   ];
 
   const HEADLINE_EN = [
-    { word: "Hella",             accent: false },
-    { word: "Dev",               accent: false },
-    { word: "Agency",            accent: false },
+    { word: "Lutiy",             accent: false },
+    { word: "Digital",           accent: false },
     { word: "—",                 accent: false },
     { word: "personal",          accent: true  },
     { word: "dev",               accent: true  },
@@ -612,7 +610,7 @@ function CharacterStage() {
         </div>
         <div>
           <div className="text-sm font-semibold tracking-tight">
-            Yevhenii — Hella
+            Yevhenii — Lutiy Digital
           </div>
           <div className="text-[10px] uppercase tracking-[0.25em] text-white/55">
             Fullstack Developer

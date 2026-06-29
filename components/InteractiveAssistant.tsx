@@ -288,7 +288,7 @@ export default function InteractiveAssistant() {
             <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-5 py-4 shrink-0">
               <div className="flex items-center gap-3.5">
                 <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-zinc-900 border border-white/10 select-none overflow-hidden">
-                  <img src="/favicon.png" alt="Hella Logo" className="h-full w-full object-cover p-1.5" />
+                  <img src="/favicon.png" alt="Lutiy Digital Logo" className="h-full w-full object-cover p-1.5" />
                   <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
@@ -299,7 +299,7 @@ export default function InteractiveAssistant() {
                     {lang === "ua" ? data.titleUA : data.titleEN}
                   </div>
                   <div className="text-[9px] uppercase tracking-[0.12em] text-white/40 font-mono">
-                    {t("Онлайн · Бот Hella", "Online · Hella Bot")}
+                    {t("Онлайн · Бот Lutiy", "Online · Lutiy Bot")}
                   </div>
                 </div>
               </div>
@@ -317,7 +317,7 @@ export default function InteractiveAssistant() {
             <div className="flex-1 overflow-y-auto p-5 space-y-4 max-h-[220px] sm:max-h-[260px] scrollbar-thin">
               <div className="flex gap-3">
                 <div className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-900 border border-white/10 select-none overflow-hidden">
-                  <img src="/favicon.png" alt="Hella" className="h-full w-full object-cover p-1" />
+                  <img src="/favicon.png" alt="Lutiy Digital" className="h-full w-full object-cover p-1" />
                 </div>
                 <div className="rounded-2xl rounded-tl-none bg-white/[0.04] px-4 py-3 text-xs sm:text-sm leading-relaxed text-white/85 whitespace-pre-line border border-white/5">
                   {lang === "ua" ? data.messageUA : data.messageEN}

@@ -6,7 +6,7 @@ import { useLang } from "@/context/LangContext";
 import MagneticButton from "@/components/MagneticButton";
 
 /* ===================== CONFIG ===================== */
-const STICKER_CHARS = ["h", "e", "l", "l", "a"];
+const STICKER_CHARS = ["l", "u", "t", "i", "y"];
 const LOADER_DURATION = 1800;
 
 const contentVariants = {
@@ -652,7 +652,7 @@ function HellaSticker() {
             ))}
           </span>
 
-          {/* Slash + Agency mention */}
+          {/* Slash + Digital mention */}
           <motion.span
             initial={{ opacity: 0, x: -4 }}
             animate={revealed ? { opacity: 1, x: 0 } : {}}
@@ -661,7 +661,7 @@ function HellaSticker() {
           >
             <span className="h-3 w-px bg-white/15" />
             <span className="font-mono text-[9px] tracking-widest text-emerald-400 font-bold uppercase">
-              {t("агенція", "agency")}
+              {t("діджитал", "digital")}
             </span>
           </motion.span>
         </div>

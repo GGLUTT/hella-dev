@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   ].join("");
 
   const text = [
-    `🔔 <b>Нова заявка з hella.dev</b>`,
+    `🔔 <b>Нова заявка з Lutiy Digital (agency-hella.site)</b>`,
     ``,
     `${meetingLabel}`,
     `👤 <b>Ім'я:</b> ${name}`,
