@@ -25,11 +25,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.agency-hella.s
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Веб-застосунки та автоматизація бізнес-процесів | Lutiy Digital",
+    default: "Розробка сайтів & автоматизація процесів | Lutiy Digital",
     template: "%s | Lutiy Digital",
   },
   description:
-    "Персональна dev-студія Євгенія Лютого (Lutiy Digital). Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
+    "Студія Євгенія Лютого Lutiy Digital (раніше Hella Dev Agency): розробка швидких сайтів, веб-додатків та автоматизація бізнес-процесів (n8n, AI) в Україні.",
   keywords: [
     "fullstack developer",
     "web developer ukraine",
@@ -42,6 +42,10 @@ export const metadata: Metadata = {
     "lutiy digital",
     "лютий діджитал",
     "lutiy digital studio",
+    "hella dev agency",
+    "hella dev",
+    "hella digital agency",
+    "агенція автоматизації hella",
     "розробка сайтів київ",
     "створення сайтів біла церква",
     "розробка сайтів біла церква",
@@ -88,9 +92,9 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Lutiy Digital",
-    title: "Веб-застосунки та автоматизація бізнес-процесів | Lutiy Digital",
+    title: "Розробка сайтів & автоматизація процесів | Lutiy Digital",
     description:
-      "Персональна dev-студія Євгенія Лютого (Lutiy Digital). Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
+      "Студія Євгенія Лютого Lutiy Digital (раніше Hella Dev Agency): розробка швидких сайтів, веб-додатків та автоматизація бізнес-процесів (n8n, AI) в Україні.",
     locale: "uk_UA",
     images: [
       {
@@ -103,9 +107,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Веб-застосунки та автоматизація бізнес-процесів | Lutiy Digital",
+    title: "Розробка сайтів & автоматизація процесів | Lutiy Digital",
     description:
-      "Персональна dev-студія Євгенія Лютого (Lutiy Digital). Розробка сайтів, веб-застосунків, CRM, кабінети клієнтів, інтеграцій та автоматизацій для бізнесу в Україні й за кордоном.",
+      "Студія Євгенія Лютого Lutiy Digital (раніше Hella Dev Agency): розробка швидких сайтів, веб-додатків та автоматизація бізнес-процесів (n8n, AI) в Україні.",
     creator: "@yevhenii_liutyi",
     images: [`${SITE_URL}/og-image.png`],
   },

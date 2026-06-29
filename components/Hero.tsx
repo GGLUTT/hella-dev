@@ -326,7 +326,7 @@ export default function Hero() {
                     variants={charVariants}
                     className="inline-block mx-0.5 sm:mx-1 whitespace-nowrap"
                   >
-                    {word}
+                    {word}{" "}
                   </motion.span>
                 ))}
               <span className="text-cyan-500/40 ml-2 sm:ml-3 font-mono font-bold">]</span>
@@ -355,7 +355,7 @@ export default function Hero() {
                       className="inline-block bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent"
                     >
                       {word}
-                    </motion.span>
+                    </motion.span>{" "}
                   </span>
                 ))}
             </motion.h1>

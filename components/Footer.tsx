@@ -130,7 +130,7 @@ export default function Footer() {
               YL
             </span>
             <span>
-              © {new Date().getFullYear()} {t("Євгеній Лютий · Lutiy Digital", "Yevhenii Liutyi · Lutiy Digital")}
+              © {new Date().getFullYear()} {t("Євгеній Лютий · Lutiy Digital // Hella", "Yevhenii Liutyi · Lutiy Digital // Hella")}
             </span>
           </div>
           <div className="flex items-center gap-4 font-mono uppercase tracking-[0.25em]">
@@ -151,8 +151,8 @@ export default function Footer() {
         >
           <p>
             {t(
-              "Lutiy Digital — персональна web development та automation студія Євгенія Лютого. Розробка сайтів, веб-застосунків, CRM, кабінетів клієнтів, інтеграцій та автоматизацій для бізнесу. Працюю онлайн з клієнтами з України та інших країн.",
-              "Lutiy Digital is Yevhenii Liutyi's personal web development and automation studio. Developing websites, web applications, CRMs, client portals, integrations, and business automations. Working online with clients from Ukraine and other countries."
+              "Lutiy Digital (раніше Hella Dev Agency) — персональна web development та automation студія Євгенія Лютого. Розробка сайтів, веб-застосунків, CRM, кабінетів клієнтів, інтеграцій та автоматизацій для бізнесу. Працюю онлайн з клієнтами з України та інших країн.",
+              "Lutiy Digital (formerly Hella Dev Agency) is Yevhenii Liutyi's personal web development and automation studio. Developing websites, web applications, CRMs, client portals, integrations, and business automations. Working online with clients from Ukraine and other countries."
             )}
           </p>
         </motion.div>
