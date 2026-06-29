@@ -56,7 +56,7 @@ export default function Footer() {
         variants={container}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: true, margin: "-30px" }}
         className="relative mx-auto max-w-5xl px-6 pb-10 pt-24 md:pt-32"
       >
         {/* Eyebrow */}

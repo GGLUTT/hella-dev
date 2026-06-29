@@ -189,7 +189,7 @@ export default function Services() {
           variants={cardContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-30px" }}
           className="mt-16 grid grid-cols-1 gap-5 sm:gap-6 md:mt-28 sm:grid-cols-2 lg:grid-cols-4 md:items-stretch"
           style={{ perspective: 1400 }}
         >

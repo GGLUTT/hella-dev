@@ -150,7 +150,7 @@ export default function Workflow() {
           variants={containerStagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-30px" }}
           className="relative border-l border-white/10 ml-4 md:ml-8 pl-8 sm:pl-12 space-y-12"
         >
           {steps.map((step, idx) => (

@@ -179,14 +179,14 @@ export default function WhatYouGet() {
           variants={containerStagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-30px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
           {items.map((item, idx) => (
             <motion.div
               key={idx}
               variants={cardReveal}
-              className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 ${item.glow}`}
+              className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 ${item.glow}`}
             >
               {/* Highlight sheen top border */}
               <div className={`pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent ${item.sheen} to-transparent opacity-0 transition duration-300 group-hover:opacity-100`} />

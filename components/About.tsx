@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
@@ -255,7 +256,7 @@ export default function About() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: "-30px" }}
             variants={containerStagger}
           >
             {/* Eyebrow */}
@@ -324,7 +325,7 @@ export default function About() {
                   key={s.labelUA}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
+                  viewport={{ once: true, margin: "-30px" }}
                   transition={{
                     duration: 0.7,
                     delay: 0.5 + i * 0.1,
@@ -505,11 +506,37 @@ export default function About() {
 /* ============ Character video (full-bleed, large) ============ */
 
 function CharacterStage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const container = containerRef.current;
+    if (!video || !container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <motion.div
+      ref={containerRef}
       initial={{ opacity: 0, y: 100, scale: 0.82, rotate: -3 }}
       whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-30px" }}
       transition={{
         duration: 1.4,
         ease: [0.22, 1, 0.36, 1],
@@ -553,18 +580,17 @@ function CharacterStage() {
         }}
       />
 
-      {/* The character video — pinned to the bottom edge with subtle idle float */}
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 z-10 isolate"
       >
         <video
-          autoPlay
+          ref={videoRef}
           loop
           muted
           playsInline
-          preload="auto"
+          preload="none"
           disablePictureInPicture
           className="h-full w-full select-none object-contain object-bottom mix-blend-screen [will-change:transform]"
           style={{ transform: "translate3d(0, 0, 0)" }}

@@ -22,7 +22,7 @@ export default function Reveal({
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
       className={className}
     >

@@ -145,7 +145,7 @@ export default function Contact() {
         {/* Header — centered */}
         <div className="text-center">
           <Reveal>
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-white/55 backdrop-blur-md">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-white/55 backdrop-blur-none md:backdrop-blur-md">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
@@ -170,7 +170,7 @@ export default function Contact() {
 
         {/* Lead Magnet Card */}
         <Reveal delay={0.15}>
-          <div className="relative mt-12 overflow-hidden rounded-3xl border border-emerald-500/20 bg-emerald-500/[0.02] p-6 backdrop-blur-md">
+          <div className="relative mt-12 overflow-hidden rounded-3xl border border-emerald-500/20 bg-emerald-500/[0.02] p-6 backdrop-blur-none md:backdrop-blur-md">
             {/* Visual pulse glow */}
             <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-emerald-500/10 blur-2xl" />
             
@@ -228,7 +228,7 @@ export default function Contact() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: "-30px" }}
             variants={{
               hidden: {},
               visible: { transition: { staggerChildren: 0.1 } },
@@ -278,9 +278,9 @@ export default function Contact() {
             onSubmit={onSubmit}
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: "-30px" }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] p-5 text-left backdrop-blur-md sm:p-6 md:p-8 lg:col-span-7"
+            className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] p-5 text-left backdrop-blur-none md:backdrop-blur-md sm:p-6 md:p-8 lg:col-span-7"
           >
           {/* Animated gradient border */}
           <div
@@ -486,7 +486,7 @@ function Pill({
   children: React.ReactNode;
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 backdrop-blur-md">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 backdrop-blur-none md:backdrop-blur-md">
       <span className="text-emerald-300">{icon}</span>
       {children}
     </span>
