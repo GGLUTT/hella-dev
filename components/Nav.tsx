@@ -13,9 +13,9 @@ const overlayVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.35, ease: "easeOut", staggerChildren: 0.06, delayChildren: 0.15 },
+    transition: { duration: 0.3, ease: "easeOut", staggerChildren: 0.05, delayChildren: 0.1 },
   },
-  exit: { opacity: 0, transition: { duration: 0.25, ease: "easeIn" } },
+  exit: { opacity: 0, transition: { duration: 0.2, ease: "easeIn" } },
 };
 
 const itemVariants: Variants = {
@@ -23,7 +23,7 @@ const itemVariants: Variants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -156,36 +156,22 @@ export default function Nav() {
             exit="exit"
             className="fixed inset-0 z-40 md:hidden"
           >
-            {/* Backdrop blur */}
+            {/* Solid dark overlay (no costly backdrop blur on mobile) */}
             <motion.div
-              className="absolute inset-0 bg-black/85 backdrop-blur-2xl"
+              className="absolute inset-0 bg-zinc-950/98"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             />
 
-            {/* Aurora glow */}
+            {/* Faint grid without CPU-heavy radial mask */}
             <div
               aria-hidden
-              className="pointer-events-none absolute -left-32 top-1/3 h-[420px] w-[420px] rounded-full bg-emerald-500/15 blur-[140px]"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-32 bottom-10 h-[380px] w-[380px] rounded-full bg-sky-500/15 blur-[140px]"
-            />
-
-            {/* Faint grid */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-[0.05]"
+              className="pointer-events-none absolute inset-0 opacity-[0.02]"
               style={{
                 backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+                  "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
                 backgroundSize: "48px 48px",
-                maskImage:
-                  "radial-gradient(ellipse at center, black 30%, transparent 80%)",
-                WebkitMaskImage:
-                  "radial-gradient(ellipse at center, black 30%, transparent 80%)",
               }}
             />
 
