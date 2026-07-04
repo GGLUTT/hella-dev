@@ -66,7 +66,7 @@ export default function Nav() {
         className="fixed left-0 right-0 top-0 z-50"
       >
         <div className="mx-auto mt-4 max-w-6xl px-4">
-          <div className="glass flex items-center justify-between rounded-full px-5 py-2.5">
+          <div className={`flex items-center justify-between rounded-full px-5 py-2.5 ${open ? "border border-white/10 bg-zinc-950" : "glass"}`}>
             <Link
               href="/"
               className="flex items-center gap-2 text-sm font-semibold tracking-wide"
@@ -158,7 +158,7 @@ export default function Nav() {
           >
             {/* Solid dark overlay (no costly backdrop blur on mobile) */}
             <motion.div
-              className="absolute inset-0 bg-zinc-950/98"
+              className="absolute inset-0 bg-zinc-950"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
