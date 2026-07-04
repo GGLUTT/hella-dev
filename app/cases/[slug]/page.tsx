@@ -58,5 +58,40 @@ export default function CaseStudyPage({ params }: Props) {
     notFound();
   }
 
-  return <CaseStudyClient caseItem={caseItem} />;
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.agency-hella.site";
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Головна",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Проєкти",
+        item: `${SITE_URL}/#projects`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: caseItem.title,
+        item: `${SITE_URL}/cases/${caseItem.slug}`,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <CaseStudyClient caseItem={caseItem} />
+    </>
+  );
 }

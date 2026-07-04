@@ -86,6 +86,7 @@ export const metadata: Metadata = {
     languages: {
       "uk": SITE_URL,
       "en": SITE_URL,
+      "x-default": SITE_URL,
     },
   },
   openGraph: {
@@ -135,7 +136,11 @@ const jsonLd = {
       "url": SITE_URL,
       "logo": `${SITE_URL}/favicon.png`,
       "sameAs": [
-        "https://github.com/GGLUTT"
+        "https://github.com/GGLUTT",
+        "https://www.linkedin.com/in/evgenii-lutiy-460797364/",
+        "https://www.instagram.com/gg_lutt/",
+        "https://www.tiktok.com/@hella.work44",
+        "https://t.me/GGLUTT"
       ]
     },
     {

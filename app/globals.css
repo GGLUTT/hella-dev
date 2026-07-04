@@ -100,8 +100,8 @@ section + section {
 .glass {
   background: linear-gradient(
     180deg,
-    rgba(var(--color-text-white) / 0.04),
-    rgba(var(--color-text-white) / 0.015)
+    rgba(var(--color-bg-black) / 0.85),
+    rgba(var(--color-bg-black) / 0.75)
   );
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
