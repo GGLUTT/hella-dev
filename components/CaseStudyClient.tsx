@@ -327,6 +327,36 @@ export default function CaseStudyClient({ caseItem }: { caseItem: CaseStudy }) {
         </div>
       </section>
 
+      {/* Case Gallery */}
+      {caseItem.galleryPaths && caseItem.galleryPaths.length > 0 && (
+        <section className="py-16 px-5 sm:px-6 relative z-10 max-w-7xl mx-auto border-t border-white/5">
+          <Reveal>
+            <h2 className="text-balance text-2xl sm:text-3xl font-semibold tracking-tight uppercase mb-8">
+              {t("Інтерфейс ", "Project ")}
+              <span className="bg-gradient-to-r from-white via-emerald-200 to-sky-200 bg-clip-text text-transparent">
+                {t("проєкту", "Gallery")}
+              </span>
+            </h2>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {caseItem.galleryPaths.map((imagePath, idx) => (
+              <Reveal key={idx} delay={idx * 0.1}>
+                <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 group shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
+                  <Image
+                    src={imagePath}
+                    alt={`${caseItem.title} screenshot ${idx + 1}`}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-102"
+                  />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Case CTA footer */}
       <section className="py-20 px-5 sm:px-6 text-center relative z-10 border-t border-white/5">
         <div className="max-w-3xl mx-auto">

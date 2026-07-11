@@ -142,7 +142,7 @@ export const SERVICES: ServiceDetail[] = [
         answer: "Так, завдяки компонентній структурі Next.js / React, ми можемо в будь-який момент додати нові сторінки, кабінети користувачів, блоги чи підключити додаткові сервіси."
       }
     ],
-    relatedCasesSlugs: ["budle-startup", "nts-soccer-academy", "store-platform"]
+    relatedCasesSlugs: ["budle-startup", "nts-soccer-academy", "store-platform", "apex-fitness-studio"]
   },
   {
     slug: "landing-page",
@@ -203,7 +203,7 @@ export const SERVICES: ServiceDetail[] = [
         answer: "Я налаштовую відстеження всіх важливих подій (кліки на кнопки, відправки форм, переходи в месенджери) в Google Analytics та Facebook Pixel. Ви бачитимете точну статистику конверсій."
       }
     ],
-    relatedCasesSlugs: ["kronos-agency", "iphone-3d-landing", "nike-concept"]
+    relatedCasesSlugs: ["kronos-agency", "iphone-3d-landing", "nike-concept", "apex-fitness-studio"]
   },
   {
     slug: "web-app-development",
