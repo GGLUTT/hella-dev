@@ -34,6 +34,18 @@ type RawProject = Omit<Project, "desc"> & { descUA: string; descEN: string };
 
 const RAW_PROJECTS: RawProject[] = [
   {
+    slug: "apex-fitness-studio",
+    name: "Apex Fitness Studio",
+    tag: "Fitness · Sport",
+    descUA: "Сучасний веб-сайт для мережі фітнес-клубів із інтерактивним розкладом занять, особистими кабінетами та онлайн-оплатою.",
+    descEN: "A modern fitness studio website featuring an interactive class schedule, customer portals, and online payments.",
+    stack: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"],
+    href: "https://gglutt.github.io/apex_fitnes/",
+    bannerPath: "/fitnes2.jpg",
+    framePath: "/fitnes1.jpg",
+    accent: "from-orange-500/40 via-amber-500/20 to-transparent",
+  },
+  {
     slug: "kronos-agency",
     name: "Kronos Agency",
     tag: "Real Estate · Brand",
@@ -143,18 +155,6 @@ const RAW_PROJECTS: RawProject[] = [
     href: "https://svitdtv.shop/",
     bannerPath: "/store-banner.jpg",
     accent: "from-emerald-500/40 via-teal-500/20 to-transparent",
-  },
-  {
-    slug: "apex-fitness-studio",
-    name: "Apex Fitness Studio",
-    tag: "Fitness · Sport",
-    descUA: "Сучасний веб-сайт для мережі фітнес-клубів із інтерактивним розкладом занять, особистими кабінетами та онлайн-оплатою.",
-    descEN: "A modern fitness studio website featuring an interactive class schedule, customer portals, and online payments.",
-    stack: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"],
-    href: "https://gglutt.github.io/apex_fitnes/",
-    bannerPath: "/fitnes1.jpg",
-    framePath: "/fitnes2.jpg",
-    accent: "from-teal-500/40 via-emerald-500/20 to-transparent",
   },
 ];
 

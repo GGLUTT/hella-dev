@@ -21,6 +21,34 @@ export interface CaseStudy {
 
 export const CASES: CaseStudy[] = [
   {
+    slug: "apex-fitness-studio",
+    title: "Apex Fitness Studio",
+    category: "Фітнес · Спорт",
+    shortDescription: "Сучасний веб-сайт для мережі фітнес-клубів із інтерактивним розкладом занять, особистими кабінетами клієнтів та інтеграцією онлайн-оплати.",
+    problem: "Клієнт потребував новий сучасний сайт, який би об'єднав інформацію про тренування, тренерський склад та ціни, а також дозволив користувачам купувати абонементи онлайн та записуватися на групові заняття в реальному часі.",
+    solution: "Розроблено висококонверсійний веб-сайт на Next.js. Інтегровано інтерактивну сітку розкладу занять з можливістю фільтрації за напрямками та тренерами. Створено особисті кабінети клієнтів для відстеження активних абонементів та спрощено процес купівлі через платіжні шлюзи Monobank/Stripe.",
+    features: [
+      "Інтерактивний розклад групових занять з фільтрацією",
+      "Онлайн-покупка абонементів та разових тренувань",
+      "Особисті кабінети клієнтів з історією відвідувань",
+      "Адаптивний мобільний інтерфейс з преміальними анімаціями"
+    ],
+    stack: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "Node.js"],
+    integrations: ["Monobank API", "Stripe API", "Telegram Bot API"],
+    resultDescription: "Завдяки зручній системі запису та оплати онлайн, конверсія сайту зросла на 42%, а навантаження на адміністраторів рецепції знизилося на 60% завдяки автоматизації оформлення абонементів.",
+    bannerPath: "/fitnes1.jpg",
+    framePath: "/fitnes2.jpg",
+    galleryPaths: ["/fitnes2.jpg", "/fitnes3.jpg"],
+    accent: "from-orange-500/40 via-amber-500/20 to-transparent",
+    relatedServices: [
+      { title: "Розробка Landing Page", href: "/landing-page" },
+      { title: "Створення сайтів у Києві", href: "/stvorennya-saitiv-kyiv" }
+    ],
+    seoTitle: "Кейс Apex Fitness Studio | Сайт для фітнес-клубу",
+    seoDescription: "Розробка сайту фітнес-студії Apex Fitness Studio на Next.js: інтерактивний розклад, онлайн-оплата абонементів, особистий кабінет. Деталі кейсу.",
+    liveUrl: "https://gglutt.github.io/apex_fitnes/"
+  },
+  {
     slug: "kronos-agency",
     title: "Kronos Agency",
     category: "Нерухомість · Бренд",
@@ -280,33 +308,5 @@ export const CASES: CaseStudy[] = [
     seoTitle: "Кейс Store Platform | Headless E-commerce на Next.js",
     seoDescription: "Як створити швидкий інтернет-магазин з показником PageSpeed 98/100. Інтеграція Headless Next.js, пошуку Algolia та автоматизації n8n.",
     liveUrl: "https://svitdtv.shop/"
-  },
-  {
-    slug: "apex-fitness-studio",
-    title: "Apex Fitness Studio",
-    category: "Фітнес · Спорт",
-    shortDescription: "Сучасний веб-сайт для мережі фітнес-клубів із інтерактивним розкладом занять, особистими кабінетами клієнтів та інтеграцією онлайн-оплати.",
-    problem: "Клієнт потребував новий сучасний сайт, який би об'єднав інформацію про тренування, тренерський склад та ціни, а також дозволив користувачам купувати абонементи онлайн та записуватися на групові заняття в реальному часі.",
-    solution: "Розроблено висококонверсійний веб-сайт на Next.js. Інтегровано інтерактивну сітку розкладу занять з можливістю фільтрації за напрямками та тренерами. Створено особисті кабінети клієнтів для відстеження активних абонементів та спрощено процес купівлі через платіжні шлюзи Monobank/Stripe.",
-    features: [
-      "Інтерактивний розклад групових занять з фільтрацією",
-      "Онлайн-покупка абонементів та разових тренувань",
-      "Особисті кабінети клієнтів з історією відвідувань",
-      "Адаптивний мобільний інтерфейс з преміальними анімаціями"
-    ],
-    stack: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "Node.js"],
-    integrations: ["Monobank API", "Stripe API", "Telegram Bot API"],
-    resultDescription: "Завдяки зручній системі запису та оплати онлайн, конверсія сайту зросла на 42%, а навантаження на адміністраторів рецепції знизилося на 60% завдяки автоматизації оформлення абонементів.",
-    bannerPath: "/fitnes1.jpg",
-    framePath: "/fitnes2.jpg",
-    galleryPaths: ["/fitnes2.jpg", "/fitnes3.jpg"],
-    accent: "from-teal-500/40 via-emerald-500/20 to-transparent",
-    relatedServices: [
-      { title: "Розробка Landing Page", href: "/landing-page" },
-      { title: "Створення сайтів у Києві", href: "/stvorennya-saitiv-kyiv" }
-    ],
-    seoTitle: "Кейс Apex Fitness Studio | Сайт для фітнес-клубу",
-    seoDescription: "Розробка сайту фітнес-студії Apex Fitness Studio на Next.js: інтерактивний розклад, онлайн-оплата абонементів, особистий кабінет. Деталі кейсу.",
-    liveUrl: "https://gglutt.github.io/apex_fitnes/"
   }
 ];
