@@ -84,8 +84,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
     languages: {
-      "uk": SITE_URL,
-      "en": SITE_URL,
+      "uk-UA": SITE_URL,
       "x-default": SITE_URL,
     },
   },
@@ -99,7 +98,7 @@ export const metadata: Metadata = {
     locale: "uk_UA",
     images: [
       {
-        url: `${SITE_URL}/og-image.png`,
+        url: `${SITE_URL}/preview.png`,
         width: 1200,
         height: 630,
         alt: "Lutiy Digital — Fullstack & Automation Studio",
@@ -112,7 +111,7 @@ export const metadata: Metadata = {
     description:
       "Студія Євгенія Лютого Lutiy Digital (раніше Hella Dev Agency): розробка швидких сайтів, веб-додатків та автоматизація бізнес-процесів (n8n, AI) в Україні.",
     creator: "@yevhenii_liutyi",
-    images: [`${SITE_URL}/og-image.png`],
+    images: [`${SITE_URL}/preview.png`],
   },
   icons: {
     icon: [
@@ -159,9 +158,8 @@ const jsonLd = {
       "name": "Lutiy Digital",
       "url": SITE_URL,
       "logo": `${SITE_URL}/favicon.png`,
-      "image": `${SITE_URL}/og-image.png`,
+      "image": `${SITE_URL}/preview.png`,
       "description": "Створення сайтів, веб-додатків та автоматизація бізнес-процесів за допомогою n8n та штучного інтелекту.",
-      "telephone": "",
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",

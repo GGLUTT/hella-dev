@@ -21,6 +21,14 @@ const socials = [
   { href: "mailto:newgglutt@gmail.com", label: "Email", icon: Mail01Icon },
 ];
 
+const serviceLinks = [
+  { href: "/stvorennya-saitiv-kyiv", ua: "Створення сайтів у Києві", en: "Web development in Kyiv" },
+  { href: "/stvorennya-saitiv-bila-tserkva", ua: "Створення сайтів у Білій Церкві", en: "Web development in Bila Tserkva" },
+  { href: "/landing-page", ua: "Розробка Landing Page", en: "Landing page development" },
+  { href: "/web-app-development", ua: "Розробка веб-застосунків", en: "Web application development" },
+  { href: "/n8n-automation", ua: "Автоматизація n8n", en: "n8n automation" },
+];
+
 const container: Variants = {
   hidden: {},
   visible: {
@@ -113,6 +121,22 @@ export default function Footer() {
             </a>
           ))}
         </motion.div>
+
+        <motion.nav
+          variants={item}
+          aria-label={t("Послуги", "Services")}
+          className="mt-10 flex flex-wrap justify-center gap-x-5 gap-y-3 text-center text-xs text-white/45"
+        >
+          {serviceLinks.map((service) => (
+            <Link
+              key={service.href}
+              href={service.href}
+              className="transition hover:text-white/80"
+            >
+              {t(service.ua, service.en)}
+            </Link>
+          ))}
+        </motion.nav>
 
         {/* Hairline */}
         <motion.div

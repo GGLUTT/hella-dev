@@ -269,7 +269,9 @@ function MobileDeck({ projects, viewLabel }: { projects: Project[]; viewLabel: s
     <div className="relative md:hidden px-5 py-12 flex flex-col items-center justify-center min-h-[75vh] overflow-hidden bg-black/5">
       {/* Card stack container */}
       <div className="relative w-full aspect-[3/4.2] max-w-sm flex items-center justify-center" style={{ perspective: 1200 }}>
-        {projects.map((p, i) => (
+        {projects.map((p, i) => ({ project: p, index: i }))
+          .filter(({ index }) => index >= activeIndex && index <= activeIndex + 2)
+          .map(({ project: p, index: i }) => (
           <MobileSwipeCard
             key={p.name}
             project={p}
@@ -382,7 +384,7 @@ function MobileSwipeCard({
           alt={`${project.name} - ${project.tag} by Lutiy Digital`}
           fill
           sizes="(max-width: 768px) 100vw, 380px"
-          priority={index < 2}
+          priority={index === 0}
           className="object-cover pointer-events-none"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />

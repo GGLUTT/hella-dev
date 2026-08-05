@@ -9,7 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
     },
@@ -19,7 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   SERVICES.forEach((service) => {
     routes.push({
       url: `${SITE_URL}/${service.slug}`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     });
@@ -29,7 +27,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   CASES.forEach((caseItem) => {
     routes.push({
       url: `${SITE_URL}/cases/${caseItem.slug}`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     });

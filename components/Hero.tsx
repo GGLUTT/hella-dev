@@ -87,7 +87,7 @@ export default function Hero() {
 
   // Control playing/pausing of video elements dynamically based on visibility and theme
   useEffect(() => {
-    if (!isHeroVisible) {
+    if (isMobile || !isHeroVisible) {
       lightVideoRef.current?.pause();
       darkVideoRef.current?.pause();
       return;
@@ -100,7 +100,7 @@ export default function Hero() {
       darkVideoRef.current?.play().catch(() => {});
       lightVideoRef.current?.pause();
     }
-  }, [theme, isHeroVisible]);
+  }, [theme, isHeroVisible, isMobile]);
 
   // Initialize and run auto-floating searchlight with visibility detection
   useEffect(() => {
@@ -164,7 +164,7 @@ export default function Hero() {
         const becameVisible = entry.isIntersecting && !localVisible;
         localVisible = entry.isIntersecting;
         setIsHeroVisible(entry.isIntersecting);
-        if (becameVisible) {
+        if (becameVisible && !isMobileDevice) {
           startTime = Date.now(); // Reset animation time anchor
           updateFloat();
         }
@@ -191,9 +191,6 @@ export default function Hero() {
       window.addEventListener("mousemove", handleMouseMoveStart);
       container.addEventListener("touchstart", handleTouchStart);
       container.addEventListener("touchend", handleTouchEnd);
-    } else {
-      // Trigger floating cycle directly on mobile
-      updateFloat();
     }
 
     return () => {
@@ -288,8 +285,6 @@ export default function Hero() {
 
   return (
     <>
-      <SplitLoader />
-
       <section
         ref={containerRef}
         onMouseMove={isMobile ? undefined : handleMouseMove}
@@ -312,6 +307,7 @@ export default function Hero() {
             loop
             muted
             playsInline
+            preload="metadata"
             style={{
               scale,
               filter: videoFilter,
@@ -320,7 +316,7 @@ export default function Hero() {
             transition={{ duration: 1.2, ease: "easeInOut" }}
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="/new-heros.mp4" type="video/mp4" />
+            <source media="(min-width: 768px)" src="/new-heros.mp4" type="video/mp4" />
           </motion.video>
 
           {/* Dark Theme Video */}
@@ -330,6 +326,7 @@ export default function Hero() {
             loop
             muted
             playsInline
+            preload="metadata"
             style={{
               scale,
               filter: videoFilter,
@@ -338,7 +335,7 @@ export default function Hero() {
             transition={{ duration: 1.2, ease: "easeInOut" }}
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="/dark-hero.mp4" type="video/mp4" />
+            <source media="(min-width: 768px)" src="/dark-hero.mp4" type="video/mp4" />
           </motion.video>
         </div>
 
@@ -376,8 +373,8 @@ export default function Hero() {
         {/* Layer 3: Central Hero Content Block */}
         <motion.div
           style={{
-            opacity: textOpacity,
-            y: textY,
+            opacity: isMobile ? 1 : textOpacity,
+            y: isMobile ? 0 : textY,
           }}
           className="relative z-30 flex flex-col items-center justify-center text-center max-w-4xl pointer-events-none mt-10"
         >
