@@ -175,30 +175,6 @@ export default function About() {
     span: item.span,
   }));
 
-  const HEADLINE_UA = [
-    { word: "Lutiy",             accent: false },
-    { word: "Digital",           accent: false },
-    { word: "—",                 accent: false },
-    { word: "персональна",       accent: true  },
-    { word: "dev-студія",        accent: true  },
-    { word: "Євгенія",           accent: false },
-    { word: "Лютого",            accent: false },
-  ];
-
-  const HEADLINE_EN = [
-    { word: "Lutiy",             accent: false },
-    { word: "Digital",           accent: false },
-    { word: "—",                 accent: false },
-    { word: "personal",          accent: true  },
-    { word: "dev",               accent: true  },
-    { word: "studio",            accent: true  },
-    { word: "of",                accent: false },
-    { word: "Yevhenii",          accent: false },
-    { word: "Liutyi",            accent: false },
-  ];
-
-  const HEADLINE = lang === "ua" ? HEADLINE_UA : HEADLINE_EN;
-
   return (
     <section
       id="about"
@@ -250,14 +226,30 @@ export default function About() {
       </motion.div>
 
       {/* ============ Intro over photo ============ */}
-      <div className="relative isolate flex min-h-[100svh] items-end overflow-hidden lg:min-h-[92vh] lg:items-center">
-        {/* Photo backdrop with slow Ken-Burns drift */}
+      <div className="relative isolate overflow-hidden bg-[#050507]">
+        {/* Layer 1 — the same photo, tiny & upscaled = free blur, fills every edge */}
+        <div aria-hidden className="absolute inset-0 -z-20">
+          <Image
+            src="/about-yevhenii-blur.webp"
+            alt=""
+            fill
+            sizes="10vw"
+            className="scale-110 object-cover opacity-80"
+          />
+          <div className="absolute inset-0 bg-[#050507]/55" />
+        </div>
+
+        {/* Layer 2 — sharp photo, edges dissolve into the blurred copy */}
         <motion.div
-          initial={{ scale: 1.12, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
+          initial={{ opacity: 0, scale: 1.06 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-x-0 top-0 -z-10 h-[64svh] sm:h-[70svh] lg:inset-y-0 lg:h-auto"
+          className="absolute inset-x-0 top-0 -z-10 h-[62svh] sm:h-[70svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[66%]"
+          style={{
+            maskImage: "radial-gradient(ellipse 62% 70% at 50% 42%, black 40%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(ellipse 62% 70% at 50% 42%, black 40%, transparent 100%)",
+          }}
         >
           <Image
             src="/about-yevhenii.webp"
@@ -266,35 +258,18 @@ export default function About() {
               "Yevhenii Liutyi — fullstack developer, founder of Lutiy Digital"
             )}
             fill
-            sizes="100vw"
+            sizes="(min-width: 1024px) 66vw, 100vw"
             quality={80}
-            className="object-cover object-[52%_25%] lg:object-[0%_center] 2xl:object-[20%_center]"
+            className="object-cover object-[52%_30%] lg:object-[50%_center]"
           />
         </motion.div>
 
-        {/* Contrast layers — photo is dark in both themes, so overlays are fixed-colour */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-40% via-[#050507]/80 via-55% to-[#050507]/0 lg:bg-gradient-to-r lg:from-[#050507] lg:via-[#050507]/75 lg:via-40% lg:to-transparent" />
-        <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-28 bg-gradient-to-b from-transparent to-black" />
-        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-24 bg-gradient-to-t from-transparent to-black" />
+        {/* Readability: darken behind the copy only */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-35% via-[#050507]/70 via-50% to-transparent lg:bg-gradient-to-r lg:from-[#050507] lg:from-10% lg:via-[#050507]/60 lg:via-40% lg:to-transparent lg:to-60%" />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-black" />
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-t from-transparent to-black" />
 
-        {/* Floating chips */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-          className="absolute right-4 top-24 z-10 flex items-center gap-2 rounded-full border border-neutral-50/15 bg-[#050507]/50 px-3 py-1.5 backdrop-blur-md md:right-10 md:top-28"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-100">
-            {t("Приймаю проєкти", "Available for work")}
-          </span>
-        </motion.div>
-
-        <div className="relative mx-auto w-full max-w-7xl px-6 pb-16 pt-[50svh] lg:py-28">
+        <div className="relative mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col justify-end px-6 pb-20 pt-[52svh] lg:min-h-[100vh] lg:justify-center lg:py-32">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -304,75 +279,119 @@ export default function About() {
           >
             <motion.div
               variants={fadeUp}
-              className="mb-6 flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-neutral-400"
+              className="mb-7 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-neutral-500 sm:text-[11px]"
             >
-              <span className="inline-block h-px w-10 bg-gradient-to-r from-transparent to-neutral-400" />
-              {t("Про мене", "About")}
+              <span>02</span>
+              <span className="h-px w-10 bg-neutral-600" />
+              {t("Про студію", "About the studio")}
             </motion.div>
 
-            <h2 className="flex flex-wrap font-display text-[26px] font-bold uppercase leading-[1.08] tracking-tight text-neutral-50 sm:text-[40px] md:text-[44px] xl:text-[50px]">
-              {HEADLINE.map((w, i) => (
-                <span key={i} className="mr-[0.25em] inline-flex overflow-hidden pb-[0.12em]">
+            <h2 className="font-display text-[27px] font-bold uppercase leading-[1.04] tracking-[-0.02em] sm:text-[44px] xl:text-[60px]">
+              {[
+                { text: "Lutiy Digital", muted: false },
+                { text: t("персональна", "a personal"), muted: true },
+                { text: t("dev-студія", "dev studio"), muted: true },
+              ].map((l, i) => (
+                <span key={i} className="block overflow-hidden pb-[0.05em]">
                   <motion.span
                     variants={wordReveal}
-                    className={
-                      "inline-block " +
-                      (w.accent
-                        ? "bg-[linear-gradient(100deg,#6ee7b7,#7dd3fc_55%,#c4b5fd)] bg-clip-text text-transparent"
-                        : "")
-                    }
+                    className={"block " + (l.muted ? "text-neutral-500" : "text-neutral-50")}
                   >
-                    {w.word}
+                    {l.text}
                   </motion.span>
                 </span>
               ))}
             </h2>
 
-            <motion.div
+            <motion.p
               variants={fadeUp}
-              className="mt-7 space-y-4 text-[15px] leading-relaxed text-neutral-300 md:text-lg"
+              className="mt-7 text-[15px] leading-relaxed text-neutral-300 md:text-[17px]"
             >
-              <p>
-                {t(
-                  "Я допомагаю бізнесам запускати швидкі сайти, веб-застосунки, кабінети клієнтів, інтеграції з CRM та автоматизації. Працюю напряму: занурююсь у задачу, пропоную рішення, розробляю frontend, backend та інтеграції й доводжу проєкт до запуску.",
-                  "I help businesses launch fast websites, web apps, client portals, CRM integrations and automations. I work directly with you: dive into the task, propose a solution, build frontend, backend and integrations, and take the project to launch."
-                )}
-              </p>
-              <p className="text-neutral-400">
-                {t(
-                  "Мій фокус — не просто код, а рішення, що приносить заявки, пришвидшує обробку клієнтів і прибирає ручну роботу.",
-                  "My focus isn't just code — it's a solution that brings leads, speeds up client handling and removes manual work."
-                )}
-              </p>
-            </motion.div>
+              {t(
+                "Я — Євгеній Лютий, fullstack-розробник. Кожен проєкт веду особисто: від першої розмови та прототипу до запуску й підтримки.",
+                "I'm Yevhenii Liutyi, a fullstack developer. I run every project personally — from the first call and prototype to launch and support."
+              )}
+            </motion.p>
 
-            <motion.div
-              variants={fadeUp}
-              className="mt-10 grid grid-cols-3 gap-6 border-t border-neutral-50/15 pt-7"
-            >
-              {STATS.map((s, i) => (
-                <div key={s.labelUA}>
-                  <div className="text-3xl font-semibold tracking-tight text-neutral-50 md:text-4xl">
-                    <CountUp from={0} to={s.to} duration={1.8} delay={0.5 + i * 0.15} />
-                    <span>{s.suffix}</span>
-                  </div>
-                  <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-neutral-400 sm:text-[10px] sm:tracking-[0.25em]">
-                    {t(s.labelUA, s.labelEN)}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+            {/* Principles */}
+            <motion.ol variants={fadeUp} className="mt-9 border-t border-neutral-50/10">
+              {[
+                {
+                  ua: ["Напряму з розробником", "Без менеджерів і зіпсованого телефону — ви говорите з тим, хто пише код."],
+                  en: ["Direct line to the developer", "No managers, no broken telephone — you talk to the person writing the code."],
+                },
+                {
+                  ua: ["Сайт як частина системи", "Форми, CRM, Telegram та автоматизації працюють разом, а не окремо."],
+                  en: ["Your site as part of a system", "Forms, CRM, Telegram and automations work together, not in isolation."],
+                },
+                {
+                  ua: ["Результат, а не макет", "Швидкість, SEO і конверсія закладаються з першого дня."],
+                  en: ["Results, not mockups", "Speed, SEO and conversion are built in from day one."],
+                },
+              ].map((item, i) => {
+                const [title, desc] = lang === "ua" ? item.ua : item.en;
+                return (
+                  <li
+                    key={i}
+                    className="group grid grid-cols-[2.5rem_1fr] gap-x-3 border-b border-neutral-50/10 py-4 transition-colors hover:border-neutral-50/25"
+                  >
+                    <span className="pt-0.5 font-mono text-[11px] text-neutral-600 transition-colors group-hover:text-emerald-400">
+                      0{i + 1}
+                    </span>
+                    <div>
+                      <h3 className="text-[15px] font-semibold text-neutral-100">{title}</h3>
+                      <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">{desc}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </motion.ol>
 
-            <motion.a
-              variants={fadeUp}
-              href="#contact"
-              className="mt-10 inline-flex items-center gap-3 rounded-full border border-neutral-50/20 bg-neutral-50/[0.06] px-6 py-3 font-mono text-[11px] uppercase tracking-widest text-neutral-50 backdrop-blur-md transition hover:border-emerald-300/50 hover:bg-emerald-300/10"
-            >
-              {t("Обговорити ваш проєкт", "Discuss your project")}
-              <span aria-hidden>→</span>
-            </motion.a>
+            {/* Stats + CTA */}
+            <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-end justify-between gap-8">
+              <div className="flex gap-8">
+                {STATS.map((s, i) => (
+                  <div key={s.labelUA}>
+                    <div className="font-display text-2xl font-semibold tracking-tight text-neutral-50 md:text-3xl">
+                      <CountUp from={0} to={s.to} duration={1.8} delay={0.5 + i * 0.15} />
+                      <span>{s.suffix}</span>
+                    </div>
+                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-neutral-500 sm:text-[10px]">
+                      {t(s.labelUA, s.labelEN)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="#contact"
+                className="group inline-flex items-center gap-3 rounded-full border border-neutral-50/20 px-6 py-3 font-mono text-[11px] uppercase tracking-widest text-neutral-50 transition hover:border-neutral-50/50 hover:bg-neutral-50/[0.05]"
+              >
+                {t("Обговорити проєкт", "Discuss a project")}
+                <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+              </a>
+            </motion.div>
           </motion.div>
         </div>
+
+        {/* Signature card over the photo */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute right-4 top-24 flex items-center gap-3 rounded-2xl border border-neutral-50/10 bg-[#050507]/50 px-4 py-3 backdrop-blur-md lg:bottom-16 lg:right-10 lg:top-auto"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+          </span>
+          <div className="leading-tight">
+            <div className="text-[13px] font-semibold text-neutral-50">{t("Євгеній Лютий", "Yevhenii Liutyi")}</div>
+            <div className="text-[9px] uppercase tracking-[0.25em] text-neutral-400">
+              {t("Засновник · приймаю проєкти", "Founder · open for work")}
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* ============ Why Choose Me block ============ */}

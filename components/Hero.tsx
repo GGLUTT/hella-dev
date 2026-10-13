@@ -1,138 +1,94 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLang } from "@/context/LangContext";
-import { useTheme } from "@/context/ThemeContext";
 import MagneticButton from "@/components/MagneticButton";
 import HeroShape from "@/components/HeroShape";
 
 /* ===================== CONFIG ===================== */
 const STICKER_CHARS = ["l", "u", "t", "i", "y"];
 
-const contentVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.4,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 24, opacity: 0, filter: "blur(4px)" },
-  visible: {
-    y: 0,
-    opacity: 1,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.85,
-      ease: [0.16, 1, 0.3, 1], // easeOutExpo
-    },
-  },
-};
-
-const charVariants = {
-  hidden: { opacity: 0, y: 4 },
-  visible: {
-    opacity: [0, 0.45, 0.15, 0.9, 0.6, 1], // hologram boot-up flicker
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-};
-
-const eyebrowContainerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.035,
-      delayChildren: 0.65,
-    },
-  },
-};
-
 /* ===================== HERO MAIN ===================== */
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 const TRUST = [
-  { val: "10+", ua: "проєктів", en: "projects" },
-  { val: "$150", ua: "сайт від", en: "sites from" },
-  { val: "48h", ua: "старт роботи", en: "kick-off" },
-  { val: "24h", ua: "AI-аудит", en: "AI audit" },
+  { val: "10+", ua: "запущених проєктів", en: "projects shipped" },
+  { val: "$150", ua: "старт ціни за сайт", en: "websites from" },
+  { val: "24h", ua: "безкоштовний AI-аудит", en: "free AI audit" },
 ];
 
 const SERVICES = [
   { ua: "Лендінги", en: "Landing pages" },
   { ua: "Корпоративні сайти", en: "Business websites" },
   { ua: "Веб-застосунки", en: "Web apps" },
-  { ua: "CRM та n8n-автоматизація", en: "CRM & n8n automation" },
+  { ua: "CRM та n8n", en: "CRM & n8n" },
   { ua: "AI-інтеграції", en: "AI integrations" },
 ];
 
+/** One headline line revealed from behind a mask, with a blur-to-sharp settle. */
+function Line({ children, delay, muted }: { children: React.ReactNode; delay: number; muted?: boolean }) {
+  return (
+    <span className="block overflow-hidden pb-[0.06em]">
+      <motion.span
+        initial={{ y: "105%", filter: "blur(10px)", opacity: 0 }}
+        animate={{ y: "0%", filter: "blur(0px)", opacity: 1 }}
+        transition={{ duration: 1.2, delay, ease: EASE }}
+        className={"block " + (muted ? "text-white/35" : "text-white")}
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+}
+
 export default function Hero() {
   const { t } = useLang();
-  const { theme } = useTheme();
-  const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollY } = useScroll();
   const contentOpacity = useTransform(scrollY, [0, 520], [1, 0]);
   const contentY = useTransform(scrollY, [0, 600], [0, -60]);
-  const shapeY = useTransform(scrollY, [0, 700], [0, 120]);
-  const shapeScale = useTransform(scrollY, [0, 700], [1, 0.9]);
+  const shapeY = useTransform(scrollY, [0, 700], [0, 140]);
 
   const scrollTo = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  const headline = t(
-    "Сайти та веб-застосунки, що приводять клієнтів",
-    "Websites & web apps that bring you clients"
-  );
-  const words = headline.split(" ");
-  // last two words get the iridescent accent
-  const accentFrom = words.length - 2;
-
   return (
     <section
-      ref={sectionRef}
       id="hero"
       aria-label={t("Розробка сайтів — Lutiy Digital", "Web development — Lutiy Digital")}
-      className="relative flex min-h-[100svh] w-full items-end overflow-hidden bg-black px-5 pb-16 pt-28 sm:px-8 md:items-center md:pb-24 md:pt-32"
+      className="relative flex min-h-[100svh] w-full items-end overflow-hidden bg-black px-5 pb-14 pt-[40svh] sm:px-8 md:items-center md:pb-16 md:pt-28 [@media(max-aspect-ratio:7/5)]:items-end [@media(max-aspect-ratio:7/5)]:pb-16 [@media(max-aspect-ratio:7/5)]:pt-[40svh]"
     >
-      {/* Ambient backdrop — static, GPU-cheap */}
+      {/* Backdrop: faint grid + a barely-there green light source behind the shape */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
-        <div className="absolute right-[-10%] top-[5%] h-[60vmin] w-[60vmin] rounded-full bg-emerald-500/10 blur-[100px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] h-[50vmin] w-[50vmin] rounded-full bg-sky-500/10 blur-[100px]" />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2.4, delay: 0.6 }}
+          className="absolute left-1/2 top-[22%] h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/[0.07] blur-[110px] md:left-[72%] md:top-1/2"
+        />
         <div
-          className="absolute inset-0 opacity-[0.05]"
+          className="absolute inset-0 opacity-[0.045]"
           style={{
             backgroundImage:
               "linear-gradient(rgb(var(--color-text-white)) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--color-text-white)) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-            maskImage: "radial-gradient(ellipse 80% 70% at 60% 45%, black, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 60% 45%, black, transparent 75%)",
+            backgroundSize: "64px 64px",
+            maskImage: "radial-gradient(ellipse 70% 60% at 65% 45%, black, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 65% 45%, black, transparent 75%)",
           }}
         />
       </div>
 
-      {/* Iridescent WebGL shape */}
-      <motion.div
-        style={{ y: shapeY, scale: shapeScale }}
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-        className="absolute inset-0 z-10"
-      >
-        <HeroShape theme={theme} className="relative h-full w-full" />
+      {/* Dark liquid shape (WebGL) */}
+      <motion.div style={{ y: shapeY }} className="absolute inset-0 z-10">
+        <HeroShape className="relative h-full w-full" />
       </motion.div>
 
       {/* Readability fade under copy on mobile */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[65%] bg-gradient-to-t from-black via-black/80 to-transparent md:hidden"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[70%] bg-gradient-to-t from-black from-50% via-black/80 to-transparent [@media(min-aspect-ratio:7/5)]:hidden"
       />
 
       {/* Content */}
@@ -140,75 +96,63 @@ export default function Hero() {
         style={{ opacity: contentOpacity, y: contentY }}
         className="relative z-20 mx-auto w-full max-w-7xl"
       >
-        <motion.div
-          variants={contentVariants}
-          initial="hidden"
-          animate="visible"
-          className="flex max-w-2xl flex-col items-start lg:max-w-[44rem] xl:max-w-[50rem]"
-        >
-          <motion.div variants={itemVariants}>
+        <div className="flex max-w-2xl flex-col items-start lg:max-w-[54rem]">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
+          >
             <HellaSticker />
           </motion.div>
 
-          {/* Eyebrow */}
-          <motion.p
-            variants={eyebrowContainerVariants}
-            className="mt-6 flex flex-wrap items-center font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-500 sm:text-[11px]"
-          >
-            {t(
-              "Веб-розробка · Автоматизація · AI",
-              "Web development · Automation · AI"
-            )
-              .split(" ")
-              .map((w, i) => (
-                <motion.span key={i} variants={charVariants} className="mr-2 inline-block">
-                  {w}
-                </motion.span>
-              ))}
-          </motion.p>
+          {/* Eyebrow with drawing rule */}
+          <div className="mt-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.35em] text-white/50 sm:text-[11px]">
+            <motion.span
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 0.35, ease: EASE }}
+              className="h-px w-10 origin-left bg-white/40"
+            />
+            <motion.span
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.55, ease: EASE }}
+            >
+              {t("Студія веб-розробки · Київ", "Web development studio · Kyiv")}
+            </motion.span>
+          </div>
 
-          {/* H1 — primary SEO keywords */}
-          <h1 className="mt-4 font-display text-[2rem] font-bold uppercase leading-[1.06] tracking-[-0.02em] text-white sm:text-[2.8rem] md:text-[3rem] lg:text-[3.3rem] xl:text-[3.9rem]">
-            {words.map((word, i) => (
-              <span key={i} className="mr-[0.22em] inline-block overflow-hidden pb-[0.08em] align-bottom">
-                <motion.span
-                  initial={{ y: "110%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 0.95, delay: 0.35 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                  className={
-                    "inline-block " +
-                    (i >= accentFrom
-                      ? "bg-[linear-gradient(100deg,#10b981,#38bdf8_45%,#a78bfa_75%,#f59e0b)] bg-clip-text text-transparent"
-                      : "")
-                  }
-                >
-                  {word}
-                </motion.span>
-              </span>
-            ))}
+          {/* H1 — main SEO phrase, monochrome */}
+          <h1 className="mt-5 font-display text-[1.9rem] font-bold uppercase leading-[1.02] tracking-[-0.025em] sm:text-[2.9rem] md:text-[3.2rem] lg:text-[3.2rem] xl:text-[3.7rem]">
+            <Line delay={0.5}>{t("Сайти та", "Websites &")}</Line>
+            <Line delay={0.62}>{t("веб-застосунки,", "web apps")}</Line>
+            <Line delay={0.74} muted>{t("що приносять", "that bring")}</Line>
+            <Line delay={0.86} muted>{t("заявки", "you leads")}</Line>
           </h1>
 
           <motion.p
-            variants={itemVariants}
-            className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400 sm:text-base md:text-lg"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.05, ease: EASE }}
+            className="mt-6 max-w-lg text-[15px] leading-relaxed text-white/55 md:text-base"
           >
             {t(
-              "Розробляю сайти під ключ, кабінети клієнтів, інтеграції з CRM і автоматизації на n8n. Швидко, з SEO з першого дня і без ручної рутини — ви отримуєте заявки, а не просто красиву сторінку.",
-              "I build turnkey websites, client portals, CRM integrations and n8n automations. Fast, SEO-ready from day one and free of manual routine — you get leads, not just a pretty page."
+              "Проєктую й розробляю сайти під ключ, кабінети клієнтів та автоматизації з CRM. Швидкі, з SEO з першого дня — щоб клієнти знаходили вас і залишали заявки.",
+              "I design and build turnkey websites, client portals and CRM automations. Fast and SEO-ready from day one — so clients find you and get in touch."
             )}
           </motion.p>
 
-          {/* Service keywords — crawlable list */}
+          {/* Service keywords — crawlable */}
           <motion.ul
-            variants={itemVariants}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.2 }}
             aria-label={t("Послуги", "Services")}
-            className="mt-6 flex flex-wrap gap-2"
+            className="mt-5 hidden flex-wrap items-center gap-x-3 gap-y-1 font-mono sm:flex text-[10px] uppercase tracking-[0.2em] text-white/40 sm:text-[11px]"
           >
-            {SERVICES.map((s) => (
-              <li
-                key={s.en}
-                className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium text-zinc-300 backdrop-blur-sm sm:text-xs"
-              >
+            {SERVICES.map((s, i) => (
+              <li key={s.en} className="flex items-center gap-3">
+                {i > 0 && <span aria-hidden className="h-1 w-1 rounded-full bg-emerald-500/60" />}
                 {t(s.ua, s.en)}
               </li>
             ))}
@@ -216,8 +160,10 @@ export default function Hero() {
 
           {/* CTAs */}
           <motion.div
-            variants={itemVariants}
-            className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.3, ease: EASE }}
+            className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
           >
             <MagneticButton
               as="button"
@@ -227,7 +173,7 @@ export default function Hero() {
               data-event="click_hero_cta"
               className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-white px-8 py-4 font-mono text-xs font-semibold uppercase tracking-widest text-black transition hover:bg-white/90 sm:w-auto"
             >
-              <span className="relative z-10">{t("Безкоштовна консультація", "Free consultation")}</span>
+              <span className="relative z-10">{t("Обговорити проєкт", "Discuss a project")}</span>
               <span aria-hidden className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">→</span>
             </MagneticButton>
             <MagneticButton
@@ -236,32 +182,39 @@ export default function Hero() {
               glowBorder={false}
               strength={0.25}
               data-event="click_view_cases"
-              className="relative flex w-full items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/[0.03] px-8 py-4 font-mono text-xs uppercase tracking-widest text-white backdrop-blur-sm transition hover:border-white/30 sm:w-auto"
+              className="relative flex w-full items-center justify-center overflow-hidden rounded-full border border-white/15 px-8 py-4 font-mono text-xs uppercase tracking-widest text-white transition hover:border-white/40 sm:w-auto"
             >
-              {t("Подивитися кейси", "View case studies")}
+              {t("Дивитися кейси", "View case studies")}
             </MagneticButton>
           </motion.div>
 
           {/* Trust row */}
           <motion.dl
-            variants={itemVariants}
-            className="mt-10 grid w-full max-w-xl grid-cols-2 gap-x-6 gap-y-3 border-t border-white/10 pt-6 sm:grid-cols-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 1.5 }}
+            className="mt-8 grid w-full max-w-lg grid-cols-3 gap-4 border-t border-white/10 pt-6"
           >
             {TRUST.map((item) => (
-              <div key={item.en} className="flex flex-col-reverse">
-                <dt className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">{t(item.ua, item.en)}</dt>
-                <dd className="text-lg font-semibold tracking-tight text-white">{item.val}</dd>
+              <div key={item.en} className="flex flex-col-reverse gap-1">
+                <dt className="text-[9px] uppercase leading-snug tracking-[0.18em] text-white/40 sm:text-[10px]">{t(item.ua, item.en)}</dt>
+                <dd className="font-display text-xl font-semibold tracking-tight text-white sm:text-2xl">{item.val}</dd>
               </div>
             ))}
           </motion.dl>
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* Corner labels */}
-      <div className="pointer-events-none absolute inset-x-8 bottom-6 z-20 hidden items-center justify-between font-mono text-[9px] uppercase tracking-[0.4em] text-white/35 md:flex">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, delay: 1.8 }}
+        className="pointer-events-none absolute inset-x-8 bottom-6 z-20 hidden items-center justify-between font-mono text-[9px] uppercase tracking-[0.4em] text-white/30 md:flex"
+      >
         <span>Lutiy Digital · MMXXVI</span>
-        <span>Kyiv / Remote</span>
-      </div>
+        <span>{t("Гортайте", "Scroll")} ↓</span>
+      </motion.div>
     </section>
   );
 }
