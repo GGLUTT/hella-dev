@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useLang } from "@/context/LangContext";
 import { useTheme } from "@/context/ThemeContext";
 import MagneticButton from "@/components/MagneticButton";
+import HeroShape from "@/components/HeroShape";
 
 /* ===================== CONFIG ===================== */
 const STICKER_CHARS = ["l", "u", "t", "i", "y"];
-const LOADER_DURATION = 1800;
 
 const contentVariants = {
   hidden: { opacity: 0 },
@@ -58,604 +58,211 @@ const eyebrowContainerVariants = {
 
 /* ===================== HERO MAIN ===================== */
 
+const TRUST = [
+  { val: "10+", ua: "проєктів", en: "projects" },
+  { val: "$150", ua: "сайт від", en: "sites from" },
+  { val: "48h", ua: "старт роботи", en: "kick-off" },
+  { val: "24h", ua: "AI-аудит", en: "AI audit" },
+];
+
+const SERVICES = [
+  { ua: "Лендінги", en: "Landing pages" },
+  { ua: "Корпоративні сайти", en: "Business websites" },
+  { ua: "Веб-застосунки", en: "Web apps" },
+  { ua: "CRM та n8n-автоматизація", en: "CRM & n8n automation" },
+  { ua: "AI-інтеграції", en: "AI integrations" },
+];
+
 export default function Hero() {
   const { t } = useLang();
   const { theme } = useTheme();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const lightVideoRef = useRef<HTMLVideoElement>(null);
-  const darkVideoRef = useRef<HTMLVideoElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isHeroVisible, setIsHeroVisible] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
-
-  // Shutter scale animation on mount
-  const entranceScale = useSpring(0, { stiffness: 85, damping: 18 });
-  useEffect(() => {
-    entranceScale.set(1);
-  }, [entranceScale]);
-
-  // Raw motion values for cursor lens coords
-  const lensX = useMotionValue(0);
-  const lensY = useMotionValue(0);
-
-  // Smooth springs for inertia on coords
-  const smoothLensX = useSpring(lensX, { stiffness: 90, damping: 20 });
-  const smoothLensY = useSpring(lensY, { stiffness: 90, damping: 20 });
-
-  // Control playing/pausing of video elements dynamically based on visibility and theme
-  useEffect(() => {
-    if (isMobile || !isHeroVisible) {
-      lightVideoRef.current?.pause();
-      darkVideoRef.current?.pause();
-      return;
-    }
-
-    if (theme === "light") {
-      lightVideoRef.current?.play().catch(() => {});
-      darkVideoRef.current?.pause();
-    } else {
-      darkVideoRef.current?.play().catch(() => {});
-      lightVideoRef.current?.pause();
-    }
-  }, [theme, isHeroVisible, isMobile]);
-
-  // Initialize and run auto-floating searchlight with visibility detection
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    let isInteracting = false;
-    let idleTimeout: NodeJS.Timeout;
-    let animationFrameId: number;
-    let startTime = Date.now();
-    let localVisible = true;
-
-    // Default coordinates set
-    const rect = container.getBoundingClientRect();
-    const initX = rect.width > 0 ? rect.width / 2 : window.innerWidth / 2;
-    const initY = rect.height > 0 ? rect.height * 0.38 : window.innerHeight * 0.38;
-    lensX.set(initX);
-    lensY.set(initY);
-
-    const startInteraction = () => {
-      isInteracting = true;
-      clearTimeout(idleTimeout);
-    };
-
-    const stopInteraction = () => {
-      clearTimeout(idleTimeout);
-      idleTimeout = setTimeout(() => {
-        isInteracting = false;
-        startTime = Date.now(); // Reset time to avoid jump in math
-      }, 2500); // Resume floating after 2.5s of idle
-    };
-
-    const updateFloat = () => {
-      if (!localVisible) return;
-      if (!isInteracting) {
-        const containerRect = container.getBoundingClientRect();
-        const w = containerRect.width > 0 ? containerRect.width : window.innerWidth;
-        const h = containerRect.height > 0 ? containerRect.height : window.innerHeight;
-        
-        const elapsed = (Date.now() - startTime) / 1000;
-        
-        // Dynamic smooth orbit around center
-        const centerX = w / 2;
-        const centerY = h * 0.38;
-        const radiusX = w * 0.25; 
-        const radiusY = h * 0.12;
-
-        const targetX = centerX + Math.cos(elapsed * 0.6) * radiusX;
-        const targetY = centerY + Math.sin(elapsed * 1.0) * radiusY;
-
-        lensX.set(targetX);
-        lensY.set(targetY);
-      }
-      animationFrameId = requestAnimationFrame(updateFloat);
-    };
-
-    // Use IntersectionObserver to stop floating rendering loop when offscreen
-    const isMobileDevice = window.innerWidth < 768;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const becameVisible = entry.isIntersecting && !localVisible;
-        localVisible = entry.isIntersecting;
-        setIsHeroVisible(entry.isIntersecting);
-        if (becameVisible && !isMobileDevice) {
-          startTime = Date.now(); // Reset animation time anchor
-          updateFloat();
-        }
-      },
-      { threshold: 0.01 }
-    );
-    observer.observe(container);
-
-    // Listeners to track interaction on desktop
-    const handleMouseMoveStart = () => {
-      startInteraction();
-      stopInteraction();
-    };
-
-    const handleTouchStart = () => {
-      startInteraction();
-    };
-
-    const handleTouchEnd = () => {
-      stopInteraction();
-    };
-
-    if (!isMobileDevice) {
-      window.addEventListener("mousemove", handleMouseMoveStart);
-      container.addEventListener("touchstart", handleTouchStart);
-      container.addEventListener("touchend", handleTouchEnd);
-    }
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      clearTimeout(idleTimeout);
-      observer.disconnect();
-      if (!isMobileDevice) {
-        window.removeEventListener("mousemove", handleMouseMoveStart);
-        container.removeEventListener("touchstart", handleTouchStart);
-        container.removeEventListener("touchend", handleTouchEnd);
-      }
-    };
-  }, [lensX, lensY]);
-
-  // Scroll animations
   const { scrollY } = useScroll();
+  const contentOpacity = useTransform(scrollY, [0, 520], [1, 0]);
+  const contentY = useTransform(scrollY, [0, 600], [0, -60]);
+  const shapeY = useTransform(scrollY, [0, 700], [0, 120]);
+  const shapeScale = useTransform(scrollY, [0, 700], [1, 0.9]);
 
-  // Scroll radius shrinks like a camera shutter close (from 140px to 0px)
-  const lensRadius = useTransform(scrollY, [0, 380], [140, 0]);
-  const smoothRadius = useSpring(lensRadius, { stiffness: 110, damping: 22 });
+  const scrollTo = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  // Subscribe and map lens coordinates, radius, and entrance scale variables
-  useEffect(() => {
-    const updateRadius = () => {
-      const radiusVal = smoothRadius.get();
-      const scaleVal = entranceScale.get();
-      containerRef.current?.style.setProperty("--lens-radius", `${radiusVal * scaleVal}px`);
-    };
-
-    const unsubX = smoothLensX.on("change", (v) => {
-      containerRef.current?.style.setProperty("--mouse-x", `${v}px`);
-    });
-    const unsubY = smoothLensY.on("change", (v) => {
-      containerRef.current?.style.setProperty("--mouse-y", `${v}px`);
-    });
-    const unsubRadius = smoothRadius.on("change", () => {
-      updateRadius();
-    });
-    const unsubEntrance = entranceScale.on("change", () => {
-      updateRadius();
-    });
-
-    return () => {
-      unsubX();
-      unsubY();
-      unsubRadius();
-      unsubEntrance();
-    };
-  }, [smoothLensX, smoothLensY, smoothRadius, entranceScale]);
-
-  // Background video zoom & exit blur (smoothed with springs)
-  const scaleRaw = useTransform(scrollY, [0, 600], [1.0, 1.12]);
-  const scale = useSpring(scaleRaw, { stiffness: 90, damping: 20 });
-
-  const blurRaw = useTransform(scrollY, [0, 500], [0, 8]);
-  const blurVal = useSpring(blurRaw, { stiffness: 90, damping: 20 });
-  const videoFilter = useTransform(blurVal, (b) => {
-    if (isMobile) {
-      return "none"; // Disable costly filters on mobile to maintain 60/120fps scrolling
-    }
-    return `saturate(1.1) brightness(0.8) blur(${b}px)`;
-  });
-
-  // Text container scroll parallax exit (smoothed)
-  const textOpacityRaw = useTransform(scrollY, [0, 450], [1.0, 0]);
-  const textOpacity = useSpring(textOpacityRaw, { stiffness: 90, damping: 20 });
-
-  const textYRaw = useTransform(scrollY, [0, 600], [0, -100]);
-  const textY = useSpring(textYRaw, { stiffness: 90, damping: 20 });
-
-  const updateCoordinates = (clientX: number, clientY: number) => {
-    lensX.set(clientX);
-    lensY.set(clientY);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    updateCoordinates(e.clientX, e.clientY);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (e.touches.length > 0) {
-      updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
-
-  const handleScrollToContact = () => {
-    const el = document.getElementById("contact");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const headline = t(
+    "Сайти та веб-застосунки, що приводять клієнтів",
+    "Websites & web apps that bring you clients"
+  );
+  const words = headline.split(" ");
+  // last two words get the iridescent accent
+  const accentFrom = words.length - 2;
 
   return (
-    <>
-      <section
-        ref={containerRef}
-        onMouseMove={isMobile ? undefined : handleMouseMove}
-        onTouchMove={isMobile ? undefined : handleTouchMove}
-        className="min-h-[100svh] w-full relative bg-zinc-950 overflow-hidden flex flex-col justify-center items-center py-20 px-6 select-none"
-        style={
-          {
-            "--mouse-x": "50%",
-            "--mouse-y": "38%",
-            "--lens-radius": "140px",
-          } as any
-        }
-      >
-        {/* Layer 0: Cinematic Video Background (with dynamic cross-fade) */}
-        <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-          {/* Light Theme Video */}
-          <motion.video
-            ref={lightVideoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            style={{
-              scale,
-              filter: videoFilter,
-            }}
-            animate={{ opacity: theme === "light" ? 1 : 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source media="(min-width: 768px)" src="/new-heros.mp4" type="video/mp4" />
-          </motion.video>
-
-          {/* Dark Theme Video */}
-          <motion.video
-            ref={darkVideoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            style={{
-              scale,
-              filter: videoFilter,
-            }}
-            animate={{ opacity: theme === "dark" ? 1 : 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source media="(min-width: 768px)" src="/dark-hero.mp4" type="video/mp4" />
-          </motion.video>
-        </div>
-
-        {/* Layer 1: Solid Black Shroud (Reveals video underneath via radial gradient mask) */}
+    <section
+      ref={sectionRef}
+      id="hero"
+      aria-label={t("Розробка сайтів — Lutiy Digital", "Web development — Lutiy Digital")}
+      className="relative flex min-h-[100svh] w-full items-end overflow-hidden bg-black px-5 pb-16 pt-28 sm:px-8 md:items-center md:pb-24 md:pt-32"
+    >
+      {/* Ambient backdrop — static, GPU-cheap */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute right-[-10%] top-[5%] h-[60vmin] w-[60vmin] rounded-full bg-emerald-500/10 blur-[100px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-[50vmin] w-[50vmin] rounded-full bg-sky-500/10 blur-[100px]" />
         <div
-          style={{
-            maskImage: "radial-gradient(circle var(--lens-radius) at var(--mouse-x) var(--mouse-y), transparent 0%, black 100%)",
-            WebkitMaskImage: "radial-gradient(circle var(--lens-radius) at var(--mouse-x) var(--mouse-y), transparent 0%, black 100%)",
-          }}
-          className="absolute inset-0 bg-zinc-950/95 z-10 pointer-events-none transition-[mask] duration-75"
-        >
-          {/* Subtle editorial dot-grid overlay on the shroud to give it a premium texture */}
-          <div
-            className="absolute inset-0 opacity-[0.035]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
-              backgroundSize: "44px 44px",
-            }}
-          />
-        </div>
-
-        {/* Layer 2: Interactive Lens Glow Edge (Visible on desktop when coordinates are active) */}
-        <div
-          style={{
-            left: "var(--mouse-x)",
-            top: "var(--mouse-y)",
-            transform: "translate(-50%, -50%)",
-            width: "calc(var(--lens-radius) * 2)",
-            height: "calc(var(--lens-radius) * 2)",
-          }}
-          className="absolute pointer-events-none z-20 rounded-full border border-cyan-500/20 bg-cyan-500/[0.015] filter blur-[3px]"
-        />
-
-        {/* Layer 3: Central Hero Content Block */}
-        <motion.div
-          style={{
-            opacity: isMobile ? 1 : textOpacity,
-            y: isMobile ? 0 : textY,
-          }}
-          className="relative z-30 flex flex-col items-center justify-center text-center max-w-4xl pointer-events-none mt-10"
-        >
-          <motion.div
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col items-center"
-          >
-            {/* Hella Pill Label */}
-            <motion.div variants={itemVariants} className="pointer-events-auto">
-              <HellaSticker />
-            </motion.div>
-
-            {/* Eyebrow Label with tech-flicker character entry */}
-            <motion.div
-              variants={eyebrowContainerVariants}
-              className="flex flex-wrap justify-center items-center text-[8px] sm:text-[10px] font-display uppercase tracking-[0.25em] sm:tracking-[0.35em] text-cyan-400/95 mt-5 select-none px-4"
-            >
-              <span className="text-cyan-500/40 mr-2 sm:mr-3 font-mono font-bold">[</span>
-              {t(
-                "PERSONAL DEV STUDIO // FULLSTACK // AUTOMATION // AI INTEGRATIONS",
-                "PERSONAL DEV STUDIO // FULLSTACK // AUTOMATION // AI INTEGRATIONS"
-              )
-                .split(" ")
-                .map((word, index) => (
-                  <motion.span
-                    key={index}
-                    variants={charVariants}
-                    className="inline-block mx-0.5 sm:mx-1 whitespace-nowrap"
-                  >
-                    {word}{" "}
-                  </motion.span>
-                ))}
-              <span className="text-cyan-500/40 ml-2 sm:ml-3 font-mono font-bold">]</span>
-            </motion.div>
-
-            {/* Main Giant Title - Mask Slide Up Reveal */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] font-bold tracking-tight leading-[1.15] mt-3 max-w-lg sm:max-w-2xl md:max-w-4xl lg:max-w-5xl flex flex-wrap justify-center gap-x-2 sm:gap-x-3 text-balance uppercase"
-            >
-              {t(
-                "Будую швидкі веб-застосунки та автоматизую бізнес-процеси",
-                "I build fast web applications and automate business processes"
-              )
-                .split(" ")
-                .map((word, i) => (
-                  <span key={i} className="overflow-hidden inline-block py-0.5 sm:py-1">
-                    <motion.span
-                      initial={{ y: "110%", rotate: 2, skewY: 3 }}
-                      animate={{ y: 0, rotate: 0, skewY: 0 }}
-                      transition={{
-                        duration: 0.95,
-                        delay: 0.4 + i * 0.05,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                      className="inline-block bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent"
-                    >
-                      {word}
-                    </motion.span>{" "}
-                  </span>
-                ))}
-            </motion.h1>
-
-            {/* Detailed Tagline */}
-            <motion.p
-              variants={itemVariants}
-              className="text-[13px] sm:text-sm md:text-base leading-relaxed text-zinc-400 max-w-md sm:max-w-xl mt-5 px-4 text-balance"
-            >
-              {t(
-                "Допомагаю бізнесу запускати сайти, веб-застосунки, кабінети клієнтів, інтеграції з CRM та автоматизації, які приймають заявки, обробляють клієнтів і прибирають ручну роботу.",
-                "I help businesses launch websites, web applications, client portals, CRM integrations, and automations that capture leads, handle clients and eliminate manual work."
-              )}
-            </motion.p>
-
-            {/* Compact Trust-row */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[10px] sm:text-xs font-mono tracking-wider text-zinc-400/90 max-w-2xl px-4 select-none bg-zinc-950/40 border border-white/5 py-2 px-4 rounded-full backdrop-blur-sm"
-            >
-              <span className="text-white/80">10+ {t("проєктів", "projects")}</span>
-              <span className="text-emerald-500/50 font-bold">·</span>
-              <span className="text-white/80">{t("сайти від", "sites from")} $150</span>
-              <span className="text-emerald-500/50 font-bold">·</span>
-              <span className="text-white/80">{t("AI-аудит за 24 години", "AI-audit in 24h")}</span>
-              <span className="text-emerald-500/50 font-bold">·</span>
-              <span className="text-white/80">{t("Київ / Біла Церква / онлайн", "Kyiv / Bila Tserkva / online")}</span>
-            </motion.div>
-
-            {/* CTA Buttons Side-by-Side */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto w-full px-4"
-            >
-              {/* Primary: Contact Me (Filled white) */}
-              <MagneticButton
-                as="button"
-                onClick={handleScrollToContact}
-                glowBorder={false}
-                strength={0.25}
-                data-event="click_hero_cta"
-                className="relative overflow-hidden bg-white text-black font-semibold border border-white px-8 py-3.5 rounded-full text-xs font-mono tracking-widest uppercase hover:bg-white/90 transition duration-300 flex items-center justify-center w-full sm:w-auto pointer-events-auto"
-              >
-                <span className="relative z-10">{t("Обговорити проєкт", "Discuss project")}</span>
-                
-                {/* Micro-shimmer sheen */}
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/5 to-transparent group-hover/magnetic:translate-x-full transition-transform duration-1000 ease-out" />
-              </MagneticButton>
-
-              {/* Secondary: My Projects (Outlined black matte) */}
-              <MagneticButton
-                as="button"
-                onClick={() => {
-                  const el = document.getElementById("projects");
-                  if (el) {
-                    el.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                glowBorder={false}
-                strength={0.25}
-                data-event="click_view_cases"
-                className="relative overflow-hidden bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-white px-8 py-3.5 rounded-full text-xs font-mono tracking-widest uppercase hover:bg-zinc-900 transition duration-300 flex items-center justify-center w-full sm:w-auto pointer-events-auto"
-              >
-                <span className="relative z-10">{t("Подивитися кейси", "View case studies")}</span>
-                
-                {/* micro-shimmer sheen */}
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover/magnetic:translate-x-full transition-transform duration-1000 ease-out" />
-              </MagneticButton>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-        {/* Film grain effect */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-40 mix-blend-overlay opacity-[0.05]"
+          className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/></svg>\")",
+              "linear-gradient(rgb(var(--color-text-white)) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--color-text-white)) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 60% 45%, black, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 60% 45%, black, transparent 75%)",
           }}
-        />
-
-        {/* Corner labels — editorial feel */}
-        <div className="pointer-events-none absolute inset-x-10 bottom-8 z-30 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.4em] text-white/40">
-          <span>PORTFOLIO · MMXXVI</span>
-          <span>Remote / Kyiv</span>
-        </div>
-      </section>
-    </>
-  );
-}
-
-/* ===================== LOADER ===================== */
-
-function SplitLoader() {
-  const [progress, setProgress] = useState(0);
-  const [splitting, setSplitting] = useState(false);
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    const startAt = Date.now();
-    const interval = setInterval(() => {
-      const p = Math.min(
-        100,
-        Math.round(((Date.now() - startAt) / (LOADER_DURATION - 150)) * 100)
-      );
-      setProgress(p);
-      if (p >= 100) clearInterval(interval);
-    }, 50);
-    const splitTimer = setTimeout(() => setSplitting(true), LOADER_DURATION);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(splitTimer);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (done) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [done]);
-
-  if (done) return null;
-
-  const halfTransition = {
-    duration: 1.1,
-    ease: [0.83, 0, 0.17, 1] as [number, number, number, number],
-  };
-
-  return (
-    <div className="fixed inset-0 z-[100] pointer-events-none">
-      <motion.div
-        aria-hidden
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={
-          splitting ? { scaleX: 1, opacity: [0, 1, 0] } : { scaleX: 0, opacity: 0 }
-        }
-        transition={{ duration: 0.45, ease: "easeOut" }}
-        style={{ originX: 0.5 }}
-        className="absolute left-0 right-0 top-1/2 z-[101] h-px -translate-y-1/2 bg-white/90 shadow-[0_0_18px_2px_rgba(255,255,255,0.6)]"
-      />
-      <motion.div
-        initial={{ y: 0 }}
-        animate={splitting ? { y: "-100%" } : { y: 0 }}
-        transition={halfTransition}
-        className="absolute inset-x-0 top-0 h-1/2 overflow-hidden bg-black"
-      >
-        <div className="absolute inset-x-0 top-0 flex h-[100vh] items-center justify-center">
-          <LoaderContent progress={progress} splitting={splitting} />
-        </div>
-      </motion.div>
-      <motion.div
-        initial={{ y: 0 }}
-        animate={splitting ? { y: "100%" } : { y: 0 }}
-        transition={halfTransition}
-        onAnimationComplete={() => {
-          if (splitting) setDone(true);
-        }}
-        className="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden bg-black"
-      >
-        <div className="absolute inset-x-0 bottom-0 flex h-[100vh] items-center justify-center">
-          <LoaderContent progress={progress} splitting={splitting} />
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-function LoaderContent({
-  progress,
-  splitting,
-}: {
-  progress: number;
-  splitting: boolean;
-}) {
-  return (
-    <div className="flex w-full max-w-[420px] flex-col items-center px-6">
-      <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: splitting ? 0 : 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.05, ease: "easeOut" }}
-        className="mb-10 flex items-center gap-3 text-[10px] uppercase tracking-[0.5em] text-white/35"
-      >
-        <span className="inline-block h-px w-6 bg-white/25" />
-        Yevhenii Liutyi
-        <span className="inline-block h-px w-6 bg-white/25" />
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.92 }}
-        animate={{ opacity: splitting ? 0 : 1, scale: splitting ? 1.04 : 1 }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <span
-          className="block font-display text-[88px] font-medium leading-none tracking-[-0.04em] text-white"
-          style={{ textShadow: "0 0 60px rgba(255,255,255,0.08)" }}
-        >
-          YL
-        </span>
-      </motion.div>
-
-      <div className="mt-12 h-px w-44 overflow-hidden bg-white/10">
-        <div
-          className="h-full bg-white transition-all duration-75"
-          style={{ width: `${progress}%` }}
         />
       </div>
 
+      {/* Iridescent WebGL shape */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: splitting ? 0 : 1 }}
-        transition={{ duration: 0.4 }}
-        className="mt-4 font-mono text-[10px] tabular-nums tracking-[0.4em] text-white/40"
+        style={{ y: shapeY, scale: shapeScale }}
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        className="absolute inset-0 z-10"
       >
-        {progress.toString().padStart(3, "0")}
+        <HeroShape theme={theme} className="relative h-full w-full" />
       </motion.div>
-    </div>
+
+      {/* Readability fade under copy on mobile */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[65%] bg-gradient-to-t from-black via-black/80 to-transparent md:hidden"
+      />
+
+      {/* Content */}
+      <motion.div
+        style={{ opacity: contentOpacity, y: contentY }}
+        className="relative z-20 mx-auto w-full max-w-7xl"
+      >
+        <motion.div
+          variants={contentVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex max-w-2xl flex-col items-start lg:max-w-[44rem] xl:max-w-[50rem]"
+        >
+          <motion.div variants={itemVariants}>
+            <HellaSticker />
+          </motion.div>
+
+          {/* Eyebrow */}
+          <motion.p
+            variants={eyebrowContainerVariants}
+            className="mt-6 flex flex-wrap items-center font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-500 sm:text-[11px]"
+          >
+            {t(
+              "Веб-розробка · Автоматизація · AI",
+              "Web development · Automation · AI"
+            )
+              .split(" ")
+              .map((w, i) => (
+                <motion.span key={i} variants={charVariants} className="mr-2 inline-block">
+                  {w}
+                </motion.span>
+              ))}
+          </motion.p>
+
+          {/* H1 — primary SEO keywords */}
+          <h1 className="mt-4 font-display text-[2rem] font-bold uppercase leading-[1.06] tracking-[-0.02em] text-white sm:text-[2.8rem] md:text-[3rem] lg:text-[3.3rem] xl:text-[3.9rem]">
+            {words.map((word, i) => (
+              <span key={i} className="mr-[0.22em] inline-block overflow-hidden pb-[0.08em] align-bottom">
+                <motion.span
+                  initial={{ y: "110%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 0.95, delay: 0.35 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  className={
+                    "inline-block " +
+                    (i >= accentFrom
+                      ? "bg-[linear-gradient(100deg,#10b981,#38bdf8_45%,#a78bfa_75%,#f59e0b)] bg-clip-text text-transparent"
+                      : "")
+                  }
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
+
+          <motion.p
+            variants={itemVariants}
+            className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400 sm:text-base md:text-lg"
+          >
+            {t(
+              "Розробляю сайти під ключ, кабінети клієнтів, інтеграції з CRM і автоматизації на n8n. Швидко, з SEO з першого дня і без ручної рутини — ви отримуєте заявки, а не просто красиву сторінку.",
+              "I build turnkey websites, client portals, CRM integrations and n8n automations. Fast, SEO-ready from day one and free of manual routine — you get leads, not just a pretty page."
+            )}
+          </motion.p>
+
+          {/* Service keywords — crawlable list */}
+          <motion.ul
+            variants={itemVariants}
+            aria-label={t("Послуги", "Services")}
+            className="mt-6 flex flex-wrap gap-2"
+          >
+            {SERVICES.map((s) => (
+              <li
+                key={s.en}
+                className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium text-zinc-300 backdrop-blur-sm sm:text-xs"
+              >
+                {t(s.ua, s.en)}
+              </li>
+            ))}
+          </motion.ul>
+
+          {/* CTAs */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+          >
+            <MagneticButton
+              as="button"
+              onClick={() => scrollTo("contact")}
+              glowBorder={false}
+              strength={0.25}
+              data-event="click_hero_cta"
+              className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-white px-8 py-4 font-mono text-xs font-semibold uppercase tracking-widest text-black transition hover:bg-white/90 sm:w-auto"
+            >
+              <span className="relative z-10">{t("Безкоштовна консультація", "Free consultation")}</span>
+              <span aria-hidden className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </MagneticButton>
+            <MagneticButton
+              as="button"
+              onClick={() => scrollTo("projects")}
+              glowBorder={false}
+              strength={0.25}
+              data-event="click_view_cases"
+              className="relative flex w-full items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/[0.03] px-8 py-4 font-mono text-xs uppercase tracking-widest text-white backdrop-blur-sm transition hover:border-white/30 sm:w-auto"
+            >
+              {t("Подивитися кейси", "View case studies")}
+            </MagneticButton>
+          </motion.div>
+
+          {/* Trust row */}
+          <motion.dl
+            variants={itemVariants}
+            className="mt-10 grid w-full max-w-xl grid-cols-2 gap-x-6 gap-y-3 border-t border-white/10 pt-6 sm:grid-cols-4"
+          >
+            {TRUST.map((item) => (
+              <div key={item.en} className="flex flex-col-reverse">
+                <dt className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">{t(item.ua, item.en)}</dt>
+                <dd className="text-lg font-semibold tracking-tight text-white">{item.val}</dd>
+              </div>
+            ))}
+          </motion.dl>
+        </motion.div>
+      </motion.div>
+
+      {/* Corner labels */}
+      <div className="pointer-events-none absolute inset-x-8 bottom-6 z-20 hidden items-center justify-between font-mono text-[9px] uppercase tracking-[0.4em] text-white/35 md:flex">
+        <span>Lutiy Digital · MMXXVI</span>
+        <span>Kyiv / Remote</span>
+      </div>
+    </section>
   );
 }
 

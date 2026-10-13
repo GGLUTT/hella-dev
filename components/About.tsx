@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
@@ -249,38 +249,76 @@ export default function About() {
         />
       </motion.div>
 
-      {/* ============ Main grid ============ */}
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-end gap-12 px-6 pt-28 md:pt-36 lg:grid-cols-12 lg:gap-12 lg:pt-0">
-        {/* Left: Copy — same height as character, content vertically centered */}
-        <div className="z-10 flex flex-col justify-center pb-20 lg:col-span-6 lg:h-[88vh] lg:min-h-[680px] lg:pb-0">
+      {/* ============ Intro over photo ============ */}
+      <div className="relative isolate flex min-h-[100svh] items-end overflow-hidden lg:min-h-[92vh] lg:items-center">
+        {/* Photo backdrop with slow Ken-Burns drift */}
+        <motion.div
+          initial={{ scale: 1.12, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-x-0 top-0 -z-10 h-[64svh] sm:h-[70svh] lg:inset-y-0 lg:h-auto"
+        >
+          <Image
+            src="/about-yevhenii.webp"
+            alt={t(
+              "Євгеній Лютий — fullstack-розробник, засновник Lutiy Digital",
+              "Yevhenii Liutyi — fullstack developer, founder of Lutiy Digital"
+            )}
+            fill
+            sizes="100vw"
+            quality={80}
+            className="object-cover object-[52%_25%] lg:object-[0%_center] 2xl:object-[20%_center]"
+          />
+        </motion.div>
+
+        {/* Contrast layers — photo is dark in both themes, so overlays are fixed-colour */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-40% via-[#050507]/80 via-55% to-[#050507]/0 lg:bg-gradient-to-r lg:from-[#050507] lg:via-[#050507]/75 lg:via-40% lg:to-transparent" />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-28 bg-gradient-to-b from-transparent to-black" />
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-24 bg-gradient-to-t from-transparent to-black" />
+
+        {/* Floating chips */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+          className="absolute right-4 top-24 z-10 flex items-center gap-2 rounded-full border border-neutral-50/15 bg-[#050507]/50 px-3 py-1.5 backdrop-blur-md md:right-10 md:top-28"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-100">
+            {t("Приймаю проєкти", "Available for work")}
+          </span>
+        </motion.div>
+
+        <div className="relative mx-auto w-full max-w-7xl px-6 pb-16 pt-[50svh] lg:py-28">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-30px" }}
             variants={containerStagger}
+            className="max-w-xl"
           >
-            {/* Eyebrow */}
             <motion.div
               variants={fadeUp}
-              className="mb-6 flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-white/45"
+              className="mb-6 flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-neutral-400"
             >
-              <span className="inline-block h-px w-10 bg-gradient-to-r from-transparent to-white/50" />
+              <span className="inline-block h-px w-10 bg-gradient-to-r from-transparent to-neutral-400" />
               {t("Про мене", "About")}
             </motion.div>
 
-            {/* Headline with word-by-word stagger */}
-            <h2 className="flex flex-wrap text-[34px] font-semibold leading-[1.08] tracking-tight sm:text-[40px] md:text-5xl lg:text-[44px] xl:text-[54px]">
+            <h2 className="flex flex-wrap font-display text-[26px] font-bold uppercase leading-[1.08] tracking-tight text-neutral-50 sm:text-[40px] md:text-[44px] xl:text-[50px]">
               {HEADLINE.map((w, i) => (
-                <span
-                  key={i}
-                  className="mr-[0.25em] inline-flex overflow-hidden pb-[0.14em]"
-                >
+                <span key={i} className="mr-[0.25em] inline-flex overflow-hidden pb-[0.12em]">
                   <motion.span
                     variants={wordReveal}
                     className={
                       "inline-block " +
                       (w.accent
-                        ? "bg-gradient-to-r from-white via-emerald-200 to-sky-200 bg-clip-text text-transparent"
+                        ? "bg-[linear-gradient(100deg,#6ee7b7,#7dd3fc_55%,#c4b5fd)] bg-clip-text text-transparent"
                         : "")
                     }
                   >
@@ -290,70 +328,50 @@ export default function About() {
               ))}
             </h2>
 
-            {/* Description */}
             <motion.div
               variants={fadeUp}
-              className="mt-8 max-w-xl text-base leading-relaxed text-white/60 md:text-lg space-y-4"
+              className="mt-7 space-y-4 text-[15px] leading-relaxed text-neutral-300 md:text-lg"
             >
               <p>
                 {t(
-                  "Я допомагаю бізнесам запускати швидкі сайти, веб-застосунки, кабінети клієнтів, інтеграції з CRM та автоматизації. Працюю напряму з клієнтом: занурююсь у задачу, пропоную технічне рішення, розробляю frontend, backend, інтеграції й доводжу проєкт до запуску.",
-                  "I help businesses launch fast websites, web applications, client portals, CRM integrations, and automations. I work directly with the client: diving deep into the task, proposing technical solutions, developing frontend, backend, integrations, and driving the project to launch."
+                  "Я допомагаю бізнесам запускати швидкі сайти, веб-застосунки, кабінети клієнтів, інтеграції з CRM та автоматизації. Працюю напряму: занурююсь у задачу, пропоную рішення, розробляю frontend, backend та інтеграції й доводжу проєкт до запуску.",
+                  "I help businesses launch fast websites, web apps, client portals, CRM integrations and automations. I work directly with you: dive into the task, propose a solution, build frontend, backend and integrations, and take the project to launch."
                 )}
               </p>
-              <p>
+              <p className="text-neutral-400">
                 {t(
-                  "Мій фокус — не просто написати код, а побудувати рішення, яке допомагає бізнесу приймати заявки, швидше обробляти клієнтів, зменшувати ручну роботу й бачити процеси прозоріше.",
-                  "My focus is not just to write code, but to build a solution that helps the business capture leads, process clients faster, reduce manual work, and see workflows more transparently."
-                )}
-              </p>
-              <p>
-                {t(
-                  "Для більших задач можу підключати перевірених спеціалістів під конкретний етап: дизайн, SEO, контент або додаткову розробку. Але основна комунікація, технічна логіка й відповідальність за результат залишаються на мені.",
-                  "For larger scale tasks, I can pull in proven specialists for specific phases: design, SEO, content or extra development. However, the main communication, technical logic, and responsibility for the final outcome remain solely with me."
+                  "Мій фокус — не просто код, а рішення, що приносить заявки, пришвидшує обробку клієнтів і прибирає ручну роботу.",
+                  "My focus isn't just code — it's a solution that brings leads, speeds up client handling and removes manual work."
                 )}
               </p>
             </motion.div>
 
-            {/* Stats */}
             <motion.div
               variants={fadeUp}
-              className="mt-12 grid grid-cols-3 gap-6 border-t border-white/10 pt-8"
+              className="mt-10 grid grid-cols-3 gap-6 border-t border-neutral-50/15 pt-7"
             >
               {STATS.map((s, i) => (
-                <motion.div
-                  key={s.labelUA}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-30px" }}
-                  transition={{
-                    duration: 0.7,
-                    delay: 0.5 + i * 0.1,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                >
-                  <div className="bg-gradient-to-br from-white to-white/60 bg-clip-text text-3xl font-semibold tracking-tight text-transparent md:text-4xl">
-                    <CountUp
-                      from={0}
-                      to={s.to}
-                      duration={1.8}
-                      delay={0.5 + i * 0.15}
-                      className="bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent"
-                    />
+                <div key={s.labelUA}>
+                  <div className="text-3xl font-semibold tracking-tight text-neutral-50 md:text-4xl">
+                    <CountUp from={0} to={s.to} duration={1.8} delay={0.5 + i * 0.15} />
                     <span>{s.suffix}</span>
                   </div>
-                  <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white/45 sm:text-[10px] sm:tracking-[0.25em]">
+                  <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-neutral-400 sm:text-[10px] sm:tracking-[0.25em]">
                     {t(s.labelUA, s.labelEN)}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </motion.div>
-          </motion.div>
-        </div>
 
-        {/* Right: character pinned to section bottom, equal height to text column */}
-        <div className="relative self-end lg:col-span-6">
-          <CharacterStage />
+            <motion.a
+              variants={fadeUp}
+              href="#contact"
+              className="mt-10 inline-flex items-center gap-3 rounded-full border border-neutral-50/20 bg-neutral-50/[0.06] px-6 py-3 font-mono text-[11px] uppercase tracking-widest text-neutral-50 backdrop-blur-md transition hover:border-emerald-300/50 hover:bg-emerald-300/10"
+            >
+              {t("Обговорити ваш проєкт", "Discuss your project")}
+              <span aria-hidden>→</span>
+            </motion.a>
+          </motion.div>
         </div>
       </div>
 
@@ -500,149 +518,5 @@ export default function About() {
         </div>
       </div>
     </section>
-  );
-}
-
-/* ============ Character video (full-bleed, large) ============ */
-
-function CharacterStage() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    const container = containerRef.current;
-    if (!video || !container) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  return (
-    <motion.div
-      ref={containerRef}
-      initial={{ opacity: 0, y: 100, scale: 0.82, rotate: -3 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{
-        duration: 1.4,
-        ease: [0.22, 1, 0.36, 1],
-        opacity: { duration: 0.8 },
-      }}
-      className="relative h-[60vh] min-h-[420px] w-full sm:h-[70vh] sm:min-h-[520px] lg:h-[88vh]"
-      style={{ transformOrigin: "50% 100%" }}
-    >
-      {/* Aurora glow behind character */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 65% 55% at 55% 55%, rgba(16,185,129,0.22), transparent 65%), radial-gradient(ellipse 50% 40% at 35% 30%, rgba(56,189,248,0.16), transparent 60%)",
-          filter: "blur(20px)",
-        }}
-      />
-
-      {/* Soft floor glow under torso cutoff */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-1/3"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(16,185,129,0.20), transparent 75%)",
-        }}
-      />
-      {/* Subtle grid only behind character on mobile */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[1] opacity-[0.05] md:opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage:
-            "radial-gradient(ellipse 60% 50% at 50% 60%, black, transparent 75%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 60% 50% at 50% 60%, black, transparent 75%)",
-        }}
-      />
-
-      <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute inset-0 z-10 isolate"
-      >
-        <video
-          ref={videoRef}
-          loop
-          muted
-          playsInline
-          preload="none"
-          disablePictureInPicture
-          className="h-full w-full select-none object-contain object-bottom mix-blend-screen [will-change:transform]"
-          style={{ transform: "translate3d(0, 0, 0)" }}
-        >
-          <source src="/character-action.webm" type="video/webm" />
-          <source src="/character-action.mov" type="video/quicktime" />
-        </video>
-      </motion.div>
-
-      {/* Bottom fade so the torso cut blends into the section */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-32 bg-gradient-to-b from-transparent via-black/60 to-black"
-      />
-
-      {/* Floating status chip */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute right-3 top-3 z-20 flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1.5 backdrop-blur-md md:right-8 md:top-10"
-      >
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-        </span>
-        <span className="text-[10px] uppercase tracking-[0.3em] text-white/80">
-          available for work
-        </span>
-      </motion.div>
-
-      {/* Floating signature card (bottom-left, sits on the fade) */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute bottom-4 left-3 z-20 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/55 px-3 py-2.5 backdrop-blur-xl sm:px-4 sm:py-3 md:bottom-10 md:left-8"
-      >
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-sky-400 font-mono text-base font-bold text-black">
-          YL
-        </div>
-        <div>
-          <div className="text-sm font-semibold tracking-tight">
-            Yevhenii — Lutiy Digital
-          </div>
-          <div className="text-[10px] uppercase tracking-[0.25em] text-white/55">
-            Fullstack Developer
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
   );
 }
