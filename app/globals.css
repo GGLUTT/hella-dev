@@ -256,22 +256,6 @@ section + section {
   .loader-fill { clip-path: inset(0 calc(100% - 44px) 0 0 round 999px); }
 }
 
-/* About photo: dissolve the sharp shot into its blurred copy */
-.about-photo-mask {
-  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
-}
-@media (min-width: 1024px) {
-  .about-photo-mask {
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 38%),
-      linear-gradient(to bottom, transparent 0%, black 14%, black 80%, transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(to right, transparent 0%, black 38%),
-      linear-gradient(to bottom, transparent 0%, black 14%, black 80%, transparent 100%);
-    mask-composite: intersect;
-  }
-}
-
 /* Outline display type */
 .text-outline {
   color: transparent;
