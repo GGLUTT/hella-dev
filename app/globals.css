@@ -277,3 +277,40 @@ section + section {
 @keyframes marquee-x {
   to { transform: translate3d(-50%, 0, 0); }
 }
+
+/* ============ Spotlight tiles (ForWhom) ============ */
+.spot-tile {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+}
+.spot-tile::before,
+.spot-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+/* soft light pool that follows the cursor */
+.spot-tile::before {
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(16, 185, 129, 0.13), transparent 60%);
+}
+/* 1px border that lights up under the cursor */
+.spot-tile::after {
+  padding: 1px;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(52, 211, 153, 0.75), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+@media (hover: hover) {
+  .spot-tile:hover {
+    transform: translateY(-4px);
+  }
+  .spot-tile:hover::before,
+  .spot-tile:hover::after {
+    opacity: 1;
+  }
+}
