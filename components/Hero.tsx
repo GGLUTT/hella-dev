@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useLang } from "@/context/LangContext";
 import { useLoaderDone } from "@/components/SiteLoader";
 import { scrollToId } from "@/components/SmoothScroll";
@@ -23,11 +23,6 @@ const AVATARS = ["/fitnes1.jpg", "/nexus.png", "/budle1.png", "/agency.jpg"];
 export default function Hero() {
   const { t } = useLang();
   const ready = useLoaderDone();
-  const sectionRef = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
-  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
   const anim = (delay: number) => ({
     initial: { opacity: 0, y: 24 },
@@ -44,7 +39,6 @@ export default function Hero() {
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-black px-5 pb-8 pt-24 sm:px-8 md:pb-10 md:pt-28 lg:px-12"
     >
@@ -81,16 +75,15 @@ export default function Hero() {
         <span className="hidden md:inline">{t("Студія веб-розробки · Київ / Remote", "Web studio · Kyiv / Remote")}</span>
       </motion.div>
 
-      {/* Phones: the work preview fills the space above the headline */}
-      <Showcase ready={ready} mobile />
+      {/* Phones: two drifting rows of recent work fill the space above the headline */}
+      <MobileMarquee ready={ready} />
 
       {/* Giant headline */}
-      <motion.div style={{ y: titleY }} className="relative z-10 mt-auto pt-10 md:pt-0">
+      <div className="relative z-10 mt-auto pt-8 md:pt-0">
         <h1
-          className="relative font-semibold uppercase leading-[0.86] text-white"
+          className="relative text-[15.5vw] font-semibold uppercase leading-[0.86] text-white md:text-[clamp(3.3rem,11.2vw,13rem)]"
           style={{
             fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
-            fontSize: "clamp(3.3rem, 11.2vw, 13rem)",
             letterSpacing: "-0.055em",
           }}
         >
@@ -121,12 +114,11 @@ export default function Hero() {
             </span>
           ))}
         </h1>
-      </motion.div>
+      </div>
 
       {/* Bottom row */}
-      <motion.div
-        style={{ opacity: fade }}
-        className="relative z-10 mt-10 grid gap-8 md:mt-14 md:grid-cols-2 md:items-end"
+      <div
+        className="relative z-10 mt-7 grid gap-7 md:mt-14 md:grid-cols-2 md:items-end"
       >
         {/* Trust */}
         <motion.div {...anim(0.7)} className="order-2 flex items-center gap-4 md:order-1">
@@ -166,7 +158,7 @@ export default function Hero() {
               type="button"
               onClick={() => scrollToId("contact")}
               data-event="click_hero_cta"
-              className="rounded-full bg-white px-7 py-4 text-[13px] font-semibold uppercase tracking-wide text-black transition hover:bg-white/85"
+              className="flex-1 rounded-full bg-white px-7 py-4 text-[13px] font-semibold uppercase tracking-wide text-black transition hover:bg-white/85 active:scale-[0.98] md:flex-none"
             >
               {t("Обговорити проєкт", "Discuss a project")}
             </button>
@@ -175,7 +167,7 @@ export default function Hero() {
               onClick={() => scrollToId("projects")}
               data-event="click_view_cases"
               aria-label={t("Дивитися кейси", "View case studies")}
-              className="group grid h-[52px] w-[52px] place-items-center rounded-full border border-white/20 text-white transition hover:border-white hover:bg-white hover:text-black"
+              className="group grid h-[52px] w-[52px] shrink-0 place-items-center rounded-full border border-white/20 text-white transition hover:border-white hover:bg-white hover:text-black"
             >
               <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
             </button>
@@ -188,7 +180,7 @@ export default function Hero() {
             </button>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
@@ -237,5 +229,47 @@ function Showcase({ ready, mobile }: { ready: boolean; mobile?: boolean }) {
         <span className="text-emerald-400">{String(i + 1).padStart(2, "0")}/{String(SHOWCASE.length).padStart(2, "0")}</span>
       </span>
     </motion.button>
+  );
+}
+
+/* ===================== MOBILE MARQUEE ===================== */
+
+const MARQUEE_ROWS = [
+  ["/agency.jpg", "/fitnes1.jpg", "/nexus.png", "/budle1.png", "/iphone-project.png"],
+  ["/football-baner.jpg", "/nike-banner.jpg", "/wine-hood-banner.jpg", "/d4ys-banner.png", "/store-banner.jpg"],
+];
+
+/** Two tilted rows of work thumbnails drifting in opposite directions (CSS transform only). */
+function MobileMarquee({ ready }: { ready: boolean }) {
+  return (
+    <motion.div
+      aria-hidden
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={ready ? { opacity: 1, scale: 1 } : undefined}
+      transition={{ duration: 1.2, delay: 0.3, ease: EASE }}
+      className="relative -mx-5 mt-8 flex -rotate-[4deg] flex-col gap-3 py-2 sm:-mx-8 md:hidden"
+      style={{
+        maskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+        WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+      }}
+    >
+      {MARQUEE_ROWS.map((row, r) => (
+        <div key={r} className="flex overflow-hidden">
+          <div
+            className="flex w-max shrink-0 gap-3 pr-3 will-change-transform"
+            style={{ animation: `marquee-x ${r ? 34 : 28}s linear infinite${r ? " reverse" : ""}` }}
+          >
+            {[...row, ...row].map((src, i) => (
+              <span
+                key={i}
+                className="relative h-[84px] w-[134px] shrink-0 overflow-hidden rounded-xl border border-white/10 bg-zinc-900"
+              >
+                <Image src={src} alt="" fill sizes="134px" className="object-cover" />
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </motion.div>
   );
 }

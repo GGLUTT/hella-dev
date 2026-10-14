@@ -227,25 +227,26 @@ export default function About() {
 
       {/* ============ Intro over photo ============ */}
       <div className="relative isolate overflow-hidden bg-[#050507]">
-        {/* Layer 1 — the same photo, tiny & upscaled = free blur, fills every edge */}
+        {/* Layer 1 — cinematic map backdrop across the whole section */}
         <div aria-hidden className="absolute inset-0 -z-20">
           <Image
-            src="/about-yevhenii-blur.webp"
+            src="/about-bg-map.webp"
             alt=""
             fill
-            sizes="10vw"
-            className="scale-110 object-cover opacity-80"
+            sizes="100vw"
+            quality={75}
+            className="object-cover object-[30%_center] opacity-80"
           />
-          <div className="absolute inset-0 bg-[#050507]/55" />
+          <div className="absolute inset-0 bg-[#050507]/40" />
         </div>
 
-        {/* Layer 2 — sharp photo, edges dissolve into the blurred copy */}
+        {/* Layer 2 — portrait, edges dissolve into the map */}
         <motion.div
           initial={{ opacity: 0, scale: 1.06 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          className="about-photo-mask absolute inset-x-0 top-0 -z-10 h-[62svh] sm:h-[70svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[80%]"
+          className="about-photo-mask absolute inset-x-0 top-0 -z-10 h-[62svh] sm:h-[70svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[64%]"
         >
           <Image
             src="/about-yevhenii.webp"
@@ -254,14 +255,14 @@ export default function About() {
               "Yevhenii Liutyi — fullstack developer, founder of Lutiy Digital"
             )}
             fill
-            sizes="(min-width: 1024px) 80vw, 100vw"
+            sizes="(min-width: 1024px) 64vw, 100vw"
             quality={82}
             className="object-cover object-[88%_30%] sm:object-[80%_30%] lg:object-[100%_center]"
           />
         </motion.div>
 
         {/* Readability: darken behind the copy only */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-35% via-[#050507]/70 via-50% to-transparent lg:bg-gradient-to-r lg:from-[#050507] lg:from-10% lg:via-[#050507]/70 lg:via-35% lg:to-transparent lg:to-55%" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-35% via-[#050507]/70 via-50% to-transparent lg:bg-gradient-to-r lg:from-[#050507] lg:from-10% lg:via-[#050507]/55 lg:via-30% lg:to-transparent lg:to-50%" />
         <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-black" />
         <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-t from-transparent to-black" />
 

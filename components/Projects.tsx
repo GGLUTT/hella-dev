@@ -1,22 +1,13 @@
 "use client";
 
-import {
-  motion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import Reveal from "./Reveal";
 import { useLang } from "@/context/LangContext";
-import Link from "next/link";
-
-const MotionLink = motion(Link);
 
 type Project = {
   slug: string;
@@ -158,469 +149,281 @@ const RAW_PROJECTS: RawProject[] = [
   },
 ];
 
+/* Folder-style cut-outs: a tab at the top-left (category label) and a notch at
+   the bottom-right (arrow). Both are punched out of the image with CSS masks, so
+   the cards stay a single cheap layer — no extra DOM shapes, no filters. */
+const TAB_PATH = "M0 0H218C202 0 193 8 186 22L174 46C167 59 158 64 142 64H0Z";
+const tabSvg = (rotate: boolean) =>
+  `url("data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='218' height='64' viewBox='0 0 218 64'>${
+      rotate ? "<g transform='rotate(180 109 32)'>" : "<g>"
+    }<path d='${TAB_PATH}'/></g></svg>`
+  )}")`;
+const CARD_MASK: React.CSSProperties = {
+  WebkitMaskImage: `${tabSvg(false)}, ${tabSvg(true)}, linear-gradient(#000 0 0)`,
+  WebkitMaskPosition: "top left, bottom right, center",
+  WebkitMaskSize: "218px 64px, 150px 64px, 100% 100%",
+  WebkitMaskRepeat: "no-repeat",
+  WebkitMaskComposite: "xor",
+  maskImage: `${tabSvg(false)}, ${tabSvg(true)}, linear-gradient(#000 0 0)`,
+  maskPosition: "top left, bottom right, center",
+  maskSize: "218px 64px, 150px 64px, 100% 100%",
+  maskRepeat: "no-repeat",
+  maskComposite: "exclude",
+};
+
 export default function Projects() {
-  const ref = useRef<HTMLDivElement>(null);
   const { lang, t } = useLang();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
 
   const projects: Project[] = RAW_PROJECTS.map((p) => ({
     ...p,
     desc: lang === "ua" ? p.descUA : p.descEN,
   }));
 
-  // Wheel input is already eased by Lenis — a second spring here only adds lag.
-  const smooth = scrollYProgress;
-
-  const trackEnd = `-${projects.length * 94 - 100 + 12}vw`;
-  const x = useTransform(smooth, [0, 1], ["0vw", trackEnd]);
-
   return (
-    <section id="projects" className="relative bg-black">
-      {/* ============ Section header ============ */}
-      <div className="relative mx-auto max-w-7xl px-5 pb-12 pt-24 sm:px-6 sm:pb-16 md:pt-40">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <Reveal>
-              <div className="mb-4 flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-white/45">
-                <span className="inline-block h-px w-10 bg-gradient-to-r from-transparent to-white/50" />
-                {t("Проєкти", "Projects")}
-              </div>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <h2 className="text-[34px] font-semibold tracking-tight sm:text-4xl md:text-6xl lg:text-[72px]">
-                {t("Вибрані", "Selected")}{" "}
-                <span className="text-white/35">
-                  {t("роботи", "works")}
-                </span>
-              </h2>
-            </Reveal>
+    <section id="projects" className="relative bg-[#050507] text-neutral-50" style={{ overflowX: "clip" }}>
+      {/* Backdrop: faint emerald blooms + fine grid, all static */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-[10%] top-[10%] h-[50vmax] w-[50vmax] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.12),transparent_60%)]" />
+        <div className="absolute -right-[15%] bottom-0 h-[50vmax] w-[50vmax] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.08),transparent_60%)]" />
+        <div
+          className="absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
+            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
+          }}
+        />
+      </div>
+
+      {/* ============ Header ============ */}
+      <div className="relative mx-auto max-w-[1600px] px-5 pb-10 pt-24 sm:px-8 md:pb-14 md:pt-36 lg:px-12">
+        <Reveal>
+          <div className="mb-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-neutral-500 sm:text-[11px]">
+            <span>03</span>
+            <span className="h-px w-10 bg-neutral-700" />
+            {t("Кейси", "Case studies")}
           </div>
+        </Reveal>
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <Reveal delay={0.05}>
+            <h2
+              className="font-semibold uppercase leading-[0.88] text-neutral-50"
+              style={{
+                fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
+                fontSize: "clamp(2.8rem, 8vw, 8.5rem)",
+                letterSpacing: "-0.05em",
+              }}
+            >
+              {t("Наші", "Selected")}
+              <br />
+              <span className="text-outline-light">{t("проєкти", "work")}</span>
+            </h2>
+          </Reveal>
           <Reveal delay={0.1}>
-            <p className="max-w-sm text-sm text-white/50 md:text-right">
+            <p className="max-w-sm text-[13px] uppercase leading-relaxed tracking-wide text-neutral-400 md:text-right md:text-sm">
               {t(
-                "Продукти, які запускались і використовуються реальними користувачами.",
-                "Products that shipped and are used by real people."
+                `${projects.length} проєктів у різних нішах — від лендінгів до SaaS-платформ`,
+                `${projects.length} projects across niches — from landing pages to SaaS platforms`
               )}
             </p>
           </Reveal>
         </div>
       </div>
 
-      {/* ============ DESKTOP: horizontal scroll showcase ============ */}
-      <div ref={ref} className="relative hidden h-[450vh] md:block">
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-          {/* Subtle progress bar */}
-          <ProgressBar progress={smooth} />
-
-          {/* Side fades for cinematic edges */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-0 z-30 w-32 bg-gradient-to-r from-black to-transparent"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 right-0 z-30 w-32 bg-gradient-to-l from-black to-transparent"
-          />
-
-          <motion.div style={{ x }} className="flex pl-[5vw] pr-[5vw] [transform:translateZ(0)] will-change-transform">
-            {projects.map((p, i) => (
-              <ProjectCard
-                key={p.name}
-                project={p}
-                index={i}
-                total={projects.length}
-                progress={smooth}
-                viewLabel={t("Переглянути", "View Project")}
-              />
-            ))}
-          </motion.div>
-        </div>
-      </div>
-
-      {/* ============ MOBILE: deck stack with scroll-reveal ============ */}
-      <MobileDeck projects={projects} viewLabel={t("Переглянути", "View Project")} />
+      <DesktopTrack projects={projects} />
+      <MobileStack projects={projects} />
     </section>
   );
 }
 
-/* ============================ MOBILE DECK STACK ============================ */
+/* ============================ DESKTOP: pinned horizontal track ============================ */
 
-function MobileDeck({ projects, viewLabel }: { projects: Project[]; viewLabel: string }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const total = projects.length;
+function DesktopTrack({ projects }: { projects: Project[] }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [distance, setDistance] = useState(0);
 
-  const handleNext = () => {
-    setActiveIndex((prev) => Math.min(total - 1, prev + 1));
-  };
+  // Measure the real overflow so the last card lands exactly at the edge.
+  useEffect(() => {
+    const measure = () => {
+      const track = trackRef.current;
+      if (track) setDistance(Math.max(0, track.scrollWidth - window.innerWidth));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => Math.max(0, prev - 1));
-  };
-
-  return (
-    <div className="relative md:hidden px-5 py-12 flex flex-col items-center justify-center min-h-[75vh] overflow-hidden bg-black/5">
-      {/* Card stack container */}
-      <div className="relative w-full aspect-[3/4.2] max-w-sm flex items-center justify-center" style={{ perspective: 1200 }}>
-        {projects.map((p, i) => ({ project: p, index: i }))
-          .filter(({ index }) => index >= activeIndex && index <= activeIndex + 2)
-          .map(({ project: p, index: i }) => (
-          <MobileSwipeCard
-            key={p.name}
-            project={p}
-            index={i}
-            activeIndex={activeIndex}
-            total={total}
-            viewLabel={viewLabel}
-            onSwipeLeft={handleNext}
-            onSwipeRight={handlePrev}
-          />
-        ))}
-      </div>
-
-      {/* Progress & Pagination Controls */}
-      <div className="mt-8 flex items-center gap-6 z-20">
-        <button
-          onClick={handlePrev}
-          disabled={activeIndex === 0}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-white backdrop-blur-md transition disabled:opacity-30 disabled:pointer-events-none hover:bg-white/[0.12]"
-          aria-label="Previous project"
-        >
-          ←
-        </button>
-        <span className="font-mono text-xs text-white/50 tracking-wider">
-          {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
-        <button
-          onClick={handleNext}
-          disabled={activeIndex === total - 1}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-white backdrop-blur-md transition disabled:opacity-30 disabled:pointer-events-none hover:bg-white/[0.12]"
-          aria-label="Next project"
-        >
-          →
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function MobileSwipeCard({
-  project,
-  index,
-  activeIndex,
-  total,
-  viewLabel,
-  onSwipeLeft,
-  onSwipeRight,
-}: {
-  project: Project;
-  index: number;
-  activeIndex: number;
-  total: number;
-  viewLabel: string;
-  onSwipeLeft: () => void;
-  onSwipeRight: () => void;
-}) {
-  const { t } = useLang();
-  const isTop = index === activeIndex;
-  const isPast = index < activeIndex;
-  const depth = index - activeIndex;
-
-  // Visual offsets for stacked items
-  const cardScale = isPast ? 0.9 : Math.max(0.85, 1 - depth * 0.05);
-  const cardY = isPast ? -60 : depth * 12;
-  const cardZIndex = total - index;
-  const cardOpacity = isPast ? 0 : depth > 3 ? 0 : 1;
-
-  // Horizontal offsets for animations
-  const customX = isPast ? -400 : 0;
-
-  return (
-    <motion.div
-      drag={isTop ? "x" : false}
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.6}
-      onDragEnd={(e, info) => {
-        if (info.offset.x < -100 || info.velocity.x < -200) {
-          onSwipeLeft();
-        } else if (info.offset.x > 100 || info.velocity.x > 200) {
-          onSwipeRight();
-        }
-      }}
-      animate={{
-        x: customX,
-        y: cardY,
-        scale: cardScale,
-        opacity: cardOpacity,
-        rotate: isTop ? 0 : (index % 2 === 0 ? 1.5 : -1.5) * Math.max(0, 1 - depth * 0.15)
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-        mass: 0.8
-      }}
-      style={{
-        zIndex: cardZIndex,
-        transformStyle: "preserve-3d",
-        touchAction: "pan-y"
-      }}
-      className="absolute inset-0 w-full h-full max-w-sm"
-    >
-      <Link
-        href={`/cases/${project.slug}`}
-        data-event="click_case_details"
-        className="relative block w-full h-full overflow-hidden rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-      >
-        <Image
-          src={project.bannerPath}
-          alt={`${project.name} - ${project.tag} by Lutiy Digital`}
-          fill
-          sizes="(max-width: 768px) 100vw, 380px"
-          priority={index === 0}
-          className="object-cover pointer-events-none"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
-        <div
-          aria-hidden
-          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${project.accent} opacity-20`}
-        />
-
-        <div className="relative flex h-full flex-col justify-between p-6 select-none">
-          <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.3em] text-white/70">
-            <span className="font-mono">
-              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </span>
-            <span className="truncate pl-3">{project.tag}</span>
-          </div>
-
-          <div>
-            <h3 className="text-[28px] font-semibold leading-[1.05] tracking-tight text-white">
-              {project.name}
-            </h3>
-            <p className="mt-3 text-[13px] leading-relaxed text-white/75">
-              {project.desc}
-            </p>
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {project.stack.slice(0, 3).map((s) => (
-                <span
-                  key={s}
-                  className="rounded-full border border-white/15 bg-white/[0.1] px-2.5 py-1 text-[10px] text-white/85"
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.1] px-4 py-2 text-sm font-medium text-white">
-              {t("Детальніше про кейс", "Case details")}
-              <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
-
-
-/* ============================ DESKTOP CARD ============================ */
-
-function ProjectCard({
-  project,
-  index,
-  total,
-  progress,
-  viewLabel,
-}: {
-  project: Project;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-  viewLabel: string;
-}) {
-  const { t } = useLang();
-  // Each card is “in focus” at progress = index / (total - 1).
-  // Distance from focus drives scale + opacity for a cinematic per-card animation.
-  const focus = total > 1 ? index / (total - 1) : 0;
-  const dist = useTransform(progress, (p) => Math.abs(p - focus));
-
-  const scale = useTransform(dist, [0, 0.18], [1, 0.92]);
-  const opacity = useTransform(dist, [0, 0.22], [1, 0.45]);
-  const isExternal = project.href?.startsWith("http");
-
-  return (
-    <motion.article
-      style={{ scale, opacity }}
-      className="relative mx-4 flex h-[80vh] w-[90vw] shrink-0 overflow-hidden rounded-[32px] border border-white/10 [contain:layout_paint]"
-    >
-      {/* Banner background */}
-      <Image
-        src={project.bannerPath}
-        alt={`${project.name} - Premium Project from Lutiy Digital`}
-        fill
-        sizes="90vw"
-        priority={index < 2}
-        className="object-cover"
-      />
-
-      {/* Readability layer — plain tint (backdrop-filter on a moving card is what made it stutter) */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40" />
-
-      {/* Accent gradient flare */}
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute -inset-1 bg-gradient-to-br ${project.accent} opacity-20`}
-      />
-
-      {/* Content grid */}
-      <div className="relative z-10 flex w-full flex-col p-10 lg:flex-row lg:p-14">
-        {/* LEFT — copy */}
-        <div className="flex flex-col justify-between lg:w-[40%]">
-          <div>
-            <div className="mb-5 flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-white/60">
-              <span className="font-mono">
-                {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-              </span>
-              <span className="h-px w-8 bg-white/30" />
-              {project.tag}
-            </div>
-
-            <h3 className="text-balance text-5xl font-semibold leading-[1.02] tracking-tight lg:text-7xl">
-              {project.name}
-            </h3>
-
-            <p className="mt-6 max-w-md text-base leading-relaxed text-white/70 lg:text-lg">
-              {project.desc}
-            </p>
-
-            <div className="mt-7 flex flex-wrap gap-2">
-              {project.stack.map((s) => (
-                <span
-                  key={s}
-                  className="rounded-full border border-white/15 bg-white/[0.08] px-3 py-1.5 text-xs text-white/85"
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <Link
-            href={`/cases/${project.slug}`}
-            data-event="click_case_details"
-            className="group/btn mt-10 inline-flex w-fit items-center gap-3 rounded-full border border-white/20 bg-white/[0.08] px-5 py-3 text-sm font-medium text-white transition hover:border-white/40 hover:bg-white/[0.12]"
-          >
-            <span>{t("Детальніше про кейс", "Case details")}</span>
-            <span className="transition group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5">
-              <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
-            </span>
-          </Link>
-        </div>
-
-        {/* RIGHT — framed banner photo with 3D tilt */}
-        <div className="relative mt-10 flex flex-1 items-center justify-center lg:mt-0">
-          <BannerFrame
-            src={project.framePath ?? project.bannerPath}
-            alt={project.name}
-            accent={project.accent}
-          />
-        </div>
-      </div>
-    </motion.article>
-  );
-}
-
-/* ============================ FRAMED BANNER (3D tilt) ============================ */
-
-function BannerFrame({
-  src,
-  alt,
-  accent,
-}: {
-  src: string;
-  alt: string;
-  accent: string;
-}) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-
-  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), {
-    stiffness: 150,
-    damping: 18,
-  });
-  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), {
-    stiffness: 150,
-    damping: 18,
-  });
-
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mx.set((e.clientX - rect.left) / rect.width - 0.5);
-    my.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-  const onLeave = () => {
-    mx.set(0);
-    my.set(0);
-  };
+  const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start start", "end end"] });
+  const x = useTransform(scrollYProgress, [0, 1], [0, -distance]);
+  const bar = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <div
-      ref={containerRef}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      className="relative w-full"
-      style={{ perspective: 1400 }}
+      ref={wrapRef}
+      className="relative hidden md:block"
+      // one viewport of vertical scroll per ~1.6 cards keeps the pace calm
+      style={{ height: `calc(100vh + ${distance}px)` }}
     >
-      {/* Backdrop glow — softer */}
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute -inset-8 -z-10 bg-gradient-to-br ${accent} opacity-40 [mask-image:radial-gradient(closest-side,black,transparent)]`}
-      />
+      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
+        <motion.div
+          ref={trackRef}
+          style={{ x }}
+          className="flex w-max gap-6 px-8 will-change-transform lg:px-12"
+        >
+          {projects.map((p, i) => (
+            <CaseCard key={p.slug} project={p} index={i} total={projects.length} />
+          ))}
+        </motion.div>
 
-      <motion.div
-        style={{
-          rotateX: rotX,
-          rotateY: rotY,
-          transformStyle: "preserve-3d",
-        }}
-        className="relative mx-auto aspect-[16/10] w-full max-w-[620px] overflow-hidden rounded-2xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.7)]"
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes="(min-width: 1280px) 620px, 60vw"
-          className="object-cover"
-        />
-        {/* Glass sheen */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"
-        />
-        {/* Inner border highlight */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10"
-        />
-      </motion.div>
+        <div className="mx-8 mt-8 flex items-center gap-4 lg:mx-12">
+          <div className="h-px flex-1 overflow-hidden bg-neutral-50/10">
+            <motion.div style={{ width: bar }} className="h-full bg-emerald-400" />
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500">scroll</span>
+        </div>
+      </div>
     </div>
   );
 }
 
-/* ============================ PROGRESS BAR ============================ */
+/* ============================ MOBILE: sticky stacking cards ============================ */
 
-function ProgressBar({ progress }: { progress: MotionValue<number> }) {
-  const width = useTransform(progress, [0, 1], ["0%", "100%"]);
+const MOBILE_INITIAL = 6;
+
+function MobileStack({ projects }: { projects: Project[] }) {
+  const { t } = useLang();
+  const [all, setAll] = useState(false);
+  const shown = all ? projects : projects.slice(0, MOBILE_INITIAL);
+
   return (
-    <div className="pointer-events-none absolute bottom-8 left-1/2 z-40 h-[2px] w-[min(40vw,420px)] -translate-x-1/2 overflow-hidden bg-white/10">
-      <motion.div
-        style={{ width }}
-        className="h-full bg-emerald-400"
-      />
+    <div className="relative px-4 pb-20 md:hidden">
+      {shown.map((p, i) => (
+        // pure CSS sticky stacking: zero JS work while scrolling
+        <div key={p.slug} className="sticky mb-5" style={{ top: 76 + i * 10 }}>
+          <CaseCard project={p} index={i} total={projects.length} mobile />
+        </div>
+      ))}
+      {!all && projects.length > MOBILE_INITIAL && (
+        <button
+          type="button"
+          onClick={() => setAll(true)}
+          className="relative z-10 mt-4 w-full rounded-full border border-neutral-50/15 py-4 font-mono text-xs uppercase tracking-widest text-neutral-50 transition active:scale-[0.98]"
+        >
+          {t(`Ще ${projects.length - MOBILE_INITIAL} кейсів`, `${projects.length - MOBILE_INITIAL} more cases`)} ↓
+        </button>
+      )}
     </div>
+  );
+}
+
+/* ============================ CARD ============================ */
+
+function CaseCard({
+  project,
+  index,
+  total,
+  mobile,
+}: {
+  project: Project;
+  index: number;
+  total: number;
+  mobile?: boolean;
+}) {
+  const { t } = useLang();
+  const category = project.tag.split("·")[0].trim();
+
+  return (
+    <Link
+      href={`/cases/${project.slug}`}
+      data-event="click_case_details"
+      aria-label={`${project.name} — ${t("переглянути кейс", "view case")}`}
+      className={
+        "group relative block shrink-0 " +
+        (mobile ? "aspect-[4/5] w-full" : "h-[68vh] max-h-[640px] w-[46vw] max-w-[820px]")
+      }
+    >
+      {/* Image body with folder cut-outs */}
+      <div
+        className="absolute inset-0 overflow-hidden rounded-[28px] bg-neutral-900"
+        style={CARD_MASK}
+      >
+        <Image
+          src={project.bannerPath}
+          alt={`${project.name} — ${project.tag}, Lutiy Digital`}
+          fill
+          sizes={mobile ? "92vw" : "(min-width: 1800px) 820px, 46vw"}
+          priority={index < 2}
+          className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/35 to-transparent" />
+        <div className="absolute inset-0 bg-[#050507]/10 transition-colors duration-500 group-hover:bg-transparent" />
+
+        {/* Copy */}
+        <div className={"absolute inset-x-0 bottom-0 " + (mobile ? "p-5 pr-24" : "p-8 pr-40 lg:p-10 lg:pr-44")}>
+          <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-400">
+            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </div>
+          <h3
+            className={"font-semibold uppercase leading-[0.95] text-neutral-50 " + (mobile ? "text-[28px]" : "text-4xl lg:text-5xl")}
+            style={{ fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif", letterSpacing: "-0.04em" }}
+          >
+            {project.name}
+          </h3>
+          <p className={"mt-3 max-w-md leading-relaxed text-neutral-300 " + (mobile ? "line-clamp-2 text-[13px]" : "text-sm lg:text-base")}>
+            {project.desc}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {project.stack.slice(0, mobile ? 3 : 4).map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-neutral-50/15 bg-neutral-50/[0.07] px-2.5 py-1 text-[10px] text-neutral-200 sm:text-[11px]"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tab label (sits in the top-left cut-out) */}
+      <span className="absolute left-0 top-0 flex h-[52px] w-[176px] items-center pl-5 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-50">
+        {category}
+      </span>
+
+      {/* Arrow (sits in the bottom-right notch) */}
+      <span className="absolute bottom-0 right-0 flex h-[56px] w-[104px] items-center justify-end pr-5 text-emerald-400 transition-transform duration-300 group-hover:translate-x-1">
+        <HugeiconsIcon icon={ArrowUpRight01Icon} size={22} />
+      </span>
+
+      {/* Rotating "view case" badge */}
+      <span
+        aria-hidden
+        className={
+          "absolute grid place-items-center transition-all duration-500 " +
+          (mobile
+            ? "right-4 top-4 h-[74px] w-[74px]"
+            : "right-8 top-1/2 h-28 w-28 -translate-y-1/2 scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100")
+        }
+      >
+        <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full animate-[spin_12s_linear_infinite]">
+          <defs>
+            <path id={`c-${project.slug}`} d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+          </defs>
+          <circle cx="50" cy="50" r="49" fill="#10b981" />
+          <text fill="#050507" fontSize="8.5" fontWeight="700" fontFamily="var(--font-inter), sans-serif">
+            <textPath href={`#c-${project.slug}`} textLength="236" lengthAdjust="spacing">
+              {t("ПЕРЕГЛЯНУТИ КЕЙС • ПЕРЕГЛЯНУТИ КЕЙС •", "VIEW CASE • VIEW CASE • VIEW CASE • ")}
+            </textPath>
+          </text>
+        </svg>
+        <span className="relative grid h-[52%] w-[52%] place-items-center rounded-full bg-[#050507] text-neutral-50">
+          <HugeiconsIcon icon={ArrowUpRight01Icon} size={mobile ? 16 : 22} />
+        </span>
+      </span>
+    </Link>
   );
 }
