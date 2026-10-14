@@ -15,6 +15,7 @@ import {
 import { useLang } from "@/context/LangContext";
 import Reveal from "./Reveal";
 import MagneticButton from "./MagneticButton";
+import { scrollToId } from "./SmoothScroll";
 
 const icons = [
   DatabaseIcon,
@@ -102,12 +103,7 @@ export default function AIAutomation() {
 
   const cases = t("ua", "en") === "ua" ? casesUA : casesEN;
 
-  const handleScrollToContact = () => {
-    const el = document.getElementById("contact");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const handleScrollToContact = () => scrollToId("contact");
 
   return (
     <section id="automation" className="relative overflow-hidden bg-black py-24 sm:py-32">

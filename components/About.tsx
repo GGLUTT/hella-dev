@@ -245,11 +245,7 @@ export default function About() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-x-0 top-0 -z-10 h-[62svh] sm:h-[70svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[66%]"
-          style={{
-            maskImage: "radial-gradient(ellipse 62% 70% at 50% 42%, black 40%, transparent 100%)",
-            WebkitMaskImage: "radial-gradient(ellipse 62% 70% at 50% 42%, black 40%, transparent 100%)",
-          }}
+          className="about-photo-mask absolute inset-x-0 top-0 -z-10 h-[62svh] sm:h-[70svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[80%]"
         >
           <Image
             src="/about-yevhenii.webp"
@@ -258,14 +254,14 @@ export default function About() {
               "Yevhenii Liutyi — fullstack developer, founder of Lutiy Digital"
             )}
             fill
-            sizes="(min-width: 1024px) 66vw, 100vw"
-            quality={80}
-            className="object-cover object-[52%_30%] lg:object-[50%_center]"
+            sizes="(min-width: 1024px) 80vw, 100vw"
+            quality={82}
+            className="object-cover object-[88%_30%] sm:object-[80%_30%] lg:object-[100%_center]"
           />
         </motion.div>
 
         {/* Readability: darken behind the copy only */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-35% via-[#050507]/70 via-50% to-transparent lg:bg-gradient-to-r lg:from-[#050507] lg:from-10% lg:via-[#050507]/60 lg:via-40% lg:to-transparent lg:to-60%" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-35% via-[#050507]/70 via-50% to-transparent lg:bg-gradient-to-r lg:from-[#050507] lg:from-10% lg:via-[#050507]/70 lg:via-35% lg:to-transparent lg:to-55%" />
         <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-black" />
         <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-t from-transparent to-black" />
 
@@ -379,7 +375,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute right-4 top-24 flex items-center gap-3 rounded-2xl border border-neutral-50/10 bg-[#050507]/50 px-4 py-3 backdrop-blur-md lg:bottom-16 lg:right-10 lg:top-auto"
+          className="absolute left-4 top-24 flex items-center gap-3 rounded-2xl border border-neutral-50/10 bg-[#050507]/60 px-4 py-3 lg:bottom-16 lg:left-auto lg:right-10 lg:top-auto"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />

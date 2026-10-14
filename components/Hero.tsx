@@ -1,311 +1,241 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLang } from "@/context/LangContext";
-import MagneticButton from "@/components/MagneticButton";
-import HeroShape from "@/components/HeroShape";
-
-/* ===================== CONFIG ===================== */
-const STICKER_CHARS = ["l", "u", "t", "i", "y"];
-
-/* ===================== HERO MAIN ===================== */
+import { useLoaderDone } from "@/components/SiteLoader";
+import { scrollToId } from "@/components/SmoothScroll";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const TRUST = [
-  { val: "10+", ua: "запущених проєктів", en: "projects shipped" },
-  { val: "$150", ua: "старт ціни за сайт", en: "websites from" },
-  { val: "24h", ua: "безкоштовний AI-аудит", en: "free AI audit" },
+const SHOWCASE = [
+  { src: "/agency.jpg", name: "Kronos Agency" },
+  { src: "/fitnes1.jpg", name: "Apex Fitness" },
+  { src: "/nexus.png", name: "3D Nexus" },
+  { src: "/budle1.png", name: "Budle" },
 ];
 
-const SERVICES = [
-  { ua: "Лендінги", en: "Landing pages" },
-  { ua: "Корпоративні сайти", en: "Business websites" },
-  { ua: "Веб-застосунки", en: "Web apps" },
-  { ua: "CRM та n8n", en: "CRM & n8n" },
-  { ua: "AI-інтеграції", en: "AI integrations" },
-];
+const AVATARS = ["/fitnes1.jpg", "/nexus.png", "/budle1.png", "/agency.jpg"];
 
-/** One headline line revealed from behind a mask, with a blur-to-sharp settle. */
-function Line({ children, delay, muted }: { children: React.ReactNode; delay: number; muted?: boolean }) {
-  return (
-    <span className="block overflow-hidden pb-[0.06em]">
-      <motion.span
-        initial={{ y: "105%", filter: "blur(10px)", opacity: 0 }}
-        animate={{ y: "0%", filter: "blur(0px)", opacity: 1 }}
-        transition={{ duration: 1.2, delay, ease: EASE }}
-        className={"block " + (muted ? "text-white/35" : "text-white")}
-      >
-        {children}
-      </motion.span>
-    </span>
-  );
-}
+/* ===================== HERO ===================== */
 
 export default function Hero() {
   const { t } = useLang();
+  const ready = useLoaderDone();
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const { scrollY } = useScroll();
-  const contentOpacity = useTransform(scrollY, [0, 520], [1, 0]);
-  const contentY = useTransform(scrollY, [0, 600], [0, -60]);
-  const shapeY = useTransform(scrollY, [0, 700], [0, 140]);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
+  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const anim = (delay: number) => ({
+    initial: { opacity: 0, y: 24 },
+    animate: ready ? { opacity: 1, y: 0 } : undefined,
+    transition: { duration: 1, delay, ease: EASE },
+  });
+
+  // Giant type: each word slides out of its own mask.
+  const lines: { word: string; outline?: boolean }[][] = [
+    [{ word: t("Сайти.", "Sites.") }, { word: "Apps." }],
+    [{ word: "AI." }, { word: "CRM.", outline: true }, { word: "SEO.", outline: true }],
+  ];
+  let wordIndex = 0;
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
-      aria-label={t("Розробка сайтів — Lutiy Digital", "Web development — Lutiy Digital")}
-      className="relative flex min-h-[100svh] w-full items-end overflow-hidden bg-black px-5 pb-14 pt-[40svh] sm:px-8 md:items-center md:pb-16 md:pt-28 [@media(max-aspect-ratio:7/5)]:items-end [@media(max-aspect-ratio:7/5)]:pb-16 [@media(max-aspect-ratio:7/5)]:pt-[40svh]"
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-black px-5 pb-8 pt-24 sm:px-8 md:pb-10 md:pt-28 lg:px-12"
     >
-      {/* Backdrop: faint grid + a barely-there green light source behind the shape */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2.4, delay: 0.6 }}
-          className="absolute left-1/2 top-[22%] h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/[0.07] blur-[110px] md:left-[72%] md:top-1/2"
-        />
-        <div
-          className="absolute inset-0 opacity-[0.045]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgb(var(--color-text-white)) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--color-text-white)) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-            maskImage: "radial-gradient(ellipse 70% 60% at 65% 45%, black, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 65% 45%, black, transparent 75%)",
-          }}
-        />
-      </div>
-
-      {/* Dark liquid shape (WebGL) */}
-      <motion.div style={{ y: shapeY }} className="absolute inset-0 z-10">
-        <HeroShape className="relative h-full w-full" />
-      </motion.div>
-
-      {/* Readability fade under copy on mobile */}
+      {/* Soft emerald bloom — transform-only animation, no repaints */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[70%] bg-gradient-to-t from-black from-50% via-black/80 to-transparent [@media(min-aspect-ratio:7/5)]:hidden"
+        className="pointer-events-none absolute -right-[10%] top-[8%] h-[70vmin] w-[70vmin] rounded-full opacity-70 blur-[120px] [animation:hero-glow-drift_18s_ease-in-out_infinite]"
+        style={{ background: "radial-gradient(circle, rgba(16,185,129,0.22), transparent 65%)" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgb(var(--color-text-white)) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--color-text-white)) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          maskImage: "linear-gradient(to bottom, black, transparent 85%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black, transparent 85%)",
+        }}
       />
 
-      {/* Content */}
+      {/* Meta row */}
       <motion.div
-        style={{ opacity: contentOpacity, y: contentY }}
-        className="relative z-20 mx-auto w-full max-w-7xl"
+        {...anim(0.05)}
+        className="relative z-10 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.3em] text-white/45 sm:text-[11px]"
       >
-        <div className="flex max-w-2xl flex-col items-start lg:max-w-[54rem]">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
-          >
-            <HellaSticker />
-          </motion.div>
-
-          {/* Eyebrow with drawing rule */}
-          <div className="mt-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.35em] text-white/50 sm:text-[11px]">
-            <motion.span
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1, delay: 0.35, ease: EASE }}
-              className="h-px w-10 origin-left bg-white/40"
-            />
-            <motion.span
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.55, ease: EASE }}
-            >
-              {t("Студія веб-розробки · Київ", "Web development studio · Kyiv")}
-            </motion.span>
-          </div>
-
-          {/* H1 — main SEO phrase, monochrome */}
-          <h1 className="mt-5 font-display text-[1.9rem] font-bold uppercase leading-[1.02] tracking-[-0.025em] sm:text-[2.9rem] md:text-[3.2rem] lg:text-[3.2rem] xl:text-[3.7rem]">
-            <Line delay={0.5}>{t("Сайти та", "Websites &")}</Line>
-            <Line delay={0.62}>{t("веб-застосунки,", "web apps")}</Line>
-            <Line delay={0.74} muted>{t("що приносять", "that bring")}</Line>
-            <Line delay={0.86} muted>{t("заявки", "you leads")}</Line>
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.05, ease: EASE }}
-            className="mt-6 max-w-lg text-[15px] leading-relaxed text-white/55 md:text-base"
-          >
-            {t(
-              "Проєктую й розробляю сайти під ключ, кабінети клієнтів та автоматизації з CRM. Швидкі, з SEO з першого дня — щоб клієнти знаходили вас і залишали заявки.",
-              "I design and build turnkey websites, client portals and CRM automations. Fast and SEO-ready from day one — so clients find you and get in touch."
-            )}
-          </motion.p>
-
-          {/* Service keywords — crawlable */}
-          <motion.ul
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            aria-label={t("Послуги", "Services")}
-            className="mt-5 hidden flex-wrap items-center gap-x-3 gap-y-1 font-mono sm:flex text-[10px] uppercase tracking-[0.2em] text-white/40 sm:text-[11px]"
-          >
-            {SERVICES.map((s, i) => (
-              <li key={s.en} className="flex items-center gap-3">
-                {i > 0 && <span aria-hidden className="h-1 w-1 rounded-full bg-emerald-500/60" />}
-                {t(s.ua, s.en)}
-              </li>
-            ))}
-          </motion.ul>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.3, ease: EASE }}
-            className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
-          >
-            <MagneticButton
-              as="button"
-              onClick={() => scrollTo("contact")}
-              glowBorder={false}
-              strength={0.25}
-              data-event="click_hero_cta"
-              className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-white px-8 py-4 font-mono text-xs font-semibold uppercase tracking-widest text-black transition hover:bg-white/90 sm:w-auto"
-            >
-              <span className="relative z-10">{t("Обговорити проєкт", "Discuss a project")}</span>
-              <span aria-hidden className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </MagneticButton>
-            <MagneticButton
-              as="button"
-              onClick={() => scrollTo("projects")}
-              glowBorder={false}
-              strength={0.25}
-              data-event="click_view_cases"
-              className="relative flex w-full items-center justify-center overflow-hidden rounded-full border border-white/15 px-8 py-4 font-mono text-xs uppercase tracking-widest text-white transition hover:border-white/40 sm:w-auto"
-            >
-              {t("Дивитися кейси", "View case studies")}
-            </MagneticButton>
-          </motion.div>
-
-          {/* Trust row */}
-          <motion.dl
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 1.5 }}
-            className="mt-8 grid w-full max-w-lg grid-cols-3 gap-4 border-t border-white/10 pt-6"
-          >
-            {TRUST.map((item) => (
-              <div key={item.en} className="flex flex-col-reverse gap-1">
-                <dt className="text-[9px] uppercase leading-snug tracking-[0.18em] text-white/40 sm:text-[10px]">{t(item.ua, item.en)}</dt>
-                <dd className="font-display text-xl font-semibold tracking-tight text-white sm:text-2xl">{item.val}</dd>
-              </div>
-            ))}
-          </motion.dl>
-        </div>
+        <span className="flex items-center gap-2.5">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          </span>
+          {t("Приймаємо нові проєкти", "Taking new projects")}
+        </span>
+        <span className="hidden md:inline">{t("Студія веб-розробки · Київ / Remote", "Web studio · Kyiv / Remote")}</span>
       </motion.div>
 
-      {/* Corner labels */}
+      {/* Phones: the work preview fills the space above the headline */}
+      <Showcase ready={ready} mobile />
+
+      {/* Giant headline */}
+      <motion.div style={{ y: titleY }} className="relative z-10 mt-auto pt-10 md:pt-0">
+        <h1
+          className="relative font-semibold uppercase leading-[0.86] text-white"
+          style={{
+            fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
+            fontSize: "clamp(3.3rem, 11.2vw, 13rem)",
+            letterSpacing: "-0.055em",
+          }}
+        >
+          <span className="sr-only">
+            {t(
+              "Розробка сайтів, веб-застосунків, AI-інтеграцій, CRM та SEO — Lutiy Digital",
+              "Website, web app, AI, CRM and SEO development — Lutiy Digital"
+            )}
+          </span>
+          {lines.map((line, li) => (
+            <span key={li} aria-hidden className="relative flex flex-wrap items-start gap-x-[0.22em]">
+              {line.map(({ word, outline }) => {
+                const i = wordIndex++;
+                return (
+                  <span key={word} className="-mt-[0.14em] inline-block overflow-hidden pb-[0.04em] pr-[0.04em] pt-[0.14em]">
+                    <motion.span
+                      initial={{ y: "108%" }}
+                      animate={ready ? { y: "0%" } : undefined}
+                      transition={{ duration: 1.25, delay: 0.1 + i * 0.09, ease: EASE }}
+                      className={"inline-block " + (outline ? "text-outline" : "")}
+                    >
+                      {word}
+                    </motion.span>
+                  </span>
+                );
+              })}
+              {li === 0 && <Showcase ready={ready} />}
+            </span>
+          ))}
+        </h1>
+      </motion.div>
+
+      {/* Bottom row */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 1.8 }}
-        className="pointer-events-none absolute inset-x-8 bottom-6 z-20 hidden items-center justify-between font-mono text-[9px] uppercase tracking-[0.4em] text-white/30 md:flex"
+        style={{ opacity: fade }}
+        className="relative z-10 mt-10 grid gap-8 md:mt-14 md:grid-cols-2 md:items-end"
       >
-        <span>Lutiy Digital · MMXXVI</span>
-        <span>{t("Гортайте", "Scroll")} ↓</span>
+        {/* Trust */}
+        <motion.div {...anim(0.7)} className="order-2 flex items-center gap-4 md:order-1">
+          <div className="flex -space-x-3">
+            {AVATARS.map((src) => (
+              <span
+                key={src}
+                className="relative h-11 w-11 overflow-hidden rounded-full border-2 border-black bg-zinc-900 sm:h-12 sm:w-12"
+              >
+                <Image src={src} alt="" fill sizes="48px" className="object-cover" />
+              </span>
+            ))}
+          </div>
+          <div>
+            <div className="text-sm font-semibold text-white">
+              {t("10+ запущених проєктів", "10+ projects shipped")}
+            </div>
+            <div className="text-xs text-white/45">
+              {t("Лендінги, магазини, SaaS, автоматизації", "Landings, stores, SaaS, automations")}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Pitch + CTA */}
+        <div className="order-1 md:order-2 md:justify-self-end">
+          <motion.p
+            {...anim(0.55)}
+            className="max-w-md text-[15px] leading-relaxed text-white/60 md:text-base"
+          >
+            {t(
+              "Розробляємо сайти, інтернет-магазини, CRM та веб-застосунки, впроваджуємо AI й автоматизації на n8n — швидко, з SEO з першого дня й під ваші заявки.",
+              "We build websites, online stores, CRMs and web apps, and roll out AI and n8n automations — fast, SEO-ready from day one and built to bring you leads."
+            )}
+          </motion.p>
+          <motion.div {...anim(0.65)} className="mt-6 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => scrollToId("contact")}
+              data-event="click_hero_cta"
+              className="rounded-full bg-white px-7 py-4 text-[13px] font-semibold uppercase tracking-wide text-black transition hover:bg-white/85"
+            >
+              {t("Обговорити проєкт", "Discuss a project")}
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToId("projects")}
+              data-event="click_view_cases"
+              aria-label={t("Дивитися кейси", "View case studies")}
+              className="group grid h-[52px] w-[52px] place-items-center rounded-full border border-white/20 text-white transition hover:border-white hover:bg-white hover:text-black"
+            >
+              <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToId("projects")}
+              className="ml-3 hidden text-[13px] text-white/50 underline-offset-4 transition hover:text-white hover:underline sm:inline"
+            >
+              {t("Дивитися кейси", "View case studies")}
+            </button>
+          </motion.div>
+        </div>
       </motion.div>
     </section>
   );
 }
 
-/* ===================== HELLA STICKER ===================== */
+/* ===================== SHOWCASE CARD ===================== */
 
-function HellaSticker() {
+/** Small rotating preview of recent work that sits beside the first headline line. */
+function Showcase({ ready, mobile }: { ready: boolean; mobile?: boolean }) {
   const { t } = useLang();
-  const [revealed, setRevealed] = useState(false);
+  const [i, setI] = useState(0);
 
   useEffect(() => {
-    const tTimer = setTimeout(() => setRevealed(true), 900);
-    return () => clearTimeout(tTimer);
-  }, []);
+    if (!ready || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setI((v) => (v + 1) % SHOWCASE.length), 2800);
+    return () => clearInterval(id);
+  }, [ready]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.6, rotate: -14, y: 8 }}
-      animate={{ opacity: 1, scale: 1, rotate: -5, y: 0 }}
-      whileHover={{ scale: 1.05, rotate: -2, y: -2 }}
-      transition={{ 
-        type: "spring",
-        stiffness: 260,
-        damping: 18,
-        delay: 0.6 
-      }}
-      className="inline-block relative group cursor-pointer"
-      style={{ perspective: 600 }}
+    <motion.button
+      type="button"
+      onClick={() => scrollToId("projects")}
+      initial={{ clipPath: "inset(100% 0% 0% 0% round 14px)" }}
+      animate={ready ? { clipPath: "inset(0% 0% 0% 0% round 14px)" } : undefined}
+      transition={{ duration: 1.2, delay: 0.45, ease: EASE }}
+      aria-label={t("Подивитися останні роботи", "See recent work")}
+      className={
+        mobile
+          ? "group relative z-10 mt-8 block aspect-[16/9] w-full overflow-hidden rounded-[14px] border border-white/10 bg-zinc-900 md:hidden"
+          : "group absolute right-0 top-[0.08em] hidden aspect-[16/10] w-[16vw] max-w-[300px] overflow-hidden rounded-[14px] border border-white/10 bg-zinc-900 md:block"
+      }
     >
-      {/* Dynamic rotating conic border container */}
-      <div className="relative p-[1.5px] rounded-xl overflow-hidden bg-zinc-900 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-        {/* Animated conic gradient border background */}
-        <motion.div
-          className="absolute -inset-[200%] bg-[conic-gradient(from_0deg,transparent_40%,#10b981_50%,transparent_60%)] opacity-70 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+      {SHOWCASE.map((s, idx) => (
+        <Image
+          key={s.src}
+          src={s.src}
+          alt={s.name}
+          fill
+          sizes={mobile ? "100vw" : "300px"}
+          className={`object-cover transition-[opacity,transform] duration-[1200ms] ease-out group-hover:scale-105 ${
+            idx === i ? "opacity-100" : "opacity-0"
+          }`}
         />
-
-        {/* Inner pill container */}
-        <div className="relative flex items-center gap-2 rounded-[10px] bg-zinc-950/95 px-4 py-2 backdrop-blur-md overflow-hidden">
-          {/* Futuristic laser scanner sweep */}
-          <motion.div
-            className="absolute inset-y-0 w-[20px] bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent pointer-events-none z-10"
-            initial={{ left: "-20%" }}
-            animate={{ left: "120%" }}
-            transition={{
-              duration: 2.2,
-              repeat: Infinity,
-              repeatDelay: 3.5,
-              ease: "easeInOut",
-            }}
-          />
-
-          {/* Glowing dot status */}
-          <span className="relative flex h-1.5 w-1.5 shrink-0">
-            <motion.span
-              className="absolute inline-flex h-full w-full rounded-full bg-emerald-400"
-              animate={{ scale: [1, 2.5, 1], opacity: [0.8, 0, 0.8] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-            />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          </span>
-
-          {/* Char-by-char brand reveal */}
-          <span className="flex font-display text-[14px] font-bold tracking-[0.2em] text-white">
-            {STICKER_CHARS.map((char, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
-                animate={revealed ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-                transition={{ duration: 0.35, delay: i * 0.07, ease: "easeOut" }}
-              >
-                {char}
-              </motion.span>
-            ))}
-          </span>
-
-          {/* Slash + Digital mention */}
-          <motion.span
-            initial={{ opacity: 0, x: -4 }}
-            animate={revealed ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.45, ease: "easeOut" }}
-            className="flex items-center gap-2"
-          >
-            <span className="h-3 w-px bg-white/15" />
-            <span className="font-mono text-[9px] tracking-widest text-emerald-400 font-bold uppercase">
-              {t("діджитал", "digital")}
-            </span>
-          </motion.span>
-        </div>
-      </div>
-    </motion.div>
+      ))}
+      <span className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-[#050507]/90 to-transparent px-3 pb-2 pt-6 font-mono text-[10px] normal-case tracking-normal text-neutral-200">
+        <span>{SHOWCASE[i].name}</span>
+        <span className="text-emerald-400">{String(i + 1).padStart(2, "0")}/{String(SHOWCASE.length).padStart(2, "0")}</span>
+      </span>
+    </motion.button>
   );
 }

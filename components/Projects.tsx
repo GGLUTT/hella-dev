@@ -171,13 +171,8 @@ export default function Projects() {
     desc: lang === "ua" ? p.descUA : p.descEN,
   }));
 
-  // Smooth spring on the scroll progress.
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 220,
-    damping: 40,
-    mass: 0.3,
-    restDelta: 0.0005,
-  });
+  // Wheel input is already eased by Lenis — a second spring here only adds lag.
+  const smooth = scrollYProgress;
 
   const trackEnd = `-${projects.length * 94 - 100 + 12}vw`;
   const x = useTransform(smooth, [0, 1], ["0vw", trackEnd]);
@@ -197,7 +192,7 @@ export default function Projects() {
             <Reveal delay={0.05}>
               <h2 className="text-[34px] font-semibold tracking-tight sm:text-4xl md:text-6xl lg:text-[72px]">
                 {t("Вибрані", "Selected")}{" "}
-                <span className="bg-gradient-to-r from-white via-emerald-200 to-sky-200 bg-clip-text text-transparent">
+                <span className="text-white/35">
                   {t("роботи", "works")}
                 </span>
               </h2>
@@ -230,7 +225,7 @@ export default function Projects() {
             className="pointer-events-none absolute inset-y-0 right-0 z-30 w-32 bg-gradient-to-l from-black to-transparent"
           />
 
-          <motion.div style={{ x }} className="flex pl-[5vw] pr-[5vw] will-change-transform">
+          <motion.div style={{ x }} className="flex pl-[5vw] pr-[5vw] [transform:translateZ(0)] will-change-transform">
             {projects.map((p, i) => (
               <ProjectCard
                 key={p.name}
@@ -390,7 +385,7 @@ function MobileSwipeCard({
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
         <div
           aria-hidden
-          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${project.accent} opacity-30 mix-blend-screen`}
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${project.accent} opacity-20`}
         />
 
         <div className="relative flex h-full flex-col justify-between p-6 select-none">
@@ -412,13 +407,13 @@ function MobileSwipeCard({
               {project.stack.slice(0, 3).map((s) => (
                 <span
                   key={s}
-                  className="rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[10px] text-white/85 backdrop-blur-md"
+                  className="rounded-full border border-white/15 bg-white/[0.1] px-2.5 py-1 text-[10px] text-white/85"
                 >
                   {s}
                 </span>
               ))}
             </div>
-            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.1] px-4 py-2 text-sm font-medium text-white">
               {t("Детальніше про кейс", "Case details")}
               <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
             </div>
@@ -451,15 +446,14 @@ function ProjectCard({
   const focus = total > 1 ? index / (total - 1) : 0;
   const dist = useTransform(progress, (p) => Math.abs(p - focus));
 
-  const scale = useTransform(dist, [0, 0.18], [1, 0.9]);
+  const scale = useTransform(dist, [0, 0.18], [1, 0.92]);
   const opacity = useTransform(dist, [0, 0.22], [1, 0.45]);
-  const cardY = useTransform(dist, [0, 0.18], [0, 28]);
   const isExternal = project.href?.startsWith("http");
 
   return (
     <motion.article
-      style={{ scale, opacity, y: cardY }}
-      className="relative mx-4 flex h-[80vh] w-[90vw] shrink-0 overflow-hidden rounded-[32px] border border-white/10 will-change-transform"
+      style={{ scale, opacity }}
+      className="relative mx-4 flex h-[80vh] w-[90vw] shrink-0 overflow-hidden rounded-[32px] border border-white/10 [contain:layout_paint]"
     >
       {/* Banner background */}
       <Image
@@ -471,13 +465,13 @@ function ProjectCard({
         className="object-cover"
       />
 
-      {/* Readability layer — slightly lighter than before so the banner breathes */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      {/* Readability layer — plain tint (backdrop-filter on a moving card is what made it stutter) */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40" />
 
       {/* Accent gradient flare */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute -inset-1 bg-gradient-to-br ${project.accent} opacity-30 mix-blend-screen`}
+        className={`pointer-events-none absolute -inset-1 bg-gradient-to-br ${project.accent} opacity-20`}
       />
 
       {/* Content grid */}
@@ -505,7 +499,7 @@ function ProjectCard({
               {project.stack.map((s) => (
                 <span
                   key={s}
-                  className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-xs text-white/85 backdrop-blur-md"
+                  className="rounded-full border border-white/15 bg-white/[0.08] px-3 py-1.5 text-xs text-white/85"
                 >
                   {s}
                 </span>
@@ -516,7 +510,7 @@ function ProjectCard({
           <Link
             href={`/cases/${project.slug}`}
             data-event="click_case_details"
-            className="group/btn mt-10 inline-flex w-fit items-center gap-3 rounded-full border border-white/20 bg-white/[0.06] px-5 py-3 text-sm font-medium text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/[0.12]"
+            className="group/btn mt-10 inline-flex w-fit items-center gap-3 rounded-full border border-white/20 bg-white/[0.08] px-5 py-3 text-sm font-medium text-white transition hover:border-white/40 hover:bg-white/[0.12]"
           >
             <span>{t("Детальніше про кейс", "Case details")}</span>
             <span className="transition group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5">
@@ -584,7 +578,7 @@ function BannerFrame({
       {/* Backdrop glow — softer */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${accent} opacity-70 blur-2xl`}
+        className={`pointer-events-none absolute -inset-8 -z-10 bg-gradient-to-br ${accent} opacity-40 [mask-image:radial-gradient(closest-side,black,transparent)]`}
       />
 
       <motion.div
@@ -625,7 +619,7 @@ function ProgressBar({ progress }: { progress: MotionValue<number> }) {
     <div className="pointer-events-none absolute bottom-8 left-1/2 z-40 h-[2px] w-[min(40vw,420px)] -translate-x-1/2 overflow-hidden bg-white/10">
       <motion.div
         style={{ width }}
-        className="h-full bg-gradient-to-r from-emerald-300 to-sky-300"
+        className="h-full bg-emerald-400"
       />
     </div>
   );

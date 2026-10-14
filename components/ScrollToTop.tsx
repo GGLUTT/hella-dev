@@ -26,7 +26,9 @@ export default function ScrollToTop() {
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           onClick={() =>
-            window.scrollTo({ top: 0, behavior: "smooth" })
+            window.__lenis
+              ? window.__lenis.scrollTo(0, { duration: 1.6 })
+              : window.scrollTo({ top: 0, behavior: "smooth" })
           }
           aria-label="Прокрутити нагору"
           className="group fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center md:bottom-8 md:right-8"

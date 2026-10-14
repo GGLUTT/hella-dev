@@ -6,6 +6,7 @@ import ConsoleEasterEgg from "@/components/ConsoleEasterEgg";
 import { LangProvider } from "@/context/LangContext";
 import InteractiveAssistant from "@/components/InteractiveAssistant";
 import { ThemeProvider } from "@/context/ThemeContext";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -268,6 +269,7 @@ export default function RootLayout({
       <body className="font-sans bg-black text-white antialiased">
         <ThemeProvider>
           <LangProvider>
+            <SmoothScroll />
             <ConsoleEasterEgg />
             {children}
             <CookieBanner />
