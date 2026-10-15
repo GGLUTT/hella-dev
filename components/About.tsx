@@ -5,6 +5,8 @@ import { motion, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
 import { useLang } from "@/context/LangContext";
+import { useTheme } from "@/context/ThemeContext";
+import AssembleText from "./AssembleText";
 
 const STACK_ITEMS = [
   {
@@ -165,6 +167,7 @@ const fadeUp: Variants = {
 
 export default function About() {
   const { lang, t } = useLang();
+  const { theme } = useTheme();
 
   const stack = STACK_ITEMS.map((item) => ({
     name: item.name,
@@ -226,7 +229,7 @@ export default function About() {
       </motion.div>
 
       {/* ============ Intro over the map backdrop ============ */}
-      <div className="relative isolate overflow-hidden bg-[#050507]">
+      <div className="relative isolate overflow-hidden bg-black">
         {/* Background — the map artwork across the whole section */}
         <motion.div
           aria-hidden
@@ -237,7 +240,8 @@ export default function About() {
           className="absolute inset-0 -z-20"
         >
           <Image
-            src="/about-bg-map.webp"
+            key={theme}
+            src={theme === "light" ? "/about-bg-map-light.webp" : "/about-bg-map.webp"}
             alt=""
             fill
             sizes="100vw"
@@ -247,7 +251,7 @@ export default function About() {
         </motion.div>
 
         {/* Readability: darken behind the copy only */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050507] from-30% via-[#050507]/75 via-55% to-[#050507]/20 lg:bg-gradient-to-r lg:from-[#050507]/95 lg:from-5% lg:via-[#050507]/60 lg:via-35% lg:to-transparent lg:to-60%" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-black from-30% via-black/75 via-55% to-black/20 lg:bg-gradient-to-r lg:from-black/95 lg:from-5% lg:via-black/60 lg:via-35% lg:to-transparent lg:to-60%" />
         <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-black" />
         <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-t from-transparent to-black" />
 
@@ -261,42 +265,35 @@ export default function About() {
           >
             <motion.div
               variants={fadeUp}
-              className="mb-7 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-neutral-500 sm:text-[11px]"
+              className="mb-7 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-white0 sm:text-[11px]"
             >
               <span>02</span>
-              <span className="h-px w-10 bg-neutral-600" />
+              <span className="h-px w-10 bg-white/30" />
               {t("Про студію", "About the studio")}
             </motion.div>
 
-            <h2 className="font-display text-[27px] font-bold uppercase leading-[1.04] tracking-[-0.02em] sm:text-[44px] xl:text-[60px]">
-              {[
-                { text: "Lutiy Digital", muted: false },
-                { text: t("персональна", "a personal"), muted: true },
-                { text: t("dev-студія", "dev studio"), muted: true },
-              ].map((l, i) => (
-                <span key={i} className="block overflow-hidden pb-[0.05em]">
-                  <motion.span
-                    variants={wordReveal}
-                    className={"block " + (l.muted ? "text-neutral-500" : "text-neutral-50")}
-                  >
-                    {l.text}
-                  </motion.span>
-                </span>
-              ))}
+            <h2
+              className="font-display text-[27px] font-bold uppercase leading-[1.04] tracking-[-0.02em] sm:text-[44px] xl:text-[60px]"
+              aria-label={t("Lutiy Digital — персональна dev-студія", "Lutiy Digital — a personal dev studio")}
+            >
+              <AssembleText text="Lutiy Digital" className="block text-white" />
+              <AssembleText text={t("персональна", "a personal")} className="block text-white/40" />
+              <AssembleText text={t("dev-студія", "dev studio")} className="block text-white/40" />
             </h2>
 
-            <motion.p
-              variants={fadeUp}
-              className="mt-7 text-[15px] leading-relaxed text-neutral-300 md:text-[17px]"
-            >
-              {t(
-                "Я — Євгеній Лютий, fullstack-розробник. Кожен проєкт веду особисто: від першої розмови та прототипу до запуску й підтримки.",
-                "I'm Yevhenii Liutyi, a fullstack developer. I run every project personally — from the first call and prototype to launch and support."
-              )}
-            </motion.p>
+            <p className="mt-7 text-[15px] leading-relaxed text-white/75 md:text-[17px]">
+              <AssembleText
+                by="word"
+                spread={40}
+                text={t(
+                  "Я — Євгеній Лютий, fullstack-розробник. Кожен проєкт веду особисто: від першої розмови та прототипу до запуску й підтримки.",
+                  "I'm Yevhenii Liutyi, a fullstack developer. I run every project personally — from the first call and prototype to launch and support."
+                )}
+              />
+            </p>
 
             {/* Principles */}
-            <motion.ol variants={fadeUp} className="mt-9 border-t border-neutral-50/10">
+            <motion.ol variants={fadeUp} className="mt-9 border-t border-white/10">
               {[
                 {
                   ua: ["Напряму з розробником", "Без менеджерів і зіпсованого телефону — ви говорите з тим, хто пише код."],
@@ -315,14 +312,14 @@ export default function About() {
                 return (
                   <li
                     key={i}
-                    className="group grid grid-cols-[2.5rem_1fr] gap-x-3 border-b border-neutral-50/10 py-4 transition-colors hover:border-neutral-50/25"
+                    className="group grid grid-cols-[2.5rem_1fr] gap-x-3 border-b border-white/10 py-4 transition-colors hover:border-white/25"
                   >
-                    <span className="pt-0.5 font-mono text-[11px] text-neutral-600 transition-colors group-hover:text-emerald-400">
+                    <span className="pt-0.5 font-mono text-[11px] text-white/35 transition-colors group-hover:text-emerald-400">
                       0{i + 1}
                     </span>
                     <div>
-                      <h3 className="text-[15px] font-semibold text-neutral-100">{title}</h3>
-                      <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">{desc}</p>
+                      <h3 className="text-[15px] font-semibold text-white">{title}</h3>
+                      <p className="mt-1 text-[13px] leading-relaxed text-white/55">{desc}</p>
                     </div>
                   </li>
                 );
@@ -334,11 +331,11 @@ export default function About() {
               <div className="flex gap-8">
                 {STATS.map((s, i) => (
                   <div key={s.labelUA}>
-                    <div className="font-display text-2xl font-semibold tracking-tight text-neutral-50 md:text-3xl">
+                    <div className="font-display text-2xl font-semibold tracking-tight text-white md:text-3xl">
                       <CountUp from={0} to={s.to} duration={1.8} delay={0.5 + i * 0.15} />
                       <span>{s.suffix}</span>
                     </div>
-                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-neutral-500 sm:text-[10px]">
+                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white0 sm:text-[10px]">
                       {t(s.labelUA, s.labelEN)}
                     </div>
                   </div>
@@ -346,7 +343,7 @@ export default function About() {
               </div>
               <a
                 href="#contact"
-                className="group inline-flex items-center gap-3 rounded-full border border-neutral-50/20 px-6 py-3 font-mono text-[11px] uppercase tracking-widest text-neutral-50 transition hover:border-neutral-50/50 hover:bg-neutral-50/[0.05]"
+                className="group inline-flex items-center gap-3 rounded-full border border-white/20 px-6 py-3 font-mono text-[11px] uppercase tracking-widest text-white transition hover:border-white/50 hover:bg-white/[0.05]"
               >
                 {t("Обговорити проєкт", "Discuss a project")}
                 <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
@@ -361,15 +358,15 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-4 top-24 flex items-center gap-3 rounded-2xl border border-neutral-50/10 bg-[#050507]/60 px-4 py-3 lg:bottom-16 lg:left-auto lg:right-10 lg:top-auto"
+          className="absolute left-4 top-24 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/70 px-4 py-3 lg:bottom-16 lg:left-auto lg:right-10 lg:top-auto"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
           <div className="leading-tight">
-            <div className="text-[13px] font-semibold text-neutral-50">{t("Євгеній Лютий", "Yevhenii Liutyi")}</div>
-            <div className="text-[9px] uppercase tracking-[0.25em] text-neutral-400">
+            <div className="text-[13px] font-semibold text-white">{t("Євгеній Лютий", "Yevhenii Liutyi")}</div>
+            <div className="text-[9px] uppercase tracking-[0.25em] text-white/55">
               {t("Засновник · приймаю проєкти", "Founder · open for work")}
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useLang } from "@/context/LangContext";
 import { useLoaderDone } from "@/components/SiteLoader";
 import { scrollToId } from "@/components/SmoothScroll";
@@ -30,12 +30,13 @@ export default function Hero() {
     transition: { duration: 1, delay, ease: EASE },
   });
 
-  // Giant type: each word slides out of its own mask.
-  const lines: { word: string; outline?: boolean }[][] = [
-    [{ word: t("Сайти.", "Sites.") }, { word: "Apps." }],
-    [{ word: "AI." }, { word: "CRM.", outline: true }, { word: "SEO.", outline: true }],
+  // Line 1 rolls through what we build; line 2 is static.
+  const rotating = t("Сайти.|Боти.|Магазини.|Автоматизація.", "Websites.|Bots.|Stores.|Automation.").split("|");
+  const line2: { word: string; outline?: boolean }[] = [
+    { word: "AI." },
+    { word: "CRM.", outline: true },
+    { word: "SEO.", outline: true },
   ];
-  let wordIndex = 0;
 
   return (
     <section
@@ -81,7 +82,7 @@ export default function Hero() {
       {/* Giant headline */}
       <div className="relative z-10 mt-auto pt-8 md:pt-0">
         <h1
-          className="relative text-[15.5vw] font-semibold uppercase leading-[0.86] text-white md:text-[clamp(3.3rem,11.2vw,13rem)]"
+          className="relative text-[10.4vw] font-semibold uppercase leading-[0.86] text-white md:text-[clamp(3rem,8.4vw,10.5rem)]"
           style={{
             fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
             letterSpacing: "-0.055em",
@@ -89,30 +90,28 @@ export default function Hero() {
         >
           <span className="sr-only">
             {t(
-              "Розробка сайтів, веб-застосунків, AI-інтеграцій, CRM та SEO — Lutiy Digital",
-              "Website, web app, AI, CRM and SEO development — Lutiy Digital"
+              "Розробка сайтів, чат-ботів, інтернет-магазинів, автоматизації, AI, CRM та SEO — Lutiy Digital",
+              "Websites, bots, online stores, automation, AI, CRM and SEO — Lutiy Digital"
             )}
           </span>
-          {lines.map((line, li) => (
-            <span key={li} aria-hidden className="relative flex flex-wrap items-start gap-x-[0.22em]">
-              {line.map(({ word, outline }) => {
-                const i = wordIndex++;
-                return (
-                  <span key={word} className="-mt-[0.14em] inline-block overflow-hidden pb-[0.04em] pr-[0.04em] pt-[0.14em]">
-                    <motion.span
-                      initial={{ y: "108%" }}
-                      animate={ready ? { y: "0%" } : undefined}
-                      transition={{ duration: 1.25, delay: 0.1 + i * 0.09, ease: EASE }}
-                      className={"inline-block " + (outline ? "text-outline" : "")}
-                    >
-                      {word}
-                    </motion.span>
-                  </span>
-                );
-              })}
-              {li === 0 && <Showcase ready={ready} />}
-            </span>
-          ))}
+          <span aria-hidden className="relative flex items-start">
+            <WordRotator words={rotating} ready={ready} />
+            <Showcase ready={ready} />
+          </span>
+          <span aria-hidden className="relative flex flex-wrap items-start gap-x-[0.22em]">
+            {line2.map(({ word, outline }, i) => (
+              <span key={word} className="-mt-[0.14em] inline-block overflow-hidden pb-[0.04em] pr-[0.04em] pt-[0.14em]">
+                <motion.span
+                  initial={{ y: "108%" }}
+                  animate={ready ? { y: "0%" } : undefined}
+                  transition={{ duration: 1.25, delay: 0.35 + i * 0.09, ease: EASE }}
+                  className={"inline-block " + (outline ? "text-outline" : "")}
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
+          </span>
         </h1>
       </div>
 
@@ -271,5 +270,58 @@ function MobileMarquee({ ready }: { ready: boolean }) {
         </div>
       ))}
     </motion.div>
+  );
+}
+
+/* ===================== WORD ROTATOR ===================== */
+
+const wordVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.028 } },
+  exit: { transition: { staggerChildren: 0.018 } },
+};
+const letterVariants: Variants = {
+  hidden: { y: "112%" },
+  show: { y: "0%", transition: { duration: 0.85, ease: EASE } },
+  exit: { y: "-112%", transition: { duration: 0.6, ease: [0.7, 0, 0.84, 0] } },
+};
+
+/**
+ * Letters of the current word roll up out of a mask while the next word rolls in
+ * behind them. Both words share one grid cell, so the line never changes height
+ * and nothing after it moves — no jumping text.
+ */
+function WordRotator({ words, ready }: { words: string[]; ready: boolean }) {
+  const [i, setI] = useState(0);
+
+  useEffect(() => setI(0), [words]);
+
+  useEffect(() => {
+    if (!ready || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setI((v) => (v + 1) % words.length), 2600);
+    return () => clearInterval(id);
+  }, [ready, words.length]);
+
+  const word = words[i] ?? words[0];
+
+  return (
+    <span className="-mt-[0.14em] inline-grid overflow-hidden pb-[0.04em] pr-[0.04em] pt-[0.14em]">
+      <AnimatePresence initial={false}>
+        <motion.span
+          key={word}
+          variants={wordVariants}
+          initial="hidden"
+          animate={ready ? "show" : "hidden"}
+          exit="exit"
+          className="col-start-1 row-start-1 inline-flex whitespace-nowrap"
+        >
+          {Array.from(word).map((ch, ci) => (
+            <motion.span key={ci} variants={letterVariants} className="inline-block">
+              {ch}
+            </motion.span>
+          ))}
+        </motion.span>
+      </AnimatePresence>
+    </span>
   );
 }

@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { motion, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
+import NeonText from "./NeonText";
 import { useLang } from "@/context/LangContext";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -152,7 +153,7 @@ export default function ForWhom() {
             </Reveal>
             <Reveal delay={0.05}>
               <h2 className="font-display text-[30px] font-bold uppercase leading-[1.04] tracking-[-0.02em] text-white sm:text-[44px] lg:text-[54px]">
-                {t("Для кого", "Who we build")}
+                <NeonText text={t("Для кого", "Who we build")} />
                 <br />
                 <span className="text-white/35">{t("ми робимо сайти", "websites for")}</span>
               </h2>

@@ -314,3 +314,46 @@ section + section {
     opacity: 1;
   }
 }
+
+/* ============ Neon flicker (ForWhom heading) ============ */
+.neon {
+  display: inline-block;
+  opacity: 0.12;
+  text-shadow:
+    0 0 6px rgba(52, 211, 153, 0.55),
+    0 0 22px rgba(16, 185, 129, 0.35),
+    0 0 52px rgba(16, 185, 129, 0.2);
+}
+.neon.is-on {
+  animation:
+    neon-on 1.7s linear forwards,
+    neon-hum 7s linear 1.7s infinite;
+}
+.neon.is-on .neon-faulty {
+  display: inline-block;
+  animation: neon-faulty 5.3s linear 2.2s infinite;
+}
+@keyframes neon-on {
+  0% { opacity: 0.12; }
+  6% { opacity: 1; }
+  9% { opacity: 0.2; }
+  17% { opacity: 0.9; }
+  20% { opacity: 0.25; }
+  31% { opacity: 1; }
+  34% { opacity: 0.45; }
+  45%, 100% { opacity: 1; }
+}
+@keyframes neon-hum {
+  0%, 89%, 100% { opacity: 1; }
+  90% { opacity: 0.4; }
+  91.5% { opacity: 1; }
+  93% { opacity: 0.55; }
+  94.5% { opacity: 1; }
+}
+@keyframes neon-faulty {
+  0%, 68%, 100% { opacity: 1; }
+  69% { opacity: 0.15; }
+  71% { opacity: 1; }
+  72.5% { opacity: 0.2; }
+  76% { opacity: 1; }
+}
