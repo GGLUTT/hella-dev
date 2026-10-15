@@ -278,17 +278,17 @@ function MobileMarquee({ ready }: { ready: boolean }) {
 const wordVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.028 } },
-  exit: { transition: { staggerChildren: 0.018 } },
+  exit: { transition: { staggerChildren: 0.012 } },
 };
 const letterVariants: Variants = {
   hidden: { y: "112%" },
   show: { y: "0%", transition: { duration: 0.85, ease: EASE } },
-  exit: { y: "-112%", transition: { duration: 0.6, ease: [0.7, 0, 0.84, 0] } },
+  exit: { y: "-112%", transition: { duration: 0.4, ease: [0.7, 0, 0.84, 0] } },
 };
 
 /**
  * Letters of the current word roll up out of a mask while the next word rolls in
- * behind them. Both words share one grid cell, so the line never changes height
+ * after them (mode "wait" — never two words at once). The word sits in one grid cell, so the line never changes height
  * and nothing after it moves — no jumping text.
  */
 function WordRotator({ words, ready }: { words: string[]; ready: boolean }) {
@@ -306,7 +306,7 @@ function WordRotator({ words, ready }: { words: string[]; ready: boolean }) {
 
   return (
     <span className="-mt-[0.14em] inline-grid overflow-hidden pb-[0.04em] pr-[0.04em] pt-[0.14em]">
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} mode="wait">
         <motion.span
           key={word}
           variants={wordVariants}
