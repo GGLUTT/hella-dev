@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>FinPilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Literata:opsz,wght@7..72,500;7..72,600&display=swap">
+<style>
+/* Концепт: спокійна «контрольна панель пілота» — діалог у Telegram як головний образ, прогрес до ліміту як головна метафора. */
+:root {
+  --bg: #f3f6f7;
+  --surface: #ffffff;
+  --ink: #10212b;
+  --muted: #53666f;
+  --line: #d5dfe3;
+  --accent: #0b7a6b;
+  --accent-ink: #ffffff;
+  --accent-soft: #dff1ed;
+  --signal: #b86e00;
+  --chat: #e4edf1;
+  --bubble-in: #ffffff;
+  --bubble-out: #cfeee6;
+  --font-display: "Literata", "Georgia", serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c151a; --surface: #14212a; --ink: #e8f0f3; --muted: #9db0ba; --line: #243540;
+    --accent: #3fc3aa; --accent-ink: #07201b; --accent-soft: #123530; --signal: #f0a53a;
+    --chat: #101c23; --bubble-in: #1b2c36; --bubble-out: #14463d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c151a; --surface: #14212a; --ink: #e8f0f3; --muted: #9db0ba; --line: #243540;
+  --accent: #3fc3aa; --accent-ink: #07201b; --accent-soft: #123530; --signal: #f0a53a;
+  --chat: #101c23; --bubble-in: #1b2c36; --bubble-out: #14463d; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+section { padding-block: 56px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.2rem); margin-bottom: 24px; }
+p { margin: 0; }
+a { color: var(--accent); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 12px 24px; border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font: 600 1rem var(--font-body); cursor: pointer; text-decoration: none; }
+.btn:hover { filter: brightness(1.08); }
+.btn:focus-visible, summary:focus-visible, .pick:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+.btn-ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+
+/* HERO */
+.hero { padding-block: 40px 56px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; }
+.tag { display: inline-block; font: 500 0.82rem var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 6px 12px; border-radius: 6px; margin-bottom: 20px; }
+.hero h1 { font-size: clamp(2.3rem, 5.6vw, 3.9rem); margin-bottom: 20px; }
+.hero .sub { font-size: 1.15rem; color: var(--muted); max-width: 34em; margin-bottom: 28px; }
+.hero .note { margin-top: 16px; font-size: 0.9rem; color: var(--muted); max-width: 34em; }
+
+/* Макет діалогу */
+.chat { background: var(--chat); border: 1px solid var(--line); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; font-family: var(--font-mono); font-size: 0.9rem; min-width: 0; }
+.chat .head { display: flex; justify-content: space-between; align-items: center; font: 500 0.78rem var(--font-body); color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.msg { max-width: 92%; padding: 10px 12px; border-radius: 12px; background: var(--bubble-in); overflow-wrap: anywhere; }
+.msg.out { align-self: flex-end; background: var(--bubble-out); }
+.bar { height: 10px; border-radius: 5px; background: var(--line); position: relative; margin: 10px 0 6px; overflow: hidden; }
+.bar > i { position: absolute; inset: 0 auto 0 0; width: 35%; background: var(--accent); border-radius: 5px; }
+.bar > b { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--signal); }
+.bar-legend { display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--muted); }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.btns span { border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 4px 10px; font-size: 0.82rem; }
+.chat-cap { font: 400 0.78rem var(--font-body); color: var(--muted); margin-top: 4px; }
+
+/* Проблема */
+.problem ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 760px; }
+.problem li { font-family: var(--font-display); font-size: clamp(1.15rem, 2.2vw, 1.45rem); line-height: 1.4; padding: 20px 0; border-top: 1px solid var(--line); }
+.problem li:last-child { border-bottom: 1px solid var(--line); }
+
+/* Функції (fake door) */
+.features-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+.card.picked { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.card h3 { font-size: 1.25rem; }
+.card p { color: var(--muted); flex: 1; }
+.pick { min-height: 44px; border-radius: 10px; border: 2px solid var(--accent); background: transparent; color: var(--accent); font: 600 0.95rem var(--font-body); cursor: pointer; padding: 8px 14px; }
+.card.picked .pick { background: var(--accent); color: var(--accent-ink); }
+.hint { margin-top: 16px; color: var(--muted); font-size: 0.95rem; }
+#pick-thanks { color: var(--accent); font-weight: 500; margin-top: 8px; min-height: 1.5em; }
+
+/* Докази */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-bottom: 32px; }
+.stat { border-top: 3px solid var(--accent); padding-top: 12px; }
+.stat b { display: block; font: 500 clamp(2rem, 4vw, 2.8rem) var(--font-mono); font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); }
+.quotes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+blockquote { margin: 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--line); font-family: var(--font-display); font-size: 1.15rem; }
+blockquote cite { display: block; margin-top: 10px; font: 400 0.88rem var(--font-body); color: var(--muted); font-style: normal; }
+.source { margin-top: 24px; font-size: 0.85rem; color: var(--muted); }
+
+/* Кроки */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; counter-reset: s; }
+.steps li { counter-increment: s; border-top: 3px solid var(--accent); padding-top: 14px; }
+.steps li::before { content: counter(s); display: block; font: 500 1.6rem var(--font-mono); color: var(--accent); margin-bottom: 6px; }
+.steps h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.steps p { color: var(--muted); font-size: 0.95rem; }
+
+/* CTA */
+.cta { background: var(--accent); color: var(--accent-ink); border-radius: 20px; padding: 40px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.cta h2 { margin-bottom: 12px; color: inherit; }
+.cta p { color: inherit; opacity: 0.92; }
+.cta .btn { background: var(--accent-ink); color: var(--accent); }
+.cta .after { margin-top: 12px; font-size: 0.88rem; opacity: 0.85; }
+#cta-note { margin-top: 10px; font-size: 0.9rem; min-height: 1.4em; }
+
+/* FAQ */
+.faq { max-width: 760px; }
+details { border-top: 1px solid var(--line); padding: 4px 0; }
+details:last-child { border-bottom: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 600; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::after { content: "+"; font: 500 1.3rem var(--font-mono); color: var(--accent); }
+details[open] summary::after { content: "–"; }
+summary::-webkit-details-marker { display: none; }
+details p { color: var(--muted); padding-bottom: 16px; }
+footer { padding-block: 32px 96px; color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); }
+
+/* липка кнопка на телефоні */
+.sticky { display: none; }
+
+@media (max-width: 860px) {
+  section { padding-block: 40px; }
+  .hero-grid, .cta { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .features-grid, .stats, .quotes { grid-template-columns: minmax(0, 1fr); }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cta { padding: 28px 22px; }
+  .sticky { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line); padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .sticky .btn { width: 100%; }
+}
+@media (max-width: 480px) { .steps { grid-template-columns: minmax(0, 1fr); } body { font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="tag">Ранній доступ · бот у розробці</span>
+        <h1>Фінанси ФОП без зайвої тривоги</h1>
+        <p class="sub">FinPilot — Telegram-бот для фрілансерів і ФОП 2–3 групи: швидкий облік доходів, контроль податкового ліміту та нагадування про сплату — прямо в Telegram.</p>
+        <button class="btn" type="button" data-cta="hero" id="cta-hero">Отримати ранній доступ</button>
+        <p class="note">Це ранній тест ідеї: бот ще у розробці. Платити зараз не потрібно — залиште заявку, і ми напишемо, коли він буде готовий. Планований тариф — 150 грн/міс.</p>
+      </div>
+      <div class="chat" role="img" aria-label="Макет діалогу з ботом FinPilot: користувач вносить оплату, бот показує використаний ліміт і нагадує про сплату податку">
+        <div class="head"><span>FinPilot · бот</span><span>макет діалогу</span></div>
+        <div class="msg out">+1200 USD Проєкт Альфа</div>
+        <div class="msg">
+          Записано: 1 200 USD → 49 200 грн<br>(курс НБУ 41,00) · Проєкт Альфа
+          <div class="bar" aria-hidden="true"><i></i><b style="left:80%"></b><b style="left:95%"></b></div>
+          <div class="bar-legend"><span>Використано 350 000 грн (35%)</span><span>Залишок 650 000 грн</span></div>
+        </div>
+        <div class="msg">
+          Нагадування: через 7 днів термін сплати податку.
+          <div class="btns"><span>Сплачено</span><span>Нагадати завтра</span></div>
+        </div>
+        <p class="chat-cap">Макет, а не працюючий бот. Приклад із умовним курсом 41,00 грн/USD та ліміту 1 000 000 грн.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem" id="problem">
+    <div class="wrap">
+      <h2>Знайомо?</h2>
+      <ul>
+        <li>Ви постійно боїтесь непомітно перевищити ліміт єдиного податку.</li>
+        <li>Оплати приходять з різних проєктів і в різних валютах, а точну суму доходу ви дізнаєтесь лише перед декларацією.</li>
+        <li>Облік у таблиці чи нотатках відкладається «на потім», а потім доводиться відновлювати чеки за кілька місяців.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Що вміє FinPilot</h2>
+      <div class="features-grid">
+        <article class="card" data-feature="limit"><h3>Контроль ліміту</h3><p>Бачите, скільки ліміту вже використано й скільки залишилось. Бот попереджає, коли ви наближаєтесь до межі.</p><button class="pick" type="button" aria-pressed="false">Це мені потрібно найбільше</button></article>
+        <article class="card" data-feature="digest"><h3>Тижневий підсумок</h3><p>Раз на тиждень бот сам пише, скільки ви заробили з усіх проєктів і валют, — без таблиць.</p><button class="pick" type="button" aria-pressed="false">Це мені потрібно найбільше</button></article>
+        <article class="card" data-feature="quick"><h3>Швидке внесення</h3><p>Одне повідомлення на кшталт «+1200 USD Проєкт Альфа» — і оплату записано.</p><button class="pick" type="button" aria-pressed="false">Це мені потрібно найбільше</button></article>
+      </div>
+      <p class="hint">Оберіть те, що важливо саме вам, — це допоможе нам вирішити, що будувати першим.</p>
+      <p id="pick-thanks" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="proof">
+    <div class="wrap">
+      <h2>Що ми почули від фрілансерів</h2>
+      <div class="stats">
+        <div class="stat"><b>34</b><span>фрілансери та ФОП взяли участь в опитуванні</span></div>
+        <div class="stat"><b>68%</b><span>стикаються з проблемою обліку доходів часто або щодня</span></div>
+        <div class="stat"><b>2,4 з 5</b><span>середня оцінка поточних способів обліку</span></div>
+      </div>
+      <div class="quotes">
+        <blockquote>«Мені потрібно не більше функцій, а менше тривоги».<cite>учасниця інтерв&#x27;ю, копірайтерка, 24 роки</cite></blockquote>
+        <blockquote>«Якби бот сам писав мені раз на тиждень підсумок — я б перестав про це думати».<cite>учасник інтерв&#x27;ю, backend-розробник, 31 рік</cite></blockquote>
+      </div>
+      <p class="source">Результати нашого дослідження: опитування (34 відповіді) та 3 глибинні інтерв&#x27;ю, 2026.</p>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>Як це працюватиме</h2>
+      <ol class="steps">
+        <li><h3>Налаштуйте профіль</h3><p>Група ФОП, ставка, ліміт і основна валюта — один раз, за пару хвилин.</p></li>
+        <li><h3>Фіксуйте оплату одним повідомленням</h3><p>Напишіть боту «+1200 USD Проєкт Альфа» — і все.</p></li>
+        <li><h3>Бачте залишок до ліміту</h3><p>Сума в гривнях за курсом НБУ та відсоток використаного ліміту — одразу у відповіді.</p></li>
+        <li><h3>Отримуйте нагадування й підсумки</h3><p>Про терміни сплати та про тиждень — без вашої участі.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="join">
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2>Хочете спробувати першими?</h2>
+          <p>Залиште заявку: Telegram-нікнейм і email. Ми напишемо, коли бот буде готовий, і запропонуємо ранній доступ за планованим тарифом 150 грн/міс. Платити зараз не потрібно.</p>
+        </div>
+        <div>
+          <button class="btn" type="button" data-cta="final" id="cta-final">Залишити заявку</button>
+          <p class="after">Що буде далі: ми пишемо лише про запуск FinPilot і не передаємо ваші контакти третім особам.</p>
+          <p id="cta-note" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>Питання та відповіді</h2>
+      <div class="faq">
+        <details data-faq="q1"><summary>Бот уже працює?</summary><p>Ні. Це ранній тест ідеї. Ми будуємо бота за відгуками, тому ваша заявка і вибір функції для нас важливі.</p></details>
+        <details data-faq="q2"><summary>Скільки це коштуватиме?</summary><p>Планований тариф — 150 грн/міс. Остаточна ціна залежить від результатів тесту; зараз ви нічого не платите.</p></details>
+        <details data-faq="q3"><summary>Які дані потрібні боту?</summary><p>Планується зберігати лише суми, дати, валюти й назви проєктів, які ви вносите самі. Доступ до банківських рахунків на старті не потрібен, а всі дані можна буде видалити командою.</p></details>
+        <details data-faq="q4"><summary>Це замінює бухгалтера?</summary><p>Ні. FinPilot допомагає вести облік і не пропускати терміни, але не є податковою консультацією.</p></details>
+        <details data-faq="q5"><summary>А як щодо банків і Payoneer?</summary><p>Автоматична синхронізація — не в першій версії. Спершу: швидке ручне внесення та імпорт із таблиці.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">FinPilot · ранній тест ідеї · 2026</div>
+  </footer>
+</main>
+
+<div class="sticky"><button class="btn" type="button" data-cta="sticky">Отримати ранній доступ</button></div>
+
+<script src="/finpilot/config.js"></script>
+<script>
+/* ==== НАЛАШТУВАННЯ (заповніть перед публікацією на власному хостингу) ====
+   GA_ID      — ідентифікатор потоку GA4, наприклад "G-XXXXXXXXXX"
+   CLARITY_ID — ідентифікатор проєкту Microsoft Clarity
+   FORM_URL   — посилання на Google Form із заявкою (відкривається в новій вкладці) */
+
+
+(function () {
+  function track(name, params) {
+    try { if (window.gtag) { window.gtag("event", name, params || {}); } } catch (e) {}
+  }
+  if (CONFIG.GA_ID) {
+    var s = document.createElement("script"); s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(CONFIG.GA_ID);
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date()); window.gtag("config", CONFIG.GA_ID);
+  }
+  if (CONFIG.CLARITY_ID) {
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", CONFIG.CLARITY_ID);
+  }
+
+  /* CTA: подія CTA_click + перехід до форми з переданими utm_* */
+  function formUrl() {
+    try {
+      var u = new URL(CONFIG.FORM_URL);
+      var src = new URLSearchParams(location.search);
+      src.forEach(function (v, k) { if (k.indexOf("utm_") === 0) { u.searchParams.set(k, v); } });
+      return u.toString();
+    } catch (e) { return CONFIG.FORM_URL; }
+  }
+  document.querySelectorAll("[data-cta]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      track("CTA_click", { cta_location: btn.getAttribute("data-cta") });
+      var note = document.getElementById("cta-note");
+      if (CONFIG.FORM_URL) {
+        window.open(formUrl(), "_blank", "noopener");
+        if (note) { note.textContent = ""; }
+      } else {
+        if (note) { note.textContent = "Форму заявки ще не підключено до цієї копії сторінки."; }
+        document.getElementById("join").scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  });
+
+  /* Fake door: вибір найважливішої функції. У GA4 надсилається лише ПЕРШИЙ вибір відвідувача. */
+  var KEY = "fp_first_pick", mem = null;
+  function getFirst() { try { return localStorage.getItem(KEY); } catch (e) { return mem; } }
+  function setFirst(v) { try { localStorage.setItem(KEY, v); } catch (e) { mem = v; } }
+  var cards = document.querySelectorAll(".card[data-feature]");
+  var thanks = document.getElementById("pick-thanks");
+  cards.forEach(function (card) {
+    var btn = card.querySelector(".pick");
+    btn.addEventListener("click", function () {
+      var key = card.getAttribute("data-feature");
+      cards.forEach(function (c) { c.classList.remove("picked"); c.querySelector(".pick").setAttribute("aria-pressed", "false"); c.querySelector(".pick").textContent = "Це мені потрібно найбільше"; });
+      card.classList.add("picked"); btn.setAttribute("aria-pressed", "true"); btn.textContent = "Обрано ✓";
+      if (!getFirst()) { setFirst(key); track("feature_pick_" + key, { feature: key }); }
+      thanks.textContent = "Дякуємо! Залиште заявку нижче, і ми напишемо, коли ця функція буде готова.";
+    });
+  });
+
+  /* FAQ: фіксуємо, які питання відкривають (зокрема про дані) */
+  document.querySelectorAll("details[data-faq]").forEach(function (d) {
+    d.addEventListener("toggle", function () { if (d.open) { track("faq_open", { faq: d.getAttribute("data-faq") }); } });
+  });
+})();
+</script>
+
+</body>
+</html>

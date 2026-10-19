@@ -1,0 +1,5 @@
+/* Вставте свої значення між лапками. Більше нічого міняти не потрібно.
+   GA_ID      — ідентифікатор потоку Google Analytics 4, наприклад "G-XXXXXXXXXX"
+   CLARITY_ID — ідентифікатор проєкту Microsoft Clarity (можна лишити порожнім)
+   FORM_URL   — посилання на Google-форму заявки (з create_forms.gs) */
+var CONFIG = { GA_ID: "", CLARITY_ID: "", FORM_URL: "" };
