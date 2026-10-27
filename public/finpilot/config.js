@@ -2,4 +2,4 @@
    GA_ID      — ідентифікатор потоку Google Analytics 4, наприклад "G-XXXXXXXXXX"
    CLARITY_ID — ідентифікатор проєкту Microsoft Clarity (можна лишити порожнім)
    FORM_URL   — посилання на Google-форму заявки (з create_forms.gs) */
-var CONFIG = { GA_ID: "", CLARITY_ID: "", FORM_URL: "" };
+var CONFIG = { GA_ID: "G-K1S1F5GTJT", CLARITY_ID: "", FORM_URL: "" };
