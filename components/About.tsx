@@ -276,8 +276,8 @@ export default function About() {
               className="font-display text-[27px] font-bold uppercase leading-[1.04] tracking-[-0.02em] sm:text-[44px] xl:text-[60px]"
               aria-label={t("Lutiy Digital — персональна dev-студія", "Lutiy Digital — a personal dev studio")}
             >
-              <AssembleText text="Lutiy Digital" className="block text-white" />
-              <AssembleText text={t("персональна", "a personal")} className="block text-white/40" />
+              <AssembleText text="Lutiy Digital" className="block text-white" />{" "}
+              <AssembleText text={t("персональна", "a personal")} className="block text-white/40" />{" "}
               <AssembleText text={t("dev-студія", "dev studio")} className="block text-white/40" />
             </h2>
 
@@ -373,146 +373,30 @@ export default function About() {
         </motion.div>
       </div>
 
-      {/* ============ Why Choose Me block ============ */}
-      <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-20">
-        <div className="mb-10 flex items-end justify-between gap-6">
+      {/* ============ Stack: one compact, scannable row ============ */}
+      <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-20">
+        <div className="flex flex-col gap-6 border-t border-white/10 pt-10 md:flex-row md:items-center md:justify-between">
           <Reveal>
-            <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-white/45">
-              <span className="inline-block h-px w-10 bg-gradient-to-r from-transparent to-white/50" />
-              {t("Чому працювати зі мною", "Why work with me")}
-            </div>
-          </Reveal>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {/* Card 1 */}
-          <Reveal delay={0.05} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
-              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-              <div>
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
-                  {t("Працюєте напряму з розробником", "Work directly with developer")}
-                </h3>
-                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
-                  {t(
-                    "Без зайвих менеджерів і втрати контексту. Я сам розумію задачу, пропоную рішення, пишу код і відповідаю за реалізацію.",
-                    "No middle managers or lost context. I understand the task, propose solutions, write the code, and own the execution."
-                  )}
-                </p>
-              </div>
-            </div>
-          </Reveal>
-          {/* Card 2 */}
-          <Reveal delay={0.1} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
-              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-              <div>
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
-                  {t("Fullstack-підхід", "Fullstack approach")}
-                </h3>
-                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
-                  {t(
-                    "Можу закрити frontend, backend, базу даних, інтеграції, автоматизацію, деплой і базову підтримку після запуску.",
-                    "I cover frontend, backend, databases, integrations, workflow automation, deployment, and post-launch support."
-                  )}
-                </p>
-              </div>
-            </div>
-          </Reveal>
-          {/* Card 3 */}
-          <Reveal delay={0.15} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
-              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-              <div>
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
-                  {t("Фокус на бізнес-процесах", "Focus on business processes")}
-                </h3>
-                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
-                  {t(
-                    "Дивлюсь не тільки на сайт, а на весь шлях заявки: форма, CRM, Telegram, Google Sheets, email, сповіщення, follow-up і аналітика.",
-                    "I look beyond the website to the entire lead journey: forms, CRM, Telegram alerts, Google Sheets, emails, follow-ups, and analytics."
-                  )}
-                </p>
-              </div>
-            </div>
-          </Reveal>
-          {/* Card 4 */}
-          <Reveal delay={0.2} className="h-full">
-            <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.01] p-6 backdrop-blur-none md:backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/30 hover:bg-white/[0.03]">
-              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-              <div>
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03] text-emerald-300 ring-1 ring-white/10 transition group-hover:bg-emerald-300/10 group-hover:text-emerald-300">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold tracking-tight text-white transition group-hover:text-emerald-300">
-                  {t("Гнучкість маленької студії", "Boutique studio flexibility")}
-                </h3>
-                <p className="mt-3 text-xs leading-relaxed text-white/50 transition group-hover:text-white/60">
-                  {t(
-                    "Швидко приймаю рішення, адаптуюсь під задачу й не додаю зайвої бюрократії. Це зручно для малого й середнього бізнесу, якому потрібен результат без довгих процесів.",
-                    "Fast decision-making, adaptive workflows, and zero bureaucracy. Perfect for small and medium businesses needing quick results without overhead."
-                  )}
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-
-      {/* ============ Stack grid ============ */}
-      <div className="relative mx-auto max-w-7xl px-6 pb-32">
-        {/* Subtle separator that ties this block to the hero above */}
-        <div className="mx-auto mb-16 h-px max-w-md bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-
-        <div className="mb-10 flex items-end justify-between gap-6">
-          <Reveal>
-            <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-white/45">
-              <span className="inline-block h-px w-10 bg-gradient-to-r from-transparent to-white/50" />
-              {t("Стек", "Stack")}
-            </div>
+            <h3 className="font-mono text-[11px] font-normal uppercase tracking-[0.4em] text-white/45">
+              {t("Технології, на яких працюю", "Tech I build with")}
+            </h3>
           </Reveal>
           <Reveal delay={0.05}>
-            <p className="hidden max-w-md text-sm text-white/45 sm:block">
-              {t("Інструменти, в яких працюю щоденно— від інтерфейсу до бази даних.", "Tools I use daily — from interface to database.")}
-            </p>
-          </Reveal>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 grid-flow-row-dense">
-          {stack.map((s, i) => (
-            <Reveal key={s.name} delay={0.05 + i * 0.06} className={`${s.span} h-full`}>
-              <div className={`group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-none md:backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 ${s.glow}`}>
-                <div className={`pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent ${s.sheen} to-transparent opacity-0 transition duration-500 group-hover:opacity-100`} />
-                <div className="mb-4 flex items-center justify-between">
-                  {s.icon}
-                  <span className="font-mono text-[10px] text-white/20 select-none">
-                    //{(i + 1).toString().padStart(2, "0")}
+            <ul className="flex flex-wrap gap-2 md:justify-end">
+              {stack.map((s) => (
+                <li
+                  key={s.name}
+                  title={s.desc}
+                  className="group flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.02] py-1.5 pl-1.5 pr-3.5 text-[13px] text-white/75 transition-colors duration-300 hover:border-emerald-400/40 hover:text-white"
+                >
+                  <span className="grid h-7 w-7 place-items-center rounded-full bg-white/[0.04] [&>svg]:h-4 [&>svg]:w-4">
+                    {s.icon}
                   </span>
-                </div>
-                <div className="text-xl font-semibold tracking-tight text-white transition duration-300">
                   {s.name}
-                </div>
-                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/55 group-hover:text-white/70 transition duration-300">
-                  {s.desc}
-                </p>
-              </div>
-            </Reveal>
-          ))}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
       </div>
     </section>

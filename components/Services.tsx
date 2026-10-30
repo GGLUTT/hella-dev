@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Tick02Icon,
@@ -166,13 +167,9 @@ export default function Services() {
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="max-w-4xl text-balance text-4xl font-semibold leading-[1.02] tracking-tight md:text-6xl lg:text-[80px]">
-            {t("Прозорі", "Transparent")}{" "}
-            <span className="bg-gradient-to-r from-white via-emerald-200 to-sky-200 bg-clip-text text-transparent">
-              {t("тарифи", "pricing")}
-            </span>
-            .
+            {t("Ціни на розробку сайтів.", "Website development pricing.")}
             <br />
-            {t("Без сюрпризів.", "No surprises.")}
+            <span className="text-white/35">{t("Без сюрпризів.", "No surprises.")}</span>
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
@@ -197,6 +194,34 @@ export default function Services() {
             <TierCard key={tier.name} tier={tier} index={i} fromLabel={t("від", "from")} hiLabel={t("АКТУАЛЬНЕ", "POPULAR")} />
           ))}
         </motion.div>
+
+        {/* Contextual links to the dedicated service pages (helps users and Google) */}
+        <Reveal delay={0.15}>
+          <nav aria-label={t("Детальніше про послуги", "Service details")} className="mt-14">
+            <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
+              {t("Детальніше про послуги", "Service details")}
+            </div>
+            <ul className="flex flex-wrap gap-2">
+              {[
+                { href: "/stvorennya-saitiv-kyiv", ua: "Створення сайтів у Києві", en: "Websites in Kyiv" },
+                { href: "/stvorennya-saitiv-bila-tserkva", ua: "Створення сайтів у Білій Церкві", en: "Websites in Bila Tserkva" },
+                { href: "/landing-page", ua: "Розробка Landing Page", en: "Landing page development" },
+                { href: "/web-app-development", ua: "Розробка веб-застосунків", en: "Web app development" },
+                { href: "/n8n-automation", ua: "Автоматизація n8n та AI", en: "n8n & AI automation" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="group inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm text-white/70 transition hover:border-emerald-400/40 hover:text-white"
+                  >
+                    {t(l.ua, l.en)}
+                    <span className="transition group-hover:translate-x-0.5">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </Reveal>
 
         {/* Footer note */}
         <Reveal delay={0.2}>

@@ -10,6 +10,7 @@ declare global {
 
 const LOADED_EVENT = "lutiy:loaded";
 const MIN_VISIBLE_MS = 1900; // fill (1.5s) + dot pop
+const SEEN_KEY = "lutiy-intro";
 const EXIT_MS = 900;
 
 /** True once the intro loader has started to leave — hero animations key off it. */
@@ -39,6 +40,18 @@ export default function SiteLoader() {
   useEffect(() => {
     const root = document.documentElement;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Intro plays once per session; later visits get the page instantly (better LCP).
+    let seen = root.classList.contains("intro-seen");
+    try {
+      seen = seen || !!sessionStorage.getItem(SEEN_KEY); // client-side return to "/"
+    } catch {}
+    if (seen) {
+      window.__lutiyLoaded = true;
+      window.dispatchEvent(new Event(LOADED_EVENT));
+      setPhase("gone");
+      return;
+    }
     root.classList.add("is-loading");
     window.__lenis?.stop();
 
@@ -55,6 +68,9 @@ export default function SiteLoader() {
     let exitTimer: ReturnType<typeof setTimeout>;
     Promise.race([Promise.all([pageLoaded, minTime]), cap]).then(() => {
       setPhase("exit");
+      try {
+        sessionStorage.setItem(SEEN_KEY, "1");
+      } catch {}
       root.classList.remove("is-loading");
       window.__lenis?.start();
       window.__lutiyLoaded = true;

@@ -151,6 +151,9 @@ section + section {
   background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08), transparent 45%);
   pointer-events: none;
 }
+html.intro-seen .site-loader {
+  display: none;
+}
 .site-loader.is-exiting {
   transform: translateY(-100%);
 }

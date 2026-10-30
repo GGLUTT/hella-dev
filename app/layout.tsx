@@ -26,11 +26,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.agency-hella.s
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Розробка сайтів & автоматизація процесів | Lutiy Digital",
+    default: "Створення сайтів під ключ — Київ, Біла Церква | Lutiy Digital",
     template: "%s | Lutiy Digital",
   },
   description:
-    "Студія Євгенія Лютого Lutiy Digital (раніше Hella Dev Agency): розробка швидких сайтів, веб-додатків та автоматизація бізнес-процесів (n8n, AI) в Україні.",
+    "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $150. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
   keywords: [
     "fullstack developer",
     "web developer ukraine",
@@ -93,9 +93,9 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Lutiy Digital",
-    title: "Розробка сайтів & автоматизація процесів | Lutiy Digital",
+    title: "Створення сайтів під ключ — Київ, Біла Церква | Lutiy Digital",
     description:
-      "Студія Євгенія Лютого Lutiy Digital (раніше Hella Dev Agency): розробка швидких сайтів, веб-додатків та автоматизація бізнес-процесів (n8n, AI) в Україні.",
+      "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $150. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
     locale: "uk_UA",
     images: [
       {
@@ -108,9 +108,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Розробка сайтів & автоматизація процесів | Lutiy Digital",
+    title: "Створення сайтів під ключ — Київ, Біла Церква | Lutiy Digital",
     description:
-      "Студія Євгенія Лютого Lutiy Digital (раніше Hella Dev Agency): розробка швидких сайтів, веб-додатків та автоматизація бізнес-процесів (n8n, AI) в Україні.",
+      "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $150. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
     creator: "@yevhenii_liutyi",
     images: [`${SITE_URL}/preview.png`],
   },
@@ -160,76 +160,40 @@ const jsonLd = {
       "url": SITE_URL,
       "logo": `${SITE_URL}/favicon.png`,
       "image": `${SITE_URL}/preview.png`,
-      "description": "Створення сайтів, веб-додатків та автоматизація бізнес-процесів за допомогою n8n та штучного інтелекту.",
-      "priceRange": "$$",
+      "description": "Розробка сайтів під ключ, лендінгів, інтернет-магазинів, веб-застосунків, чат-ботів та автоматизація бізнес-процесів (n8n, AI) для бізнесу в Києві, Білій Церкві та по всій Україні.",
+      "priceRange": "від $150",
+      "founder": {
+        "@type": "Person",
+        "name": "Євгеній Лютий",
+        "alternateName": "Yevhenii Liutyi",
+        "jobTitle": "Fullstack-розробник, засновник Lutiy Digital",
+        "sameAs": ["https://github.com/GGLUTT", "https://www.linkedin.com/in/evgenii-lutiy-460797364/"]
+      },
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Kyiv",
+        "addressRegion": "Київська область",
         "addressCountry": "UA"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Київ" },
+        { "@type": "City", "name": "Біла Церква" },
+        { "@type": "Country", "name": "Україна" }
+      ],
+      "knowsAbout": ["Next.js", "React", "Node.js", "SEO", "n8n", "CRM integrations", "AI assistants"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Послуги Lutiy Digital",
+        "itemListElement": [
+          { "@type": "Offer", "price": "150", "priceCurrency": "USD", "itemOffered": { "@type": "Service", "name": "Розробка Landing Page", "url": `${SITE_URL}/landing-page` } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Створення сайтів у Києві", "url": `${SITE_URL}/stvorennya-saitiv-kyiv` } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Створення сайтів у Білій Церкві", "url": `${SITE_URL}/stvorennya-saitiv-bila-tserkva` } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Розробка веб-застосунків", "url": `${SITE_URL}/web-app-development` } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Автоматизація бізнесу через n8n та AI", "url": `${SITE_URL}/n8n-automation` } }
+        ]
       }
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${SITE_URL}/#faq`,
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Які терміни розробки сайту?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Лендінг зазвичай створюється за 5-10 днів, складний корпоративний сайт або веб-додаток — від 3 до 6 тижнів. Терміни залежать від готовності технічного завдання (ТЗ), дизайну та швидкості зворотного зв'язку з вашого боку."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Чи робите ви дизайн, чи потрібен мій макет?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Дизайн розробляється з нуля у Figma, повністю орієнтуючись на ваші бізнес-цілі, брендбук та цільову аудиторію. Якщо у вас вже є готовий макет дизайну від іншого фахівця, я з радістю виконаю його якісну верстку та розробку."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Що таке автоматизація на n8n і навіщо вона мені?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "n8n — це потужна платформа для інтеграції різних сервісів та API. Вона дозволяє зв'язати ваш сайт, CRM-систему, Telegram-ботів, Google Таблиці, пошту та ШІ в єдині автоматичні ланцюжки. Це допомагає прибрати рутину (наприклад, ручне копіювання лідів), виключити помилки через людський фактор та заощадити до 80% робочого часу команди."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Чи інтегруєте ви штучний інтелект (OpenAI, ChatGPT) у бізнес?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Так, я створюю розумних чат-ботів, AI-асистентів та скрипти на базі моделей OpenAI та Anthropic. Вони можуть автоматично відповідати на запити клієнтів, кваліфікувати ліди, генерувати комерційні пропозиції, сортувати пошту чи аналізувати дані 24/7."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Чи надаєте ви підтримку після запуску проекту?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Звичайно. Я надаю 14 днів безкоштовної технічної підтримки та гарантії після офіційного запуску проекту, щоб переконатися, що все працює ідеально. Також я пропоную пакети щомісячного технічного супроводу для подальшого розвитку сайту або автоматизацій."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Як розраховується вартість і які умови оплати?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Вартість розраховується індивідуально після обговорення вимог та фіксується у договорі. Зазвичай я працюю за схемою 50% передоплати та 50% після повної здачі проекту. Для великих проектів можливий розподіл на етапи (спринти) з поетапною оплатою."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Чи працюєте ви з клієнтами з інших міст або країн?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Так. Я працюю онлайн, тому можу вести проєкти з клієнтами з будь-кого міста України або з-за кордону. Бриф, обговорення, розробка, погодження й запуск проходять дистанційно."
-          }
-        }
-      ]
     }
+
   ]
 };
 
@@ -249,6 +213,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
+                try {
+                  if (sessionStorage.getItem('lutiy-intro')) document.documentElement.classList.add('intro-seen');
+                } catch (e) {}
                 try {
                   var stored = localStorage.getItem('theme');
                   var resolved = stored || 'light';

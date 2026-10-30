@@ -22,7 +22,8 @@ const rand = (i: number, salt: number) => {
  * Text that assembles itself from scattered "molecules" as it scrolls into view.
  * Scroll-linked, but cheap: one scroll subscription per block writes
  * transform/opacity straight to the pieces (no React re-render, no filters).
- * The real text stays in the DOM for SEO and screen readers.
+ * The server HTML ships the text fully assembled (crawlers and no-JS see plain
+ * readable text); scattering is applied only once the client mounts.
  */
 export default function AssembleText({ text, by = "char", spread = 70, className }: Props) {
   const rootRef = useRef<HTMLSpanElement>(null);
@@ -88,7 +89,6 @@ export default function AssembleText({ text, by = "char", spread = 70, className
                 if (el) piecesRef.current[wordIdx] = el;
               }}
               className="inline-block will-change-transform"
-              style={{ opacity: 0 }}
             >
               {word}
             </span>
@@ -102,7 +102,6 @@ export default function AssembleText({ text, by = "char", spread = 70, className
                     if (el) piecesRef.current[idx] = el;
                   }}
                   className="inline-block will-change-transform"
-                  style={{ opacity: 0 }}
                 >
                   {ch}
                 </span>

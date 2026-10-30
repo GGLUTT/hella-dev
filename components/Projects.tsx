@@ -335,6 +335,8 @@ function CaseCard({
 }) {
   const { t } = useLang();
   const category = project.tag.split("·")[0].trim();
+  // The desktop track and the mobile stack render the same cases; only one set gets real headings.
+  const Heading = mobile ? "div" : "h3";
 
   return (
     <Link
@@ -367,12 +369,12 @@ function CaseCard({
           <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-400">
             {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </div>
-          <h3
+          <Heading
             className={"font-semibold uppercase leading-[0.95] text-neutral-50 " + (mobile ? "text-[28px]" : "text-4xl lg:text-5xl")}
             style={{ fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif", letterSpacing: "-0.04em" }}
           >
             {project.name}
-          </h3>
+          </Heading>
           <p className={"mt-3 max-w-md leading-relaxed text-neutral-300 " + (mobile ? "line-clamp-2 text-[13px]" : "text-sm lg:text-base")}>
             {project.desc}
           </p>

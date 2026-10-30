@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useLang } from "@/context/LangContext";
 import { useLoaderDone } from "@/components/SiteLoader";
 import { scrollToId } from "@/components/SmoothScroll";
@@ -80,9 +80,14 @@ export default function Hero() {
       <MobileMarquee ready={ready} />
 
       {/* Giant headline */}
-      <div className="relative z-10 mt-auto pt-8 md:pt-0">
+      <div
+        className="relative z-10 mt-auto pt-8 text-[10.4vw] font-semibold uppercase leading-[0.86] md:pt-0 md:text-[clamp(3rem,8.4vw,10.5rem)]"
+        style={{ fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif" }}
+      >
+        {/* Work preview lives outside the <h1> so its captions never pollute the heading */}
+        <Showcase ready={ready} />
         <h1
-          className="relative text-[10.4vw] font-semibold uppercase leading-[0.86] text-white md:text-[clamp(3rem,8.4vw,10.5rem)]"
+          className="relative text-white"
           style={{
             fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
             letterSpacing: "-0.055em",
@@ -96,8 +101,7 @@ export default function Hero() {
           </span>
           <span aria-hidden className="relative flex items-start">
             <WordRotator words={rotating} ready={ready} />
-            <Showcase ready={ready} />
-          </span>
+          </span>{" "}
           <span aria-hidden className="relative flex flex-wrap items-start gap-x-[0.22em]">
             {line2.map(({ word, outline }, i) => (
               <span key={word} className="-mt-[0.14em] inline-block overflow-hidden pb-[0.04em] pr-[0.04em] pt-[0.14em]">
@@ -208,7 +212,7 @@ function Showcase({ ready, mobile }: { ready: boolean; mobile?: boolean }) {
       className={
         mobile
           ? "group relative z-10 mt-8 block aspect-[16/9] w-full overflow-hidden rounded-[14px] border border-white/10 bg-zinc-900 md:hidden"
-          : "group absolute right-0 top-[0.08em] hidden aspect-[16/10] w-[16vw] max-w-[300px] overflow-hidden rounded-[14px] border border-white/10 bg-zinc-900 md:block"
+          : "group absolute right-0 top-[0.08em] z-10 hidden aspect-[16/10] w-[16vw] max-w-[300px] overflow-hidden rounded-[14px] border border-white/10 bg-zinc-900 md:block"
       }
     >
       {SHOWCASE.map((s, idx) => (
@@ -288,40 +292,52 @@ const letterVariants: Variants = {
 
 /**
  * Letters of the current word roll up out of a mask while the next word rolls in
- * after them (mode "wait" — never two words at once). The word sits in one grid cell, so the line never changes height
+ * after them — the next word mounts only once the old one is gone, so they never overlap. The word sits in one grid cell, so the line never changes height
  * and nothing after it moves — no jumping text.
  */
 function WordRotator({ words, ready }: { words: string[]; ready: boolean }) {
   const [i, setI] = useState(0);
+  const [leaving, setLeaving] = useState(false);
 
-  useEffect(() => setI(0), [words]);
+  useEffect(() => {
+    setI(0);
+    setLeaving(false);
+  }, [words]);
 
   useEffect(() => {
     if (!ready || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setI((v) => (v + 1) % words.length), 2600);
-    return () => clearInterval(id);
+    let swap: ReturnType<typeof setTimeout>;
+    const id = setInterval(() => {
+      // 1) roll the current word out, 2) only then mount the next one
+      setLeaving(true);
+      swap = setTimeout(() => {
+        setI((v) => (v + 1) % words.length);
+        setLeaving(false);
+      }, 620);
+    }, 2800);
+    return () => {
+      clearInterval(id);
+      clearTimeout(swap);
+    };
   }, [ready, words.length]);
 
   const word = words[i] ?? words[0];
 
   return (
     <span className="-mt-[0.14em] inline-grid overflow-hidden pb-[0.04em] pr-[0.04em] pt-[0.14em]">
-      <AnimatePresence initial={false} mode="wait">
-        <motion.span
-          key={word}
-          variants={wordVariants}
-          initial="hidden"
-          animate={ready ? "show" : "hidden"}
-          exit="exit"
-          className="col-start-1 row-start-1 inline-flex whitespace-nowrap"
-        >
-          {Array.from(word).map((ch, ci) => (
-            <motion.span key={ci} variants={letterVariants} className="inline-block">
-              {ch}
-            </motion.span>
-          ))}
-        </motion.span>
-      </AnimatePresence>
+      <motion.span
+        key={word}
+        variants={wordVariants}
+        initial="hidden"
+        animate={!ready ? "hidden" : leaving ? "exit" : "show"}
+        className="col-start-1 row-start-1 inline-flex whitespace-nowrap"
+      >
+        {Array.from(word).map((ch, ci) => (
+          <motion.span key={ci} variants={letterVariants} className="inline-block">
+            {ch}
+          </motion.span>
+        ))}
+      </motion.span>
     </span>
   );
 }
