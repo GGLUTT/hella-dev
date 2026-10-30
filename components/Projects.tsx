@@ -25,6 +25,17 @@ type RawProject = Omit<Project, "desc"> & { descUA: string; descEN: string };
 
 const RAW_PROJECTS: RawProject[] = [
   {
+    slug: "hellarp-gta-roleplay",
+    name: "HellaRP",
+    tag: "Gaming · GTA V RolePlay",
+    descUA: "Промо-сайт для GTA V RolePlay-сервера: лічильник гравців онлайн, карта штату, механіки, FAQ і кабінет гравця.",
+    descEN: "Promo site for a GTA V RolePlay server: live player count, state map, mechanics, FAQ and player portal.",
+    stack: ["JavaScript", "Anime.js", "HTML5", "Cloudflare Pages"],
+    href: "https://hellarp.pages.dev/",
+    bannerPath: "/hellarp-banner.webp",
+    accent: "from-sky-500/40 via-blue-600/20 to-transparent",
+  },
+  {
     slug: "apex-fitness-studio",
     name: "Apex Fitness Studio",
     tag: "Fitness · Sport",

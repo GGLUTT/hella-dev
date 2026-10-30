@@ -360,3 +360,15 @@ html.intro-seen .site-loader {
   72.5% { opacity: 0.2; }
   76% { opacity: 1; }
 }
+
+/* ============ Section textures ============ */
+@keyframes spiral-drift {
+  to { transform: rotate(360deg); }
+}
+@keyframes spiral-traffic {
+  to { stroke-dashoffset: -1084; }
+}
+@keyframes blinds-sway {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(-2%, 1.5%, 0) rotate(0.6deg); }
+}

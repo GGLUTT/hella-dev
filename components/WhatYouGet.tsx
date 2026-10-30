@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
+import { BlindsShadow } from "./SectionTextures";
 import { useLang } from "@/context/LangContext";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -78,6 +79,8 @@ export default function WhatYouGet() {
         aria-hidden
         className="pointer-events-none absolute -left-40 top-1/3 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.07),transparent_65%)]"
       />
+
+      <BlindsShadow className="inset-0" />
 
       <div className="relative mx-auto max-w-7xl">
         {/* Header */}

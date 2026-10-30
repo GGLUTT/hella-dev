@@ -21,6 +21,33 @@ export interface CaseStudy {
 
 export const CASES: CaseStudy[] = [
   {
+    slug: "hellarp-gta-roleplay",
+    title: "HellaRP",
+    category: "Gaming · GTA V RolePlay",
+    shortDescription: "Промо-сайт для GTA V RolePlay-сервера: кінематографічний перший екран, лічильник гравців онлайн, інтерактивна карта штату, механіки, покрокова інструкція «Як почати», FAQ та кабінет гравця.",
+    problem: "Новому RP-серверу потрібен був сайт, який з першого екрана передає атмосферу міста, пояснює новачкам, з чого почати, і веде їх у гру, Discord та на форум — без перевантаження текстом.",
+    solution: "Зроблено швидкий односторінковий сайт на чистому JavaScript з легкими анімаціями Anime.js: виразний перший екран з персонажами, розділи «Про проєкт», «Інтерфейс», «Механіки», «Карта», «Як почати» та FAQ, живий лічильник гравців, вхід у кабінет і переходи в Discord та на форум. Розміщено на Cloudflare Pages для швидкого завантаження.",
+    features: [
+      "Кінематографічний перший екран з персонажами та CTA «Почати грати»",
+      "Лічильник гравців онлайн у реальному часі",
+      "Розділи механік, інтерфейсу та інтерактивна карта штату",
+      "Покрокова інструкція для новачків і FAQ",
+      "Кабінет гравця, Discord та форум в один клік"
+    ],
+    stack: ["HTML5", "CSS3", "JavaScript", "Anime.js", "Cloudflare Pages"],
+    integrations: ["Discord", "Game server API"],
+    resultDescription: "Сайт став головною точкою входу для нових гравців: атмосфера, правила й старт гри зібрані на одній швидкій сторінці, а шлях від першого екрана до запуску гри — у кілька кліків.",
+    bannerPath: "/hellarp-banner.webp",
+    accent: "from-sky-500/40 via-blue-600/20 to-transparent",
+    relatedServices: [
+      { title: "Розробка Landing Page", href: "/landing-page" },
+      { title: "Розробка веб-застосунків", href: "/web-app-development" }
+    ],
+    seoTitle: "Кейс HellaRP | Сайт для GTA V RolePlay-сервера",
+    seoDescription: "Розробка промо-сайту для GTA V RolePlay-сервера HellaRP: лічильник гравців, карта штату, механіки, FAQ і кабінет гравця. Деталі кейсу від Lutiy Digital.",
+    liveUrl: "https://hellarp.pages.dev/"
+  },
+  {
     slug: "apex-fitness-studio",
     title: "Apex Fitness Studio",
     category: "Фітнес · Спорт",

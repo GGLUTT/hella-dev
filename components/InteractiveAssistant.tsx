@@ -119,8 +119,8 @@ export default function InteractiveAssistant() {
     pricing: {
       titleUA: "Ціни та окупність",
       titleEN: "Rates & Returns",
-      messageUA: "Інвестиція в розробку окупається за рахунок нових продажів та економії робочих годин. Орієнтовні ціни:\n\n• **Лендінг (сайт для заявок)**: від $300\n• **Автоматизація та боти**: від $150\n• **Індивідуальні системи**: від $800\n\nНапишіть мені в Telegram, і я безкоштовно проаналізую ваш бізнес та розпишу детальний кошторис за 15 хвилин!",
-      messageEN: "Investing in development pays off quickly through new sales and saved working hours. General rates:\n\n• **Landing (sales page)**: from $300\n• **Automations & Bots**: from $150\n• **Custom Core Systems**: from $800\n\nMessage me on Telegram, and I will calculate the exact price for your project in 15 minutes!",
+      messageUA: "Інвестиція в розробку окупається за рахунок нових продажів та економії робочих годин. Орієнтовні ціни:\n\n• **Лендінг (сайт для заявок)**: від $125\n• **Автоматизація та боти**: від $150\n• **Індивідуальні системи**: від $800\n\nНапишіть мені в Telegram, і я безкоштовно проаналізую ваш бізнес та розпишу детальний кошторис за 15 хвилин!",
+      messageEN: "Investing in development pays off quickly through new sales and saved working hours. General rates:\n\n• **Landing (sales page)**: from $125\n• **Automations & Bots**: from $150\n• **Custom Core Systems**: from $800\n\nMessage me on Telegram, and I will calculate the exact price for your project in 15 minutes!",
       options: [
         {
           textUA: "Отримати кошторис в Telegram 🚀",

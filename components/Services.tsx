@@ -35,7 +35,7 @@ type RawTier = Omit<Tier, "desc" | "features" | "cta" | "tagline"> & {
 const RAW_TIERS: RawTier[] = [
   {
     name: "Landing Page",
-    price: "$150",
+    price: "$125",
     descUA: "Швидкий односторінковий сайт для старту продажів та залучення заявок.",
     descEN: "High-converting single-page website to launch sales and capture leads.",
     taglineUA: "Швидкий старт", taglineEN: "Quick Start",

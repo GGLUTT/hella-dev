@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Lutiy Digital",
   },
   description:
-    "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $150. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
+    "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $125. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
   keywords: [
     "fullstack developer",
     "web developer ukraine",
@@ -95,7 +95,7 @@ export const metadata: Metadata = {
     siteName: "Lutiy Digital",
     title: "Створення сайтів під ключ — Київ, Біла Церква | Lutiy Digital",
     description:
-      "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $150. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
+      "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $125. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
     locale: "uk_UA",
     images: [
       {
@@ -110,7 +110,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Створення сайтів під ключ — Київ, Біла Церква | Lutiy Digital",
     description:
-      "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $150. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
+      "Розробка сайтів, лендінгів, інтернет-магазинів і веб-застосунків під ключ від $125. SEO з першого дня, інтеграції з CRM, автоматизація n8n та AI. Київ, Біла Церква, вся Україна.",
     creator: "@yevhenii_liutyi",
     images: [`${SITE_URL}/preview.png`],
   },
@@ -161,7 +161,7 @@ const jsonLd = {
       "logo": `${SITE_URL}/favicon.png`,
       "image": `${SITE_URL}/preview.png`,
       "description": "Розробка сайтів під ключ, лендінгів, інтернет-магазинів, веб-застосунків, чат-ботів та автоматизація бізнес-процесів (n8n, AI) для бізнесу в Києві, Білій Церкві та по всій Україні.",
-      "priceRange": "від $150",
+      "priceRange": "від $125",
       "founder": {
         "@type": "Person",
         "name": "Євгеній Лютий",
@@ -185,7 +185,7 @@ const jsonLd = {
         "@type": "OfferCatalog",
         "name": "Послуги Lutiy Digital",
         "itemListElement": [
-          { "@type": "Offer", "price": "150", "priceCurrency": "USD", "itemOffered": { "@type": "Service", "name": "Розробка Landing Page", "url": `${SITE_URL}/landing-page` } },
+          { "@type": "Offer", "price": "125", "priceCurrency": "USD", "itemOffered": { "@type": "Service", "name": "Розробка Landing Page", "url": `${SITE_URL}/landing-page` } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Створення сайтів у Києві", "url": `${SITE_URL}/stvorennya-saitiv-kyiv` } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Створення сайтів у Білій Церкві", "url": `${SITE_URL}/stvorennya-saitiv-bila-tserkva` } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Розробка веб-застосунків", "url": `${SITE_URL}/web-app-development` } },
