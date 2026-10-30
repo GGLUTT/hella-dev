@@ -126,10 +126,10 @@ export default function CaseStudyClient({ caseItem }: { caseItem: CaseStudy }) {
               </Reveal>
               <Reveal delay={0.05}>
                 <h1
-                  className="mt-4 font-semibold uppercase leading-[0.9] text-white"
+                  className="mt-4 break-words font-semibold uppercase leading-[0.92] text-white [hyphens:auto]"
                   style={{
                     fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
-                    fontSize: "clamp(2.6rem, 6vw, 5.2rem)",
+                    fontSize: "clamp(2.4rem, 4.4vw, 4.4rem)",
                     letterSpacing: "-0.05em",
                   }}
                 >
@@ -414,9 +414,9 @@ function PhoneFrame({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * Hero showcase: main screen in a browser frame tilted in 3D, a second screen
- * peeking from behind, and the phone version in front. Swings into the angle on
- * load and straightens a little on hover — transforms only, no filters.
+ * Hero showcase, flat: the main screen in a browser frame, a second screen
+ * offset behind it, and the phone version overlapping the corner. No 3D —
+ * just a soft fade/slide on load (transform + opacity only).
  */
 function Showcase({
   title,
@@ -432,43 +432,42 @@ function Showcase({
   host: string;
 }) {
   return (
-    <div className="group relative mx-auto max-w-[720px] pb-10 pr-6 sm:pr-14" style={{ perspective: 1600 }}>
+    <div className="relative mx-auto max-w-[720px] pb-8 pr-8 pt-8 sm:pb-10 sm:pr-16 sm:pt-10">
       {secondary && (
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 0.55, x: 0 }}
-          transition={{ duration: 1.2, delay: 0.25, ease: EASE }}
-          className="absolute -top-6 left-[12%] w-[78%] [transform:rotateY(24deg)_rotateX(8deg)_translateZ(-140px)]"
+          initial={{ opacity: 0, x: 24, y: -10 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ duration: 1, delay: 0.2, ease: EASE }}
+          className="absolute right-0 top-0 w-[72%]"
         >
-          <BrowserFrame host="">
-            <Image src={secondary} alt="" fill sizes="(min-width: 1024px) 40vw, 80vw" className="object-cover object-top" />
-          </BrowserFrame>
+          <div className="opacity-60">
+            <BrowserFrame host="">
+              <Image src={secondary} alt="" fill sizes="(min-width: 1024px) 36vw, 70vw" className="object-cover object-top" />
+            </BrowserFrame>
+          </div>
         </motion.div>
       )}
 
       <motion.div
-        initial={{ opacity: 0, rotateY: 0, rotateX: 0, y: 40 }}
-        animate={{ opacity: 1, rotateY: 20, rotateX: 7, rotateZ: -1.5, y: 0 }}
-        transition={{ duration: 1.4, ease: EASE }}
-        style={{ transformStyle: "preserve-3d" }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: EASE }}
         className="relative"
       >
-        <div className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:[transform:rotateY(-10deg)_rotateX(-3deg)]">
-          <BrowserFrame host={host}>
-            <Image src={main} alt={`${title} — головний екран сайту`} fill priority sizes="(min-width: 1024px) 50vw, 95vw" className="object-cover object-top" />
-          </BrowserFrame>
-        </div>
+        <BrowserFrame host={host}>
+          <Image src={main} alt={`${title} — головний екран сайту`} fill priority sizes="(min-width: 1024px) 50vw, 95vw" className="object-cover object-top" />
+        </BrowserFrame>
       </motion.div>
 
       {phone && (
         <motion.div
-          initial={{ opacity: 0, y: 60, rotate: 0 }}
-          animate={{ opacity: 1, y: 0, rotate: -4 }}
-          transition={{ duration: 1.2, delay: 0.45, ease: EASE }}
-          className="absolute -bottom-2 right-0 w-[26%] min-w-[96px] max-w-[170px]"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.35, ease: EASE }}
+          className="absolute bottom-0 right-0 w-[24%] min-w-[92px] max-w-[160px]"
         >
           <PhoneFrame>
-            <Image src={phone} alt={`${title} — мобільна версія`} fill sizes="170px" className="object-cover object-top" />
+            <Image src={phone} alt={`${title} — мобільна версія`} fill sizes="160px" className="object-cover object-top" />
           </PhoneFrame>
         </motion.div>
       )}
