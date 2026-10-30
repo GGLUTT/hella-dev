@@ -17,11 +17,20 @@ export interface CaseStudy {
   seoTitle: string;
   seoDescription: string;
   liveUrl?: string;
+  /** Real screenshots of the live site: first screen, a scrolled section, phone */
+  shots?: { hero: string; section: string; mobile: string };
 }
+
+const shotsFor = (slug: string) => ({
+  hero: `/cases/${slug}-hero.webp`,
+  section: `/cases/${slug}-section.webp`,
+  mobile: `/cases/${slug}-mobile.webp`,
+});
 
 export const CASES: CaseStudy[] = [
   {
     slug: "hellarp-gta-roleplay",
+    shots: shotsFor("hellarp-gta-roleplay"),
     title: "HellaRP",
     category: "Gaming · GTA V RolePlay",
     shortDescription: "Промо-сайт для GTA V RolePlay-сервера: кінематографічний перший екран, лічильник гравців онлайн, інтерактивна карта штату, механіки, покрокова інструкція «Як почати», FAQ та кабінет гравця.",
@@ -49,6 +58,7 @@ export const CASES: CaseStudy[] = [
   },
   {
     slug: "apex-fitness-studio",
+    shots: shotsFor("apex-fitness-studio"),
     title: "Apex Fitness Studio",
     category: "Фітнес · Спорт",
     shortDescription: "Сучасний веб-сайт для мережі фітнес-клубів із інтерактивним розкладом занять, особистими кабінетами клієнтів та інтеграцією онлайн-оплати.",
@@ -77,6 +87,7 @@ export const CASES: CaseStudy[] = [
   },
   {
     slug: "kronos-agency",
+    shots: shotsFor("kronos-agency"),
     title: "Kronos Agency",
     category: "Нерухомість · Бренд",
     shortDescription: "Преміальний лендінг для агентства елітної нерухомості з кінематографічною скрол-інтерактивністю та бездоганним UX.",
@@ -130,6 +141,7 @@ export const CASES: CaseStudy[] = [
   },
   {
     slug: "iphone-3d-landing",
+    shots: shotsFor("iphone-3d-landing"),
     title: "iPhone 3D Landing",
     category: "Лендінг · 3D Анімація",
     shortDescription: "Кінематографічний концепт-лендінг нового iPhone з інтерактивною 3D-сценою та скрол-анімаціями.",
@@ -156,6 +168,7 @@ export const CASES: CaseStudy[] = [
   },
   {
     slug: "3d-nexus",
+    shots: shotsFor("3d-nexus"),
     title: "3D Nexus",
     category: "Комерція · 3D / WebGL",
     shortDescription: "Сайт для комерційного комп'ютерного клубу з інтерактивними 3D-об'єктами та футуристичним інтерфейсом.",
@@ -182,6 +195,7 @@ export const CASES: CaseStudy[] = [
   },
   {
     slug: "nts-soccer-academy",
+    shots: shotsFor("nts-soccer-academy"),
     title: "NTS SOCCER ACADEMY",
     category: "Спорт · SaaS",
     shortDescription: "Платформа для дитячої футбольної академії зі статистикою в реальному часі, розкладом та кабінетами батьків.",
@@ -208,6 +222,7 @@ export const CASES: CaseStudy[] = [
   },
   {
     slug: "nike-concept",
+    shots: shotsFor("nike-concept"),
     title: "Nike Concept",
     category: "E-commerce · Бренд",
     shortDescription: "Концептуальний інтернет-магазин з динамічним 3D-конфігуратором кросівок та інтеграцією Stripe.",
@@ -234,6 +249,7 @@ export const CASES: CaseStudy[] = [
   },
   {
     slug: "wine-hood",
+    shots: shotsFor("wine-hood"),
     title: "Wine Hood",
     category: "Мобільний додаток · Лайфстайл",
     shortDescription: "Мобільний застосунок для гурманів вина з AI-рекомендаціями, дегустаційними нотатками та спільнотою.",
