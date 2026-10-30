@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
-import { BlindsShadow } from "./SectionTextures";
+import { WindowLight } from "./SectionTextures";
 import { useLang } from "@/context/LangContext";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -80,7 +80,7 @@ export default function WhatYouGet() {
         className="pointer-events-none absolute -left-40 top-1/3 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.07),transparent_65%)]"
       />
 
-      <BlindsShadow className="inset-0" />
+      <WindowLight className="-right-[30%] -top-16 h-[90vh] w-[140vw] md:-right-[6%] md:-top-24 md:h-[110vh] md:w-[75vw]" />
 
       <div className="relative mx-auto max-w-7xl">
         {/* Header */}

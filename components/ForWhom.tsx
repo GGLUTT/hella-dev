@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { motion, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
 import NeonText from "./NeonText";
-import { SpiralRoads } from "./SectionTextures";
+import { TopoTexture } from "./SectionTextures";
 import { useLang } from "@/context/LangContext";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -141,7 +141,7 @@ export default function ForWhom() {
         className="pointer-events-none absolute -right-40 top-1/4 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.08),transparent_65%)]"
       />
 
-      <SpiralRoads className="-right-[30%] -top-[12%] h-[120vmin] w-[120vmin] md:-right-[12%] md:-top-[20%]" />
+      <TopoTexture className="inset-0" />
 
       <div className="relative mx-auto max-w-7xl">
         {/* Header */}
