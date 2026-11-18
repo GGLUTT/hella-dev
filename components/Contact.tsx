@@ -166,6 +166,17 @@ export default function Contact() {
               )}
             </p>
           </Reveal>
+          <Reveal delay={0.12}>
+            <div className="mt-7 inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] py-1.5 pl-1.5 pr-5 text-left">
+              <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2 ring-emerald-400/40">
+                <Image src="/yevhenii-avatar.webp" alt={t("Євгеній Лютий", "Yevhenii Liutyi")} fill sizes="40px" className="object-cover" />
+              </span>
+              <span className="leading-tight">
+                <span className="block text-[13px] font-semibold text-white">{t("Відповідаю особисто", "I reply personally")}</span>
+                <span className="block text-[11px] text-white/50">{t("Євгеній Лютий, засновник", "Yevhenii Liutyi, founder")}</span>
+              </span>
+            </div>
+          </Reveal>
         </div>
 
         {/* Lead Magnet Card */}

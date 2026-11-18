@@ -167,6 +167,7 @@ const jsonLd = {
         "name": "Євгеній Лютий",
         "alternateName": "Yevhenii Liutyi",
         "jobTitle": "Fullstack-розробник, засновник Lutiy Digital",
+        "image": `${SITE_URL}/yevhenii-liutyi.webp`,
         "sameAs": ["https://github.com/GGLUTT", "https://www.linkedin.com/in/evgenii-lutiy-460797364/"]
       },
       "address": {

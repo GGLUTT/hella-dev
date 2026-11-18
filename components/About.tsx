@@ -255,17 +255,22 @@ export default function About() {
         <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-black" />
         <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-t from-transparent to-black" />
 
-        <div className="relative mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col justify-end px-6 pb-20 pt-[34svh] lg:min-h-[100vh] lg:justify-center lg:py-32">
+        <div className="relative mx-auto grid min-h-[100svh] w-full max-w-7xl items-center gap-12 px-6 pb-20 pt-28 lg:min-h-[100vh] lg:grid-cols-12 lg:gap-10 lg:py-32">
+          {/* Founder portrait — a real face behind the studio builds trust */}
+          <div className="lg:order-2 lg:col-span-5">
+            <FounderPortrait />
+          </div>
+
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-30px" }}
             variants={containerStagger}
-            className="max-w-xl"
+            className="max-w-xl lg:order-1 lg:col-span-7"
           >
             <motion.div
               variants={fadeUp}
-              className="mb-7 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-white0 sm:text-[11px]"
+              className="mb-7 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-white/45 sm:text-[11px]"
             >
               <span>02</span>
               <span className="h-px w-10 bg-white/30" />
@@ -335,7 +340,7 @@ export default function About() {
                       <CountUp from={0} to={s.to} duration={1.8} delay={0.5 + i * 0.15} />
                       <span>{s.suffix}</span>
                     </div>
-                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white0 sm:text-[10px]">
+                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white/45 sm:text-[10px]">
                       {t(s.labelUA, s.labelEN)}
                     </div>
                   </div>
@@ -352,25 +357,6 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Signature card */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-4 top-24 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/70 px-4 py-3 lg:bottom-16 lg:left-auto lg:right-10 lg:top-auto"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-          </span>
-          <div className="leading-tight">
-            <div className="text-[13px] font-semibold text-white">{t("Євгеній Лютий", "Yevhenii Liutyi")}</div>
-            <div className="text-[9px] uppercase tracking-[0.25em] text-white/55">
-              {t("Засновник · приймаю проєкти", "Founder · open for work")}
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       {/* ============ Stack: one compact, scannable row ============ */}
@@ -400,5 +386,82 @@ export default function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ============ Founder portrait ============ */
+
+function FounderPortrait() {
+  const { t } = useLang();
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      className="relative mx-auto w-[78%] max-w-[300px] sm:max-w-[360px] lg:w-full lg:max-w-[430px]"
+    >
+      {/* offset emerald frame for depth (static, no filters) */}
+      <span aria-hidden className="absolute inset-0 translate-x-3 translate-y-3 rounded-[30px] border border-emerald-400/30 sm:translate-x-4 sm:translate-y-4" />
+
+      <motion.div
+        initial={{ clipPath: "inset(100% 0% 0% 0% round 28px)" }}
+        whileInView={{ clipPath: "inset(0% 0% 0% 0% round 28px)" }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
+        className="relative aspect-[4/5] overflow-hidden rounded-[28px] border border-white/10 bg-zinc-900"
+      >
+        <motion.div
+          initial={{ scale: 1.15 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0"
+        >
+          <Image
+            src="/yevhenii-liutyi.webp"
+            alt={t(
+              "Євгеній Лютий — fullstack-розробник, засновник студії Lutiy Digital",
+              "Yevhenii Liutyi — fullstack developer, founder of Lutiy Digital"
+            )}
+            fill
+            sizes="(min-width: 1024px) 430px, (min-width: 640px) 360px, 78vw"
+            quality={80}
+            className="object-cover object-[50%_22%]"
+          />
+        </motion.div>
+        <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#050507] via-[#050507]/60 to-transparent" />
+
+        {/* status pill */}
+        <span className="absolute left-3 top-3 flex items-center gap-2 rounded-full border border-neutral-50/15 bg-[#050507]/70 px-3 py-1.5 sm:left-4 sm:top-4">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          </span>
+          <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-100 sm:text-[10px]">
+            {t("Приймаю проєкти", "Open for work")}
+          </span>
+        </span>
+
+        <figcaption className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+          <div className="text-lg font-semibold tracking-tight text-neutral-50 sm:text-xl">
+            {t("Євгеній Лютий", "Yevhenii Liutyi")}
+          </div>
+          <div className="mt-0.5 text-[12px] text-neutral-300 sm:text-[13px]">
+            {t("Засновник Lutiy Digital · Fullstack-розробник", "Founder of Lutiy Digital · Fullstack developer")}
+          </div>
+          <a
+            href="https://t.me/GGLUTT"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-event="click_portrait_telegram"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-neutral-50 px-4 py-2 text-[12px] font-semibold text-[#050507] transition hover:bg-emerald-400"
+          >
+            {t("Написати мені в Telegram", "Message me on Telegram")}
+            <span aria-hidden>→</span>
+          </a>
+        </figcaption>
+      </motion.div>
+    </motion.figure>
   );
 }
